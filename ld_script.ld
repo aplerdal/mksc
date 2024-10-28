@@ -65,6 +65,8 @@ SECTIONS
         src/title.o(.text);
         src/mobileSystemsGBLogo.o(.text);
         asm/text08001A84.o(.text);
+        src/unk_8001ADC.o(.text);
+        asm/text08001B30.o(.text);
         src/error.o(.text);
         asm/text08016F28.o(.text);
         src/main.o(.text);
