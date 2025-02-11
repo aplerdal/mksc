@@ -54,7 +54,7 @@ sudo apt install libtinfo-dev
 mkdir build
 cd build
 mkdir ../../mksc/tools/thumb-elf
-../configure --target=thumb-elf --without-x --prefix=$PWD/../../mksc/tools/thumb-elf
+../configure --target=thumb-elf --host=x86_64-pc-linux-gnu --without-x --prefix=$PWD/../../mksc/tools/thumb-elf
 make -j$(nproc)
 make install -j$(nproc)
 ```
