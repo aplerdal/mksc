@@ -5,3 +5,5 @@ It builds the following ROM:
 * mksc.gba `sha1: 9d327c030c3e2d9007990518594f70c3340ac56f`
 
 Instructions for setting up this project can be found in [INSTALL.md](INSTALL.md)
+
+A guide for contributing can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
