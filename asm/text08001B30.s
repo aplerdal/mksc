@@ -1312,7 +1312,7 @@ ble _0800257A
 ldr r0, _080025A8 @ =0x000007DD
 add r0, r8
 ldrb r0, [r0, #0x00]
-bl sub_8033BEC
+bl track_isSmkTrack
 adds r1, r0, #0x0
 cmp r1, #0x00
 beq _080025B0
@@ -14939,7 +14939,7 @@ ldr r0, _0800D79C @ =0x03002E20
 ldr r6, _0800D7A0 @ =0x00000801
 adds r0, r0, r6
 ldrb r0, [r0, #0x00]
-bl sub_8033BFC
+bl track_getTrackIndex
 lsls r0, r0, #0x18
 lsrs r1, r0, #0x18
 cmp r1, #0x06
@@ -24965,7 +24965,7 @@ ands r0, r1
 cmp r0, #0x00
 beq _08014CE0
 ldrb r0, [r5, #0x09]
-bl sub_8033BEC
+bl track_isSmkTrack
 cmp r0, #0x00
 beq _08014CE6
 _08014CE0:

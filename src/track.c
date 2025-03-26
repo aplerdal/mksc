@@ -6,10 +6,69 @@ extern u32 skyData_bin[0x24000/32];
 extern const u32 gMkscCups[20];
 extern const u32 gSmkCups[20];
 
+u32 track_isSmkTrack(u8 header_idx) {
+    if (header_idx < 0x20) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+u32 track_getTrackIndex(u8 header_idx) {
+    u32 index = 0;
+    u8 i;
+
+    bool8 smk_track = TRUE;
+    if (header_idx < 0x20) {
+        smk_track = FALSE;
+    }
+    
+    if (!smk_track) {
+        i = 0;
+        while (i < 0x14) {
+            if (gMkscCups[i] == header_idx) index = i;
+            i++;
+        }
+    } else {
+        i = 0;
+        while (i < 0x14) {
+            if (gSmkCups[i] == header_idx) index = i;
+            i++;
+        }
+    }
+    
+    return index;
+}
+
+u8 track_getCup(u8 header_idx) {
+    u32 index = 0;
+    u8 i;
+
+    bool8 smk_track = TRUE;
+    if (header_idx < 0x20) {
+        smk_track = FALSE;
+    }
+    
+    if (!smk_track) {
+        i = 0;
+        while (i < 0x14) {
+            if (gMkscCups[i] == header_idx) index = i;
+            i++;
+        }
+    } else {
+        i = 0;
+        while (i < 0x14) {
+            if (gSmkCups[i] == header_idx) index = i;
+            i++;
+        }
+    }
+    
+    return (u8)index>>2;
+}
+
 u8 track_getCupIndex(u8 header_idx)
 {
-    uint32_t index = 0;
-    uint8_t i;
+    u32 index = 0;
+    u8 i;
 
     bool8 smk_track = TRUE;
     if (header_idx < 0x20) {

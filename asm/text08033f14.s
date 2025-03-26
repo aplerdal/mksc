@@ -52573,7 +52573,7 @@ sub_80524CC:
     ldr r0, _08052560 @ =0x00000801
     adds r5, r6, r0
     ldrb r0, [r5, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
@@ -67287,7 +67287,7 @@ _0805D1E4:
     cmp r0, r10
     ble _0805D20C
     lsrs r0, r1, #0x18
-    bl sub_8033BFC
+    bl track_getTrackIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     lsls r1, r0, #0x02
@@ -67336,7 +67336,7 @@ _0805D242:
     cmp r0, r10
     ble _0805D26A
     lsrs r0, r1, #0x18
-    bl sub_8033BFC
+    bl track_getTrackIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     lsls r1, r0, #0x02
@@ -68092,7 +68092,7 @@ sub_805D864:
     cmp r0, #0x00
     beq _0805D8A4
     adds r0, r5, #0x0
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     adds r0, r5, #0x0
     bl track_getCupIndex
@@ -68106,7 +68106,7 @@ sub_805D864:
 _0805D8A0: .4byte 0x02032B80
 _0805D8A4:
     adds r0, r5, #0x0
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     adds r0, r5, #0x0
     bl track_getCupIndex
@@ -68147,7 +68147,7 @@ sub_805D8DC:
     cmp r0, #0x00
     beq _0805D910
     adds r0, r5, #0x0
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     adds r0, r5, #0x0
     bl track_getCupIndex
@@ -68160,7 +68160,7 @@ sub_805D8DC:
 _0805D90C: .4byte 0x02032B80
 _0805D910:
     adds r0, r5, #0x0
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     adds r0, r5, #0x0
     bl track_getCupIndex

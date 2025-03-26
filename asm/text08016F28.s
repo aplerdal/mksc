@@ -10581,7 +10581,7 @@
     ldr r1, _0801DC38 @ =0x00000801
     adds r5, r6, r1
     ldrb r0, [r5, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     lsls r0, r0, #0x18
     ldr r1, _0801DC3C @ =0x080DB254
     lsrs r0, r0, #0x16
@@ -10590,7 +10590,7 @@
     ldr r1, _0801DC40 @ =0x06000800
     bl LZ77UnCompVram
     ldrb r0, [r5, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
@@ -12973,7 +12973,7 @@
     ldr r1, _08020920 @ =0x00000801
     adds r6, r5, r1
     ldrb r0, [r6, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
@@ -13984,7 +13984,7 @@
     ldr r0, _08021BE4 @ =0x000007DD
     add r0, r9
     ldrb r0, [r0, #0x00]
-    bl sub_8033BFC
+    bl track_getTrackIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     lsls r1, r0, #0x02
@@ -14042,7 +14042,7 @@
     ldr r0, _08021CAC @ =0x00000801
     adds r5, r4, r0
     ldrb r0, [r5, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     str r0, [sp, #0x008]
@@ -14369,7 +14369,7 @@
     ldr r0, _08021F58 @ =0x00000801
     adds r5, r4, r0
     ldrb r0, [r5, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     str r0, [sp, #0x014]
@@ -15291,7 +15291,7 @@
     ldr r0, _080226D0 @ =0x00000801
     adds r6, r5, r0
     ldrb r0, [r6, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     adds r4, r0, #0x0
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
@@ -20833,7 +20833,7 @@
     bl LZ77UnCompVram
     ldr r4, _08028A74 @ =0x0203EC30
     ldrb r0, [r4, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     lsls r0, r0, #0x18
     ldr r1, _08028A78 @ =0x080DC4F0
     lsrs r0, r0, #0x16
@@ -20899,11 +20899,11 @@
     ldr r1, _08028AE0 @ =0x060002E0
     bl LZ77UnCompVram
     ldrb r0, [r4, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     lsls r0, r0, #0x18
     lsrs r5, r0, #0x18
     ldrb r0, [r4, #0x00]
-    bl sub_8033BEC
+    bl track_isSmkTrack
     cmp r0, #0x00
     beq _080289E4
     b _08028AE8
@@ -21118,7 +21118,7 @@
     str r5, [sp, #0x028]
     ldr r0, _08028CC4 @ =0x0203EC30
     ldrb r0, [r0, #0x00]
-    bl sub_8033C58
+    bl track_getCup
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     mov r10, r0
@@ -21229,7 +21229,7 @@
     _08028CFC:
     ldr r0, _08028D3C @ =0x0203EC30
     ldrb r0, [r0, #0x00]
-    bl sub_8033BEC
+    bl track_isSmkTrack
     cmp r0, #0x00
     bne _08028D40
     bl save_getSavePointer_805D9B0
@@ -21285,7 +21285,7 @@
     _08028D70:
     ldr r0, _08028DA4 @ =0x0203EC30
     ldrb r0, [r0, #0x00]
-    bl sub_8033BEC
+    bl track_isSmkTrack
     cmp r0, #0x00
     bne _08028DA8
     bl save_getSavePointer_805D9B0
