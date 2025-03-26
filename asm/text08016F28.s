@@ -10595,7 +10595,7 @@
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
     ldrb r0, [r5, #0x00]
-    bl sub_8033CB4
+    bl track_getCupIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     lsls r4, r4, #0x02
@@ -12978,7 +12978,7 @@
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
     ldrb r0, [r6, #0x00]
-    bl sub_8033CB4
+    bl track_getCupIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     lsls r4, r4, #0x02
@@ -14047,7 +14047,7 @@
     lsrs r0, r0, #0x18
     str r0, [sp, #0x008]
     ldrb r0, [r5, #0x00]
-    bl sub_8033CB4
+    bl track_getCupIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     str r0, [sp, #0x00C]
@@ -14374,7 +14374,7 @@
     lsrs r0, r0, #0x18
     str r0, [sp, #0x014]
     ldrb r0, [r5, #0x00]
-    bl sub_8033CB4
+    bl track_getCupIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     str r0, [sp, #0x018]
@@ -15296,7 +15296,7 @@
     lsls r4, r4, #0x18
     lsrs r4, r4, #0x18
     ldrb r0, [r6, #0x00]
-    bl sub_8033CB4
+    bl track_getCupIndex
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     lsls r4, r4, #0x02

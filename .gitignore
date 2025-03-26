@@ -19,3 +19,7 @@ _ReSharper*/
 /lib/*/build
 /lib/*/*.a
 /lib/*/*.h
+
+# Use this files for diffing, exclude from git
+/src/function.c
+/asm/function.s

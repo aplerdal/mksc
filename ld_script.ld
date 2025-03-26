@@ -86,6 +86,8 @@ SECTIONS
         src/vcount.o(.text);
         src/transition.O3.o(.text);
         asm/text08030774.o(.text);
+        src/track.o(.text);
+        asm/text08033f14.o(.text);
         asm/m4a_1.o(.text);
         src/mp2000/m4a.o(.text);
         asm/libagbsyscall.o(.text);
