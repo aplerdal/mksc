@@ -2,175 +2,6 @@
 
 .syntax unified
 .text
-
-    thumb_func_start sub_8033F14
-sub_8033F14:
-    push {r4, r5, r6, r7, lr}
-    ldr r1, _08033F58 @ =0x080E7FEC
-    ldr r2, _08033F5C @ =0x03002E20
-    ldr r3, _08033F60 @ =0x00000801
-    adds r0, r2, r3
-    ldrb r0, [r0, #0x00]
-    lsls r0, r0, #0x02
-    adds r0, r0, r1
-    ldr r0, [r0, #0x00]
-    ldr r0, [r0, #0x04]
-    lsls r0, r0, #0x02
-    ldr r1, _08033F64 @ =skyData_bin
-    adds r0, r0, r1
-    ldr r0, [r0, #0x00]
-    adds r0, r0, r1
-    ldr r1, _08033F68 @ =0x0000057C
-    adds r5, r2, r1
-    movs r3, #0x00
-    mov r12, r3
-    movs r6, #0x00
-    movs r7, #0x00
-    ldrb r1, [r0, #0x00]
-    cmp r1, #0x10
-    beq _08033FA6
-    cmp r1, #0x10
-    bgt _08033F72
-    cmp r1, #0x07
-    beq _08033F92
-    cmp r1, #0x07
-    bgt _08033F6C
-    cmp r1, #0x04
-    beq _08033F8C
-    b _08033FAC
-    .byte 0x00, 0x00
-_08033F58: .4byte 0x080E7FEC
-_08033F5C: .4byte 0x03002E20
-_08033F60: .4byte 0x00000801
-_08033F64: .4byte skyData_bin
-_08033F68: .4byte 0x0000057C
-_08033F6C:
-    cmp r1, #0x08
-    beq _08033F98
-    b _08033FAC
-_08033F72:
-    cmp r1, #0x40
-    beq _08033F92
-    cmp r1, #0x40
-    bgt _08033F80
-    cmp r1, #0x20
-    beq _08033F86
-    b _08033FAC
-_08033F80:
-    cmp r1, #0x80
-    beq _08033F9E
-    b _08033FAC
-_08033F86:
-    movs r7, #0x80
-    lsls r7, r7, #0x07
-    b _08033FAC
-_08033F8C:
-    movs r7, #0x80
-    lsls r7, r7, #0x08
-    b _08033FAC
-_08033F92:
-    movs r6, #0x80
-    lsls r6, r6, #0x07
-    b _08033FAC
-_08033F98:
-    movs r6, #0x80
-    lsls r6, r6, #0x08
-    b _08033FAC
-_08033F9E:
-    movs r1, #0x80
-    lsls r1, r1, #0x07
-    mov r12, r1
-    b _08033FAC
-_08033FA6:
-    movs r3, #0x80
-    lsls r3, r3, #0x08
-    mov r12, r3
-_08033FAC:
-    ldrb r0, [r0, #0x00]
-    cmp r0, #0x10
-    beq _08033FF2
-    cmp r0, #0x10
-    bgt _08033FCA
-    cmp r0, #0x07
-    beq _08033FDE
-    cmp r0, #0x07
-    bgt _08033FC4
-    cmp r0, #0x04
-    beq _08033FE6
-    b _08033FFA
-_08033FC4:
-    cmp r0, #0x08
-    beq _08033FEA
-    b _08033FFA
-_08033FCA:
-    cmp r0, #0x40
-    beq _08033FEA
-    cmp r0, #0x40
-    bgt _08033FD8
-    cmp r0, #0x20
-    beq _08033FE6
-    b _08033FFA
-_08033FD8:
-    cmp r0, #0x80
-    beq _08033FF2
-    b _08033FFA
-_08033FDE:
-    movs r0, #0x0D
-    movs r3, #0x0E
-    movs r4, #0x0E
-    b _08034000
-_08033FE6:
-    movs r0, #0x0E
-    b _08033FEC
-_08033FEA:
-    movs r0, #0x0F
-_08033FEC:
-    movs r3, #0x0D
-    movs r4, #0x0C
-    b _08034000
-_08033FF2:
-    movs r0, #0x0F
-    movs r3, #0x0E
-    movs r4, #0x0C
-    b _08034000
-_08033FFA:
-    movs r0, #0x0F
-    movs r3, #0x0E
-    movs r4, #0x0D
-_08034000:
-    ldr r2, _08034040 @ =0x0400000A
-    movs r1, #0x07
-    orrs r7, r1
-    lsls r0, r0, #0x08
-    orrs r7, r0
-    ldrh r0, [r5, #0x08]
-    strh r7, [r5, #0x08]
-    ldrh r0, [r5, #0x08]
-    strh r0, [r2, #0x00]
-    adds r2, #0x02
-    orrs r6, r1
-    lsls r0, r3, #0x08
-    orrs r6, r0
-    ldrh r0, [r5, #0x0A]
-    strh r6, [r5, #0x0A]
-    ldrh r0, [r5, #0x0A]
-    strh r0, [r2, #0x00]
-    adds r2, #0x02
-    mov r0, r12
-    orrs r0, r1
-    mov r12, r0
-    lsls r0, r4, #0x08
-    mov r1, r12
-    orrs r1, r0
-    ldrh r0, [r5, #0x0C]
-    strh r1, [r5, #0x0C]
-    ldrh r0, [r5, #0x0C]
-    strh r0, [r2, #0x00]
-    pop {r4, r5, r6, r7}
-    pop {r0}
-    bx r0
-    .byte 0x00, 0x00
-_08034040: .4byte 0x0400000A
     thumb_func_start sub_8034044
 sub_8034044:
     push {r4, r5, r6, lr}
@@ -371,7 +202,7 @@ _080341C4:
 _080341CE:
     movs r0, #0x00
     str r0, [r4, #0x04]
-    bl sub_8033F14
+    bl track_loadSkySize
     lsls r0, r5, #0x10
     asrs r2, r0, #0x10
     adds r0, r2, #0x0
@@ -1939,7 +1770,7 @@ _08034E98:
 _08034EA2:
     movs r0, #0x00
     str r0, [r4, #0x04]
-    bl sub_8033F14
+    bl track_loadSkySize
     ldr r0, _08034F44 @ =0x03002E20
     ldr r3, [r0, #0x10]
     ldr r6, _08034F48 @ =0x080E645C
@@ -3552,7 +3383,7 @@ _08035F02:
     ldr r1, _08035FD4 @ =0x000001FF
     ands r0, r1
     str r0, [r2, #0x00]
-    bl sub_8033F14
+    bl track_loadSkySize
     mov r1, r9
     lsls r0, r1, #0x10
     asrs r2, r0, #0x10
@@ -3791,7 +3622,7 @@ _08036104:
 _0803610E:
     movs r0, #0x00
     str r0, [r4, #0x04]
-    bl sub_8033F14
+    bl track_loadSkySize
     lsls r0, r5, #0x10
     asrs r2, r0, #0x10
     adds r0, r2, #0x0
@@ -5391,7 +5222,7 @@ _08036F3C:
 _08036F46:
     movs r0, #0x00
     str r0, [r4, #0x04]
-    bl sub_8033F14
+    bl track_loadSkySize
     lsls r0, r5, #0x10
     asrs r2, r0, #0x10
     adds r0, r2, #0x0
@@ -5502,7 +5333,7 @@ _08037014:
 _0803701E:
     movs r0, #0x00
     str r0, [r4, #0x04]
-    bl sub_8033F14
+    bl track_loadSkySize
     lsls r0, r5, #0x10
     asrs r2, r0, #0x10
     adds r0, r2, #0x0
@@ -6354,7 +6185,7 @@ _08037784:
 _0803778E:
     movs r0, #0x00
     str r0, [r4, #0x04]
-    bl sub_8033F14
+    bl track_loadSkySize
     lsls r0, r5, #0x10
     asrs r2, r0, #0x10
     adds r0, r2, #0x0

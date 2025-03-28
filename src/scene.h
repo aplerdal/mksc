@@ -2,6 +2,7 @@
 #include "libunk/irq.h"
 #include "frameHeap.h"
 #include "actor.h"
+#include "track.h"
 
 #define RACE_CUR_RACE_STATE_UNKNOWN_GP_MODE 0x100
 #define RACE_CUR_RACE_STATE_UNKNOWN_MG_MODE 0x800
@@ -18,11 +19,17 @@ typedef struct
 {
     u8 gap0[0x14];
     u16 nrCheckpoints;
-    u8 gap16[0x6CA];
+    u8 gap16[0x542];
+    bg_state_t backgroundState;
+    void* trackData;
+    track_def_t* trackDef;
+    u8 gapwtf[0x164];
     frmheap_t frameHeap;
     u8 gap6EC[0xEE];
     u16 curRaceStateUnknown;
-    u8 gap7DC[0x1A];
+    u8 gap7DC;
+    u8 headerTableIdx;
+    u8 gap7DE[0x1A];
     driver_t* drivers[8];
     driver_t* playerDriver;
     //...

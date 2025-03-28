@@ -1,5 +1,6 @@
 #include "track.h"
 #include "palette.h"
+#include "scene.h"
 
 extern u32 skyData_bin[0x24000/32];
 
@@ -94,11 +95,11 @@ u8 track_getCupIndex(u8 header_idx)
 
 void track_loadSky(track_def_t* td) {
     void* address;
-    bg_def_t *background;
+    sky_def_t *background;
     u16* buffer;
 
     s32 bg_offs = *(s32*)(skyData_bin + td->backgroundID);
-    background = (bg_def_t*)((s32)skyData_bin + bg_offs);
+    background = (sky_def_t*)((s32)skyData_bin + bg_offs);
     
     main_frameProc();
     
@@ -179,4 +180,83 @@ void track_loadSky(track_def_t* td) {
     }
     main_frameProc();
     return;
+}
+
+void track_loadSkySize() {
+    sky_def_t* sky;
+    track_def_t* def; 
+    volatile bg_state_t* bgState;
+    u16 size_mid;
+    u16 size_front;
+    u16 size_back;
+    u16 sb_mid;
+    u16 sb_front;
+    u16 sb_back;
+
+    def = gTrackDefTable[gSceneState.raceState.headerTableIdx];
+    sky = ((sky_def_t*)((u8*)skyData_bin+*(u32*)(skyData_bin + def->backgroundID)));
+    bgState = &gSceneState.raceState.backgroundState;
+    size_back = 0;
+    size_mid = 0;
+    size_front = 0;
+    switch (sky->size)
+    {
+    case 0x20:
+        size_front = BGCNT_TXT512x256;
+        break;
+    case 4:
+        size_front = BGCNT_TXT256x512;
+        break;
+    case 0x40:
+        size_mid = BGCNT_TXT512x256;
+        break;
+    case 7:
+        size_mid = BGCNT_TXT512x256;
+        break;
+    case 8:
+        size_mid = BGCNT_TXT256x512;
+        break;
+    case 0x80:
+        size_back = BGCNT_TXT512x256;
+        break;
+    case 0x10:
+        size_back = BGCNT_TXT256x512;
+        break;
+    }
+    
+    switch (sky->size)
+    {
+    case 0x7:
+        sb_front = 0xd;
+        sb_mid = 0xe;
+        sb_back = 0xe;
+        break;
+    case 0x4:
+    case 0x20:
+            sb_front = 0xe;
+            sb_mid = 0xd;
+            sb_back = 0xc;
+            break;
+    case 0x8:
+    case 0x40:
+        sb_front = 0xf;
+        sb_mid = 0xd;
+        sb_back = 0xc;
+        break;
+    case 0x80:
+    case 0x10:
+        sb_front = 0xf;
+        sb_mid = 0xe;
+        sb_back = 0xc;
+        break;
+    default:
+        sb_front = 0xf;
+        sb_mid = 0xe;
+        sb_back = 0xd;
+        break;
+    }
+
+    REG_BG1CNT = bgState->BG1CNT = size_front | BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(sb_front);
+    REG_BG2CNT = bgState->BG2CNT = size_mid | BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(sb_mid);
+    REG_BG3CNT = bgState->BG3CNT = size_back | BGCNT_PRIORITY(3) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(sb_back);
 }
