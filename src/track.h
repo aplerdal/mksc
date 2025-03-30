@@ -47,7 +47,7 @@ typedef struct bg_state_t
 } bg_state_t;
 
 
-u32 track_isSmkTrack(u8 header_idx);
+u32 track_isRetroTrack(u8 header_idx);
 u32 track_getTrackIndex(u8 header_idx);
 u8 track_getCup(u8 header_idx);
 u8 track_getCupIndex(u8 header_idx);

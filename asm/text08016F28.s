@@ -6268,7 +6268,7 @@
     lsls r4, r0, #0x08
     _0801AFE0:
     adds r0, r6, r5
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x02
     add r0, r8
     ldr r0, [r0, #0x00]
@@ -6999,7 +6999,7 @@
     ldr r6, _0801B65C @ =0x080DA76C
     cmp r0, #0x13
     bhi _0801B668
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     bl sub_805CE3C
@@ -7227,7 +7227,7 @@
     ldr r6, _0801B888 @ =0x080DA7F8
     cmp r0, #0x13
     bhi _0801B894
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     bl sub_805CE3C
@@ -8970,7 +8970,7 @@
     adds r5, r7, #0x0
     _0801CAFE:
     adds r0, r6, #0x0
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     bl sub_805CE3C
@@ -9081,7 +9081,7 @@
     bgt _0801CBF4
     adds r0, r4, #0x0
     str r2, [sp, #0x000]
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     adds r1, r5, r6
     ldr r2, [sp, #0x000]
     ldrb r1, [r1, #0x00]
@@ -9423,7 +9423,7 @@
     adds r6, r1, #0x0
     cmp r0, #0x13
     bhi _0801D098
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x18
     lsrs r0, r0, #0x18
     bl sub_805CE3C
@@ -10609,7 +10609,7 @@
     beq _0801DC50
     ldr r4, _0801DC48 @ =0x080E7FEC
     adds r0, r5, #0x0
-    bl sub_8033BBC
+    bl track_getRetroTrack
     lsls r0, r0, #0x02
     adds r0, r0, r4
     ldr r0, [r0, #0x00]
@@ -10642,7 +10642,7 @@
     _0801DC50:
     ldr r4, _0801DC74 @ =0x080E7FEC
     adds r0, r5, #0x0
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x02
     adds r0, r0, r4
     ldr r0, [r0, #0x00]
@@ -12992,7 +12992,7 @@
     beq _08020930
     ldr r4, _08020928 @ =0x080E7FEC
     adds r0, r6, #0x0
-    bl sub_8033BBC
+    bl track_getRetroTrack
     lsls r0, r0, #0x02
     adds r0, r0, r4
     ldr r0, [r0, #0x00]
@@ -13028,7 +13028,7 @@
     _08020930:
     ldr r4, _08020954 @ =0x080E7FEC
     adds r0, r6, #0x0
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x02
     adds r0, r0, r4
     ldr r0, [r0, #0x00]
@@ -15310,7 +15310,7 @@
     beq _080226E0
     ldr r4, _080226D8 @ =0x080E7FEC
     adds r0, r6, #0x0
-    bl sub_8033BBC
+    bl track_getRetroTrack
     lsls r0, r0, #0x02
     adds r0, r0, r4
     ldr r0, [r0, #0x00]
@@ -15327,7 +15327,7 @@
     _080226E0:
     ldr r4, _080226FC @ =0x080E7FEC
     adds r0, r6, #0x0
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x02
     adds r0, r0, r4
     ldr r0, [r0, #0x00]
@@ -20903,7 +20903,7 @@
     lsls r0, r0, #0x18
     lsrs r5, r0, #0x18
     ldrb r0, [r4, #0x00]
-    bl track_isSmkTrack
+    bl track_isRetroTrack
     cmp r0, #0x00
     beq _080289E4
     b _08028AE8
@@ -20913,7 +20913,7 @@
     ldr r6, _08028AE4 @ =0x080E7FEC
     _080289EA:
     adds r0, r5, r4
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x02
     adds r0, r0, r6
     ldr r0, [r0, #0x00]
@@ -20988,7 +20988,7 @@
     ldr r6, _08028B74 @ =0x080E7FEC
     _08028AEE:
     adds r0, r5, r4
-    bl sub_8033BBC
+    bl track_getRetroTrack
     lsls r0, r0, #0x02
     adds r0, r0, r6
     ldr r0, [r0, #0x00]
@@ -21229,7 +21229,7 @@
     _08028CFC:
     ldr r0, _08028D3C @ =0x0203EC30
     ldrb r0, [r0, #0x00]
-    bl track_isSmkTrack
+    bl track_isRetroTrack
     cmp r0, #0x00
     bne _08028D40
     bl save_getSavePointer_805D9B0
@@ -21285,7 +21285,7 @@
     _08028D70:
     ldr r0, _08028DA4 @ =0x0203EC30
     ldrb r0, [r0, #0x00]
-    bl track_isSmkTrack
+    bl track_isRetroTrack
     cmp r0, #0x00
     bne _08028DA8
     bl save_getSavePointer_805D9B0

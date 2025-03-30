@@ -52457,7 +52457,7 @@ sub_80524CC:
     beq _0805258C
     ldr r4, _08052588 @ =0x080E7FEC
     adds r0, r5, r7
-    bl sub_8033BBC
+    bl track_getRetroTrack
     b _08052594
     .byte 0x00, 0x00
 _0805255C: .4byte 0x03002E20
@@ -52475,7 +52475,7 @@ _08052588: .4byte 0x080E7FEC
 _0805258C:
     ldr r4, _08052630 @ =0x080E7FEC
     adds r0, r5, r7
-    bl sub_8033BAC
+    bl track_getMKSCTrack
 _08052594:
     lsls r0, r0, #0x02
     adds r0, r0, r4
@@ -67358,7 +67358,7 @@ _0805D3AE:
 _0805D3B8:
     ldr r0, [sp, #0x048]
     add r0, r9
-    bl sub_8033BAC
+    bl track_getMKSCTrack
     lsls r0, r0, #0x18
     lsrs r3, r0, #0x18
     ldr r1, _0805D428 @ =0x080E7FEC
@@ -67518,7 +67518,7 @@ _0805D4D0:
 _0805D4F0:
     ldr r0, [sp, #0x048]
     add r0, r9
-    bl sub_8033BBC
+    bl track_getRetroTrack
     lsls r0, r0, #0x18
     lsrs r2, r0, #0x18
     ldr r1, _0805D59C @ =0x080E7FEC

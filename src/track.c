@@ -5,9 +5,25 @@
 extern u32 skyData_bin[0x24000/32];
 
 extern const u32 gMkscCups[20];
-extern const u32 gSmkCups[20];
+extern const u32 gRetroCups[20];
+extern u32 gBattleCup[4];
+extern u32 gRetroBattleCup[4];
 
-u32 track_isSmkTrack(u8 header_idx) {
+u32 track_getMKSCTrack(int header_idx) {
+    return gMkscCups[header_idx];
+}
+u32 track_getRetroTrack(int header_idx) {
+    return gRetroCups[header_idx];
+}
+u32 track_getRetroBattleTrack(int header_idx) {
+    return gRetroBattleCup[header_idx];
+}
+
+u32 track_getBattleTrack(int header_idx) {
+    return gBattleCup[header_idx];
+}
+
+u32 track_isRetroTrack(u8 header_idx) {
     if (header_idx < 0x20) {
         return FALSE;
     }
@@ -18,12 +34,12 @@ u32 track_getTrackIndex(u8 header_idx) {
     u32 index = 0;
     u8 i;
 
-    bool8 smk_track = TRUE;
+    bool8 retro_track = TRUE;
     if (header_idx < 0x20) {
-        smk_track = FALSE;
+        retro_track = FALSE;
     }
     
-    if (!smk_track) {
+    if (!retro_track) {
         i = 0;
         while (i < 0x14) {
             if (gMkscCups[i] == header_idx) index = i;
@@ -32,7 +48,7 @@ u32 track_getTrackIndex(u8 header_idx) {
     } else {
         i = 0;
         while (i < 0x14) {
-            if (gSmkCups[i] == header_idx) index = i;
+            if (gRetroCups[i] == header_idx) index = i;
             i++;
         }
     }
@@ -44,12 +60,12 @@ u8 track_getCup(u8 header_idx) {
     u32 index = 0;
     u8 i;
 
-    bool8 smk_track = TRUE;
+    bool8 retro_track = TRUE;
     if (header_idx < 0x20) {
-        smk_track = FALSE;
+        retro_track = FALSE;
     }
     
-    if (!smk_track) {
+    if (!retro_track) {
         i = 0;
         while (i < 0x14) {
             if (gMkscCups[i] == header_idx) index = i;
@@ -58,7 +74,7 @@ u8 track_getCup(u8 header_idx) {
     } else {
         i = 0;
         while (i < 0x14) {
-            if (gSmkCups[i] == header_idx) index = i;
+            if (gRetroCups[i] == header_idx) index = i;
             i++;
         }
     }
@@ -71,12 +87,12 @@ u8 track_getCupIndex(u8 header_idx)
     u32 index = 0;
     u8 i;
 
-    bool8 smk_track = TRUE;
+    bool8 retro_track = TRUE;
     if (header_idx < 0x20) {
-        smk_track = FALSE;
+        retro_track = FALSE;
     }
     
-    if (!smk_track) {
+    if (!retro_track) {
         i = 0;
         while (i < 0x14) {
             if (gMkscCups[i] == header_idx) index = i;
@@ -85,7 +101,7 @@ u8 track_getCupIndex(u8 header_idx)
     } else {
         i = 0;
         while (i < 0x14) {
-            if (gSmkCups[i] == header_idx) index = i;
+            if (gRetroCups[i] == header_idx) index = i;
             i++;
         }
     }
