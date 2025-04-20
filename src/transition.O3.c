@@ -1,7 +1,7 @@
 #include "common.h"
 #include "transition.h"
 
-trns_state_t gTransitionState;
+TransitionState gTransitionState;
 
 void trns_init(void)
 {

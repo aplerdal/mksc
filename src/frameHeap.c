@@ -1,7 +1,7 @@
 #include "common.h"
 #include "frameHeap.h"
 
-void frmheap_init(frmheap_t* heap, void* address, u32 size)
+void frmheap_init(FrameHeap* heap, void* address, u32 size)
 {
     u32 i;
     heap->head = address;
@@ -11,12 +11,12 @@ void frmheap_init(frmheap_t* heap, void* address, u32 size)
         *(u32*)&heap->head[i << 2] = 0;
 }
 
-void frmheap_reset(frmheap_t* heap)
+void frmheap_reset(FrameHeap* heap)
 {
     heap->ptr = heap->head;
 }
 
-void* frmheap_calloc(frmheap_t* heap, int elements, int elemSize)
+void* frmheap_calloc(FrameHeap* heap, int elements, int elemSize)
 {
     void* result;
     u32 size, i;

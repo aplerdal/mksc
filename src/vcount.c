@@ -3,7 +3,7 @@
 #include "frameHeap.h"
 #include "vcount.h"
 
-vcount_state_t gVCountState;
+VCountState gVCountState;
 
 static u8 sHeapSpace[0x100];
 
@@ -25,20 +25,20 @@ void vcount_reset(void)
     list_init(&gVCountState.list);
 }
 
-vcount_entry_t* vcount_register(int vcount, vcount_func_t func)
+VCountEntry* vcount_register(int vcount, VCount_fn func)
 {
-    vcount_entry_t* result;
-    vcount_entry_t* i;
-    vcount_entry_t* next;
-    volatile dispstat_t* dispstat;
+    VCountEntry* result;
+    VCountEntry* i;
+    VCountEntry* next;
+    volatile DispStat* dispstat;
 
-    result = (vcount_entry_t*)frmheap_calloc(&gVCountState.heap, 1, sizeof(vcount_entry_t));
+    result = (VCountEntry*)frmheap_calloc(&gVCountState.heap, 1, sizeof(VCountEntry));
     if (result)
     {
         result->vcount = vcount;
         result->func = func;
 
-        i = (vcount_entry_t*)list_getHead(&gVCountState.list);
+        i = (VCountEntry*)list_getHead(&gVCountState.list);
         while (1)
         {
             if (i)
@@ -54,10 +54,10 @@ vcount_entry_t* vcount_register(int vcount, vcount_func_t func)
                 list_insertTail(&gVCountState.list, &result->link);
                 break;
             }
-            i = (vcount_entry_t*)list_getNext(&gVCountState.list, &i->link);
+            i = (VCountEntry*)list_getNext(&gVCountState.list, &i->link);
         }
 
-        next = (vcount_entry_t*)list_getHead(&gVCountState.list);
+        next = (VCountEntry*)list_getHead(&gVCountState.list);
         dispstat = REG_DISPSTAT_STRUCT;
         gVCountState.curEntry = next;
         dispstat->vcountCmp = next->vcount;
@@ -66,22 +66,22 @@ vcount_entry_t* vcount_register(int vcount, vcount_func_t func)
     return result;
 }
 
-void vcount_unregister(vcount_entry_t* entry)
+void vcount_unregister(VCountEntry* entry)
 {
     list_remove(&gVCountState.list, &entry->link);
 }
 
 void vcount_irqHandler(void)
 {
-    vcount_entry_t* entry;
-    volatile dispstat_t* dispstat;
+    VCountEntry* entry;
+    volatile DispStat* dispstat;
 
     entry = gVCountState.curEntry;
     entry->func();
 
-    entry = (vcount_entry_t*)list_getNext(&gVCountState.list, &entry->link);
+    entry = (VCountEntry*)list_getNext(&gVCountState.list, &entry->link);
     if (!entry)
-        entry = (vcount_entry_t*)list_getHead(&gVCountState.list);
+        entry = (VCountEntry*)list_getHead(&gVCountState.list);
 
     dispstat = REG_DISPSTAT_STRUCT;
     gVCountState.curEntry = entry;

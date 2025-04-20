@@ -4,7 +4,7 @@ typedef struct
 {
     s16 x;
     s16 y;
-} vec2s16_t;
+} Vec2s16;
 
 extern int gSinTable[];
 

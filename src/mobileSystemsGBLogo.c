@@ -17,19 +17,19 @@ extern int dword_80D82EC[1];
 extern void title_main();
 // End external declarations.
 
-static gbm_state_t* sState;
+static GbmState* sState;
 
 void gbm_vblank(void);
 
 int gbm_main(void)
 {
-    gbm_state_t* state;
+    GbmState* state;
     int i;
-    scene_state_t* scene = &gSceneState;
+    SceneState* scene = &gSceneState;
 
     frmheap_init(&scene->raceState.frameHeap, &gMainFrmHeap, sizeof(gMainFrmHeap));
 
-    sState = (gbm_state_t*)frmheap_calloc(&scene->raceState.frameHeap, 1, 12);
+    sState = (GbmState*)frmheap_calloc(&scene->raceState.frameHeap, 1, 12);
     state = sState;
     state->bg0cnt = BGCNT_CHARBASE(1);
     state->dispcnt = DISPCNT_BG0_ON;
@@ -79,7 +79,7 @@ int gbm_main(void)
 
 void gbm_vblank(void)
 {
-    gbm_state_t* state = sState;
+    GbmState* state = sState;
     REG_BLDCNT = state->bldcnt;
     REG_BLDALPHA = state->bldalpha;
     REG_BLDY = state->bldy;

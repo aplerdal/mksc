@@ -12,10 +12,10 @@ void actlist_init(actlist_t* list)
     list->head = NULL;
 }
 
-void actlist_insertHead(actlist_t* list, actor_t* item)
+void actlist_insertHead(actlist_t* list, Actor* item)
 {
-    actor_t* head;
-    actor_t* prev;
+    Actor* head;
+    Actor* prev;
 
     prev = NULL;
     head = list->head;
@@ -29,10 +29,10 @@ void actlist_insertHead(actlist_t* list, actor_t* item)
     list->head = item;
 }
 
-void actlist_insertTail(actlist_t* list, actor_t* item)
+void actlist_insertTail(actlist_t* list, Actor* item)
 {
-    actor_t* tail;
-    actor_t* next;
+    Actor* tail;
+    Actor* next;
 
     tail = list->tail;
     next = NULL;
@@ -45,7 +45,7 @@ void actlist_insertTail(actlist_t* list, actor_t* item)
     list->tail = item;
 }
 
-void actlist_insertBefore(actlist_t* list, actor_t* target, actor_t* item)
+void actlist_insertBefore(actlist_t* list, Actor* target, Actor* item)
 {
     item->prev = target->prev;
     item->next = target;
@@ -56,9 +56,9 @@ void actlist_insertBefore(actlist_t* list, actor_t* target, actor_t* item)
     target->prev = item;
 }
 
-void actlist_insertAfter(actlist_t* list, actor_t* target, actor_t* item)
+void actlist_insertAfter(actlist_t* list, Actor* target, Actor* item)
 {
-    actor_t* next = target->next;
+    Actor* next = target->next;
     item->prev = target;
     item->next = next;
     if (target->next)
@@ -68,9 +68,9 @@ void actlist_insertAfter(actlist_t* list, actor_t* target, actor_t* item)
     target->next = item;
 }
 
-actor_t* actlist_takeHead(actlist_t* list)
+Actor* actlist_takeHead(actlist_t* list)
 {
-    actor_t* item = list->head;
+    Actor* item = list->head;
     list->head = item->next;
     if (list->head)
         list->head->prev = NULL;
@@ -81,9 +81,9 @@ actor_t* actlist_takeHead(actlist_t* list)
     return item;
 }
 
-actor_t* actlist_takeTail(actlist_t* list)
+Actor* actlist_takeTail(actlist_t* list)
 {
-    actor_t* item = list->tail;
+    Actor* item = list->tail;
     list->tail = item->prev;
     if (list->tail)
         list->tail->next = NULL;
@@ -94,9 +94,9 @@ actor_t* actlist_takeTail(actlist_t* list)
     return item;
 }
 
-void actlist_remove(actlist_t* list, actor_t* item)
+void actlist_remove(actlist_t* list, Actor* item)
 {
-    actor_t* item2 = item;
+    Actor* item2 = item;
     if (item2 == list->head)
         actlist_takeHead(list);
     else if (item2 == list->tail)

@@ -20,7 +20,7 @@ typedef struct
 {
     u8 optionId;
     u32 field4;
-} idk_t;
+} Struct1;
 
 typedef struct
 {
@@ -50,9 +50,9 @@ typedef struct
     int field_30;
     void* field_34;
     struc_75 field_38[3];
-    idk_t mainMenuItems[10];
+    Struct1 mainMenuItems[10];
     u8 mainMenuItemCount;
-    idk_t linkSubMenuItems[10];
+    Struct1 linkSubMenuItems[10];
     u8 linkSubMenuItemCount;
     int mainMenuCursorPos;
     bool32 inLinkSubMenu;
@@ -70,7 +70,7 @@ typedef struct
     int field_150;
     int field_154;
     int fallingStarState;
-    vec2s16_t fallingStarPos;
+    Vec2s16 fallingStarPos;
     int fallingStarScale;
     int fallingStarRot;
     int field_168;
@@ -79,12 +79,12 @@ typedef struct
     int koopaShipCounter;
     int koopaShipX;
     int koopaShipY;
-    vec2s16_t koopaShipPosition;
+    Vec2s16 koopaShipPosition;
     bool32 isSunset;
     char field_188[512];
     int field_388;
     int field_38C;
     u32 field_390;
-} title_state_t;
+} TitleState;
 
 bool32 title_main(void);

@@ -4,7 +4,7 @@ typedef struct
 {
     vu16* reg;
     u16 val;
-} ioreg_val_t;
+} Register;
 
 void main_setKeyRepeat(int initialRepeatWait, int nextRepeatWait);
 u16 main_getKeys(void);
@@ -13,7 +13,7 @@ u16 main_getRepeatTriggerKeys(void);
 u32 main_checkKeys(u16 mask);
 u32 main_checkKeysTriggered(u16 mask);
 u32 main_checkKeysRepeatTriggered(u16 mask);
-void main_configureIoRegs(const ioreg_val_t* regs, int count);
+void main_configureIoRegs(const Register* regs, int count);
 void main_waitVBlankFlag(void);
 void main_waitNotVBlankFlag(void);
 void* main_copyThumbFunc(const void* src, void* dst, u32 length);

@@ -4,11 +4,11 @@
 // static u8 sHeap[0x600];
 extern u8 dmaq_sHeap[0x600];
 
-static dmaq_t sVBlankDmaQueue;
+static DmaQueue sVBlankDmaQueue;
 
-void dmaq_process(dmaq_t* queue)
+void dmaq_process(DmaQueue* queue)
 {
-    dmaq_entry_t* entry;
+    DmaQueueEntry* entry;
     const u8* src;
     u32 srcMode;
     u8* dst;
@@ -16,12 +16,12 @@ void dmaq_process(dmaq_t* queue)
     u32 left;
     int size;
     u32 dstMode;
-    frmheap_t* heap;
+    FrameHeap* heap;
 
     if (!queue->inUse)
     {
         queue->inUse = TRUE;
-        entry = (dmaq_entry_t*)queue->list.head;
+        entry = (DmaQueueEntry*)queue->list.head;
         heap = &queue->heap;
         while (entry)
         {
@@ -60,7 +60,7 @@ void dmaq_process(dmaq_t* queue)
 
                 left -= size;
             } while (left);
-            entry = (dmaq_entry_t*)entry->link.next;
+            entry = (DmaQueueEntry*)entry->link.next;
         }
         frmheap_reset(heap);
         queue->list.tail = NULL;
@@ -69,7 +69,7 @@ void dmaq_process(dmaq_t* queue)
     queue->inUse = FALSE;
 }
 
-void dmaq_init(dmaq_t* queue)
+void dmaq_init(DmaQueue* queue)
 {
     frmheap_init(&queue->heap, dmaq_sHeap, sizeof(dmaq_sHeap));
     queue->list.tail = NULL;
@@ -77,7 +77,7 @@ void dmaq_init(dmaq_t* queue)
     queue->inUse = FALSE;
 }
 
-void dmaq_reset(dmaq_t* queue)
+void dmaq_reset(DmaQueue* queue)
 {
     bool32 one;
     do
@@ -93,9 +93,9 @@ void dmaq_reset(dmaq_t* queue)
     queue->inUse = FALSE;
 }
 
-dmaq_entry_t* dmaq_enqueue(dmaq_t* queue, const void* src, void* dst, u32 config)
+DmaQueueEntry* dmaq_enqueue(DmaQueue* queue, const void* src, void* dst, u32 config)
 {
-    dmaq_entry_t* result;
+    DmaQueueEntry* result;
     bool32 one;
     do
     {
@@ -104,7 +104,7 @@ dmaq_entry_t* dmaq_enqueue(dmaq_t* queue, const void* src, void* dst, u32 config
     while (queue->inUse)
         ;
     queue->inUse = one;
-    result = (dmaq_entry_t*)frmheap_calloc(&queue->heap, 1, sizeof(dmaq_entry_t));
+    result = (DmaQueueEntry*)frmheap_calloc(&queue->heap, 1, sizeof(DmaQueueEntry));
     if (result)
     {
         result->src = src;
@@ -116,12 +116,12 @@ dmaq_entry_t* dmaq_enqueue(dmaq_t* queue, const void* src, void* dst, u32 config
     return result;
 }
 
-dmaq_t* dmaq_getVBlankDmaQueue(void)
+DmaQueue* dmaq_getVBlankDmaQueue(void)
 {
     return &sVBlankDmaQueue;
 }
 
-bool32 dmaq_beginUse(dmaq_t* queue)
+bool32 dmaq_beginUse(DmaQueue* queue)
 {
     bool32 result;
     if (queue->inUse)
@@ -134,7 +134,7 @@ bool32 dmaq_beginUse(dmaq_t* queue)
     return result;
 }
 
-void dmaq_endUse(dmaq_t* queue)
+void dmaq_endUse(DmaQueue* queue)
 {
     queue->inUse = FALSE;
 }

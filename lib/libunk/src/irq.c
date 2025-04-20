@@ -9,13 +9,13 @@ static void dummyHandler(void)
 {
 }
 
-static const irq_handler_t sIrqTableInitData[15] = { dummyHandler, dummyHandler, dummyHandler, dummyHandler,
+static const IrqHandler sIrqTableInitData[15] = { dummyHandler, dummyHandler, dummyHandler, dummyHandler,
                                                      dummyHandler, dummyHandler, dummyHandler, dummyHandler,
                                                      dummyHandler, dummyHandler, dummyHandler, dummyHandler,
                                                      dummyHandler, dummyHandler, dummyHandler };
 
 extern void intr_main(void);
-extern irq_handler_t gIrqTable[];
+extern IrqHandler gIrqTable[];
 
 void irq_init()
 {
@@ -25,7 +25,7 @@ void irq_init()
     INTR_VECTOR_BUF = (u32)sIntrMain;
 }
 
-void irq_setHandler(int irqId, irq_handler_t handler)
+void irq_setHandler(int irqId, IrqHandler handler)
 {
     gIrqTable[irqId] = handler;
 }

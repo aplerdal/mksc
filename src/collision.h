@@ -5,11 +5,11 @@ typedef struct
 {
     u8 activeCount;
     u8 passiveCount;
-    actor_t* activeList[24];
-    actor_t* passiveList[64];
-} col_list_t;
+    Actor* activeList[24];
+    Actor* passiveList[64];
+} CollisionList;
 
-bool32 col_addActive(col_list_t* colList, actor_t* actor);
-bool32 col_addPassive(col_list_t* colList, actor_t* actor);
-void col_clearLists(col_list_t* colList);
-void col_collide(col_list_t* colList);
+bool32 col_addActive(CollisionList* colList, Actor* actor);
+bool32 col_addPassive(CollisionList* colList, Actor* actor);
+void col_clearLists(CollisionList* colList);
+void col_collide(CollisionList* colList);

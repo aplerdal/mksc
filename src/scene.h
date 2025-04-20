@@ -9,60 +9,60 @@
 
 typedef struct
 {
-    actor_t actor;
+    Actor actor;
     u32 field_44;
     u32 field_48;
     //...
-} driver_t;
+} Driver;
 
 typedef struct
 {
     u8 gap0[0x14];
     u16 nrCheckpoints;
     u8 gap16[0x542];
-    bg_state_t backgroundState;
+    BgState backgroundState;
     void* trackData;
-    track_def_t* trackDef;
+    TrackDef* trackDef;
     u8 gapwtf[0x164];
-    frmheap_t frameHeap;
+    FrameHeap frameHeap;
     u8 gap6EC[0xEE];
     u16 curRaceStateUnknown;
     u8 gap7DC;
     u8 headerTableIdx;
     u8 gap7DE[0x1A];
-    driver_t* drivers[8];
-    driver_t* playerDriver;
+    Driver* drivers[8];
+    Driver* playerDriver;
     //...
-} race_state_t;
+} RaceState;
 
-typedef bool32 (*scene_main_func_t)(void);
-typedef void (*scene_vblank_func_t)(void);
+typedef bool32 (*SceneMain_fn)(void);
+typedef void (*SceneVblank_fn)(void);
 
 typedef struct
 {
-    scene_main_func_t sceneMainFunc;
+    SceneMain_fn sceneMainFunc;
     u8 space1[4];
     bool8 byte_3002E28;
-    scene_vblank_func_t vBlankFunc;
+    SceneVblank_fn vBlankFunc;
     u32 field10;
     u32 field14;
     u8 space2[8];
     u16 initialRepeatWait;
     u16 nextRepeatWait;
-    race_state_t raceState;
-} scene_state_t;
+    RaceState raceState;
+} SceneState;
 
-extern scene_state_t gSceneState;
+extern SceneState gSceneState;
 
-static inline void scene_setVBlankFunc(scene_vblank_func_t func)
+static inline void scene_setVBlankFunc(SceneVblank_fn func)
 {
-    scene_state_t* sceneState = &gSceneState;
+    SceneState* sceneState = &gSceneState;
     irq_updateMask(IRQ_UPDATE_MODE_AND, ~IRQ_MASK_VBLANK);
     sceneState->vBlankFunc = func;
     irq_updateMask(IRQ_UPDATE_MODE_OR, IRQ_MASK_VBLANK | IRQ_MASK_IME);
 }
 
-static inline void scene_setMainFunc(scene_main_func_t func)
+static inline void scene_setMainFunc(SceneMain_fn func)
 {
     gSceneState.sceneMainFunc = func;
     gSceneState.byte_3002E28 = (gSceneState.byte_3002E28 + 1) & 7;

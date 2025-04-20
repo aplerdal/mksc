@@ -5,13 +5,13 @@
 extern u8 col_sCpoiStartIndicesActive[128];
 extern u8 col_sCpoiStartIndicesPassive[128];
 
-static void sortByCheckpoint(actor_t** actorList, int actorCount, u8* cpoiStartIndices, int nrCheckpoints)
+static void sortByCheckpoint(Actor** actorList, int actorCount, u8* cpoiStartIndices, int nrCheckpoints)
 {
     int i, j;
     int idx;
     for (i = 0; i < actorCount - 1; i++)
     {
-        actor_t* tempActor;
+        Actor* tempActor;
         int checkpointId = actorList[i]->checkpointId;
         idx = i;
         for (j = i + 1; j < actorCount; j++)
@@ -39,7 +39,7 @@ static void sortByCheckpoint(actor_t** actorList, int actorCount, u8* cpoiStartI
         cpoiStartIndices[i++] = idx;
 }
 
-static inline bool32 somethingField38(actor_t* actorA, actor_t* actorB)
+static inline bool32 somethingField38(Actor* actorA, Actor* actorB)
 {
     int tmp = actorA->field_38;
     if ((tmp | actorB->field_38) > 1)
@@ -47,7 +47,7 @@ static inline bool32 somethingField38(actor_t* actorA, actor_t* actorB)
     return TRUE;
 }
 
-static inline void collide(actor_t* actorA, actor_t* actorB)
+static inline void collide(Actor* actorA, Actor* actorB)
 {
     int size;
 
@@ -75,10 +75,10 @@ static inline void collide(actor_t* actorA, actor_t* actorB)
     }
 }
 
-static void collideActiveActiveFast(const col_list_t* colList, u8* cpoiStartIndices, int nrCheckpoints)
+static void collideActiveActiveFast(const CollisionList* colList, u8* cpoiStartIndices, int nrCheckpoints)
 {
     int i, j;
-    actor_t* actorA;
+    Actor* actorA;
     int checkpointId;
     int startCpoi, endCpoi;
     int startIdx, endIdx;
@@ -114,10 +114,10 @@ static void collideActiveActiveFast(const col_list_t* colList, u8* cpoiStartIndi
     }
 }
 
-static void collideActiveActive(const col_list_t* colList)
+static void collideActiveActive(const CollisionList* colList)
 {
     int i, j;
-    actor_t* actorA;
+    Actor* actorA;
     for (i = 0; i < colList->activeCount; i++)
     {
         actorA = colList->activeList[i];
@@ -126,11 +126,11 @@ static void collideActiveActive(const col_list_t* colList)
     }
 }
 
-static void collideActivePassiveFast(const col_list_t* colList, u8* cpoiStartIndices, int nrCheckpoints)
+static void collideActivePassiveFast(const CollisionList* colList, u8* cpoiStartIndices, int nrCheckpoints)
 {
     int i, j;
-    actor_t* actorA;
-    actor_t* actorA2;
+    Actor* actorA;
+    Actor* actorA2;
     int checkpointId;
     int startCpoi, endCpoi;
     int startIdx, endIdx;
@@ -168,10 +168,10 @@ static void collideActivePassiveFast(const col_list_t* colList, u8* cpoiStartInd
     }
 }
 
-static void collideActivePassive(const col_list_t* colList)
+static void collideActivePassive(const CollisionList* colList)
 {
     int i, j;
-    actor_t* actorA;
+    Actor* actorA;
     for (i = 0; i < colList->activeCount; i++)
     {
         actorA = colList->activeList[i];
@@ -180,7 +180,7 @@ static void collideActivePassive(const col_list_t* colList)
     }
 }
 
-bool32 col_addActive(col_list_t* colList, actor_t* actor)
+bool32 col_addActive(CollisionList* colList, Actor* actor)
 {
     int count = colList->activeCount;
     if (count == 24)
@@ -190,7 +190,7 @@ bool32 col_addActive(col_list_t* colList, actor_t* actor)
     return TRUE;
 }
 
-bool32 col_addPassive(col_list_t* colList, actor_t* actor)
+bool32 col_addPassive(CollisionList* colList, Actor* actor)
 {
     int count = colList->passiveCount;
     if (count == 64)
@@ -200,13 +200,13 @@ bool32 col_addPassive(col_list_t* colList, actor_t* actor)
     return TRUE;
 }
 
-void col_clearLists(col_list_t* colList)
+void col_clearLists(CollisionList* colList)
 {
     colList->activeCount = 0;
     colList->passiveCount = 0;
 }
 
-void col_collide(col_list_t* colList)
+void col_collide(CollisionList* colList)
 {
     int nrCheckpoints = gSceneState.raceState.nrCheckpoints;
     if (!(gSceneState.raceState.curRaceStateUnknown & RACE_CUR_RACE_STATE_UNKNOWN_MG_MODE))

@@ -13,7 +13,7 @@ typedef struct
 
 typedef struct
 {
-    actor_t actor;
+    Actor actor;
     u8 pad1[4];
     u32 cellData;
     u16 waitCounter;

@@ -21,6 +21,6 @@ typedef struct
     s32 field32;
     u16 field_24[4][4];
     u32 field68;
-} error_state_t;
+} ErrorState;
 
 int error_main(void);

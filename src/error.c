@@ -48,15 +48,15 @@ extern u16 dword_80DA30C[4];
 extern int dword_3005C50;
 // End external declarations.
 
-static error_state_t* sState;
-static vec2s16_t word_300018C;
+static ErrorState* sState;
+static Vec2s16 word_300018C;
 
 static void error_8016D90(void);
 static void sub_801715C(void);
 
 static void error_vblank(void)
 {
-    error_state_t* state = sState;
+    ErrorState* state = sState;
 
     REG_DISPCNT &= DISPCNT_WIN0_ON | DISPCNT_WIN1_ON;
     REG_DISPCNT |= state->dspcnt & ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
@@ -81,7 +81,7 @@ static void error_loadGraphics(void)
 {
     int i, j;
 
-    error_state_t* state = sState;
+    ErrorState* state = sState;
 
     LZ77UnCompWram(dword_80C7F38, pltt_getBuffer(PLTT_BUFFER_BG));
     LZ77UnCompWram(dword_80C7F38, pltt_getBuffer(PLTT_BUFFER_OBJ));
@@ -173,8 +173,8 @@ static void error_loadGraphics(void)
 int error_main(void)
 {
     int offset;
-    error_state_t* state;
-    scene_state_t* sceneState;
+    ErrorState* state;
+    SceneState* sceneState;
 
     bool32 finished = FALSE;
     int funcState = 0;
@@ -186,7 +186,7 @@ int error_main(void)
 
     sceneState = &gSceneState;
     frmheap_init(&sceneState->raceState.frameHeap, &gMainFrmHeap, sizeof(gMainFrmHeap));
-    sState = state = frmheap_calloc(&sceneState->raceState.frameHeap, 1, sizeof(error_state_t));
+    sState = state = frmheap_calloc(&sceneState->raceState.frameHeap, 1, sizeof(ErrorState));
 
     error_loadGraphics();
 
@@ -285,11 +285,11 @@ asm_unified(".include \"nonmatching/text08016D90.s\"");
 static void error_8016D90(void)
 {
     int i;
-    vec2s16_t a2;
-    vec2s16_t v18;
+    Vec2s16 a2;
+    Vec2s16 v18;
     int value;
 
-    error_state_t* state = sState;
+    ErrorState* state = sState;
 
     int v1 = sio2_sMPlayerId.field_1;
     if (v1 <= 1)

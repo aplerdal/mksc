@@ -8,17 +8,17 @@ static const int sObjHalfHeight[3][4] = { { 4, 8, 16, 32 }, { 4, 4, 8, 16 }, { 8
 static int sBufferOffset;
 static int sNextAffineId;
 static u16 sBuffer[128 * 4];
-static oam_cell_list_entry_t sCellListEntries[32];
-static oam_cell_list_entry_t* sCellListHead;
-static oam_cell_list_entry_t* sCellListTail;
+static OamCellListEntry sCellListEntries[32];
+static OamCellListEntry* sCellListHead;
+static OamCellListEntry* sCellListTail;
 static int sCellListEntryCount;
 static bool32 sCopyDisabled;
 static bool32 oam_3002188;
 static bool32 oam_300218C;
 
-bool32 oam_renderCell(oam_cell_t* cell);
-void oam_renderCellData(const u16* cellData, vec2s16_t* position, int scaleX, int scaleY, int rotation, struc_6* a6);
-oam_cell_list_entry_t* oam_802FC48(oam_cell_list_entry_t* a1);
+bool32 oam_renderCell(OamCell* cell);
+void oam_renderCellData(const u16* cellData, Vec2s16* position, int scaleX, int scaleY, int rotation, struc_6* a6);
+OamCellListEntry* oam_802FC48(OamCellListEntry* a1);
 void oam_init(void);
 void oam_update(void);
 void oam_reset(void);
@@ -30,13 +30,13 @@ inline void oam_802FE4C(bool32 value)
     oam_3002188 = value;
 }
 
-void oam_renderMipmapCellDataUniform(const oam_mipmap_cell_data_t* a1, vec2s16_t* position, int scale, struc_6* a4);
-void oam_renderMipmapCellData(const oam_mipmap_cell_data_t* a1, vec2s16_t* position, int mipmapScale, int scaleX,
+void oam_renderMipmapCellDataUniform(const OamMipmapCellData* a1, Vec2s16* position, int scale, struc_6* a4);
+void oam_renderMipmapCellData(const OamMipmapCellData* a1, Vec2s16* position, int mipmapScale, int scaleX,
                               int scaleY, int rotation, struc_6* a7);
 void oam_renderCellDataSimple(const u16* cellData, int x, int y, int scale, struc_6* a6);
-bool32 sub_802FF58(vec2s16_t* a1, s16 a2);
+bool32 sub_802FF58(Vec2s16* a1, s16 a2);
 
-inline int oam_bufferCellAffineMtx(oam_cell_t* cell)
+inline int oam_bufferCellAffineMtx(OamCell* cell)
 {
     if (sNextAffineId > 31)
         return -1;
@@ -50,7 +50,7 @@ inline int oam_bufferCellAffineMtx(oam_cell_t* cell)
 
 inline void oam_renderAllCells(void)
 {
-    oam_cell_list_entry_t* listEntry;
+    OamCellListEntry* listEntry;
 
     if (!sCellListHead)
         return;
@@ -68,7 +68,7 @@ inline void oam_renderAllCells(void)
 #ifndef NONMATCHING
 asm_unified(".include \"nonmatching/text0802F6BC.s\"");
 #else
-bool32 oam_renderCell(oam_cell_t* cell)
+bool32 oam_renderCell(OamCell* cell)
 {
     int offsetX;
     int offsetY;
@@ -131,7 +131,7 @@ bool32 oam_renderCell(oam_cell_t* cell)
     int tmp2;
     u16* new_var4;
     u16 tmp;
-    oam_cell_t* new_var;
+    OamCell* new_var;
     v2 = cell->cellData;
     offsetX = cell->offsetX;
     offsetY = cell->offsetY;
@@ -245,14 +245,14 @@ bool32 oam_renderCell(oam_cell_t* cell)
 }
 #endif
 
-void oam_renderCellData(const u16* cellData, vec2s16_t* position, int scaleX, int scaleY, int rotation, struc_6* a6)
+void oam_renderCellData(const u16* cellData, Vec2s16* position, int scaleX, int scaleY, int rotation, struc_6* a6)
 {
-    oam_cell_list_entry_t* v12;
-    oam_cell_list_entry_t* v13;
-    oam_cell_list_entry_t* v14;
+    OamCellListEntry* v12;
+    OamCellListEntry* v13;
+    OamCellListEntry* v14;
     struc_6* v16;
-    oam_cell_t* cell;
-    oam_cell_t v20;
+    OamCell* cell;
+    OamCell v20;
 
     if (!a6)
     {
@@ -326,16 +326,16 @@ void oam_renderCellData(const u16* cellData, vec2s16_t* position, int scaleX, in
     }
 }
 
-oam_cell_list_entry_t* oam_802FC48(oam_cell_list_entry_t* listEntry)
+OamCellListEntry* oam_802FC48(OamCellListEntry* listEntry)
 {
-    oam_cell_list_entry_t* v2;
-    oam_cell_list_entry_t* v4;
-    oam_cell_list_entry_t* v5;
-    oam_cell_list_entry_t* v7;
-    oam_cell_list_entry_t* v6;
-    oam_cell_list_entry_t* v8;
-    oam_cell_list_entry_t* v9;
-    oam_cell_list_entry_t entry;
+    OamCellListEntry* v2;
+    OamCellListEntry* v4;
+    OamCellListEntry* v5;
+    OamCellListEntry* v7;
+    OamCellListEntry* v6;
+    OamCellListEntry* v8;
+    OamCellListEntry* v9;
+    OamCellListEntry entry;
     if ((!listEntry) || (!listEntry->next))
     {
         return listEntry;
@@ -455,7 +455,7 @@ void oam_cpuCopyToHw(void)
     if (!sCopyDisabled)
         CpuCopy32(sBuffer, (void*)OAM, sizeof(sBuffer));
 }
-void oam_renderMipmapCellDataUniform(const oam_mipmap_cell_data_t* cellData, vec2s16_t* position, int scale,
+void oam_renderMipmapCellDataUniform(const OamMipmapCellData* cellData, Vec2s16* position, int scale,
                                      struc_6* a4)
 {
     if (scale <= 511)
@@ -472,7 +472,7 @@ void oam_renderMipmapCellDataUniform(const oam_mipmap_cell_data_t* cellData, vec
                            scale >> cellData->level3Shift, 0, a4);
 }
 
-void oam_renderMipmapCellData(const oam_mipmap_cell_data_t* cellData, vec2s16_t* position, int mipmapScale, int scaleX,
+void oam_renderMipmapCellData(const OamMipmapCellData* cellData, Vec2s16* position, int mipmapScale, int scaleX,
                               int scaleY, int rotation, struc_6* a7)
 {
     if (mipmapScale <= 511)
@@ -491,7 +491,7 @@ void oam_renderMipmapCellData(const oam_mipmap_cell_data_t* cellData, vec2s16_t*
 
 void oam_renderCellDataSimple(const u16* cellData, int x, int y, int scale, struc_6* a6)
 {
-    vec2s16_t a2;
+    Vec2s16 a2;
     x <<= 16;
     y <<= 16;
     *(u32*)&a2 = ((u32)x >> 16) | y;
@@ -499,7 +499,7 @@ void oam_renderCellDataSimple(const u16* cellData, int x, int y, int scale, stru
     oam_renderCellData(cellData, &a2, scale, scale, 0, a6);
 }
 
-bool32 sub_802FF58(vec2s16_t* a1, s16 a2)
+bool32 sub_802FF58(Vec2s16* a1, s16 a2)
 {
     if ((u16)(a1->x + 64) > 0x170 || a1->y < 0 || a1->y > 224 || a2 <= 127 || a2 > 4096)
         return 0;

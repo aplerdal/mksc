@@ -1,7 +1,7 @@
 #pragma once
 #include "common.h"
 
-typedef struct track_def_t {
+typedef struct TrackDef {
     int trackID;
     int backgroundID;
     int backgroundBehavior;
@@ -15,11 +15,11 @@ typedef struct track_def_t {
     int *trackCoverPalette;
     int *notUnlockedPalette;
     int *trackNameText;
-} track_def_t;
+} TrackDef;
 
-extern const track_def_t* gTrackDefTable[56];
+extern const TrackDef* gTrackDefTable[56];
 
-typedef struct sky_def_t {
+typedef struct {
     u8 size;
     u8 cmp_flgs;
     s32 gfx_offset;
@@ -27,9 +27,9 @@ typedef struct sky_def_t {
     s32 layout_mid;
     s32 layout_back;
     s32 pal_offset;
-} sky_def_t;
+} SkyDef;
 
-typedef struct bg_state_t
+typedef struct
 {
     u16 DISPCNT;
     u16 gap0;
@@ -44,12 +44,12 @@ typedef struct bg_state_t
     u16 BG3HOFS;
     u16 BG3VOFS;
     u16 gap1;
-} bg_state_t;
+} BgState;
 
 
 u32 track_isRetroTrack(u8 header_idx);
 u32 track_getTrackIndex(u8 header_idx);
 u8 track_getCup(u8 header_idx);
 u8 track_getCupIndex(u8 header_idx);
-void track_loadSky(track_def_t * td);
+void track_loadSky(TrackDef * td);
 void track_loadSkySize();

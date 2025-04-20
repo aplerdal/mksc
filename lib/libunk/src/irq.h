@@ -1,6 +1,6 @@
 #pragma once
 
-typedef void (*irq_handler_t)(void);
+typedef void (*IrqHandler)(void);
 
 #define IRQ_ID_VBLANK    0
 #define IRQ_ID_HBLANK    1

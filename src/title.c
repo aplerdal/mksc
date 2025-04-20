@@ -64,14 +64,14 @@ extern u8 unk_203EBE0[];
 extern const u8 dword_80D8E64[3];
 extern const u8 dword_80D8E67[2];
 
-static title_state_t* title_sState;
+static TitleState* title_sState;
 
 static void vcount70(void);
 
-static void title_80001D8(title_state_t* state)
+static void title_80001D8(TitleState* state)
 {
     int i;
-    vec2s16_t a2;
+    Vec2s16 a2;
 
     for (i = 0; i < 3; i++)
     {
@@ -160,13 +160,13 @@ typedef struct
     int y : 16;
 } test_t;
 
-static void title_8000350(title_state_t* state)
+static void title_8000350(TitleState* state)
 {
     int optionId;
     int v8;
     int v10;
     int itemCount;
-    idk_t* items;
+    Struct1* items;
     int i;
     int v20;
     const u16* v22;
@@ -302,7 +302,7 @@ static void title_8000350(title_state_t* state)
     }
 }
 
-static void title_handleNightStars(title_state_t* state)
+static void title_handleNightStars(TitleState* state)
 {
     const u16* plttSrc;
     u16* plttDst;
@@ -355,7 +355,7 @@ static void title_handleNightStars(title_state_t* state)
                            state->fallingStarScale, state->fallingStarRot, 0);
 }
 
-static void title_handleNightKoopaShip(title_state_t* state)
+static void title_handleNightKoopaShip(TitleState* state)
 {
     if (!state->koopaShipEnabled)
         return;
@@ -386,7 +386,7 @@ static void title_handleNightKoopaShip(title_state_t* state)
 
 static void vblank(void)
 {
-    title_state_t* state = title_sState;
+    TitleState* state = title_sState;
     REG_BG0HOFS = state->bg0HOfs;
     REG_BG0VOFS = state->bg0VOfs;
     REG_BG1HOFS = state->bg1HOfs;
@@ -413,7 +413,7 @@ static void vblank(void)
 
 static void title_loadGraphics(void)
 {
-    title_state_t* state = title_sState;
+    TitleState* state = title_sState;
 
     map_setBufferDestination(0, (void*)(BG_VRAM + 0x1000));
     if (state->isNight)
@@ -526,7 +526,7 @@ bool32 title_main(void)
 {
     u32 stateId;
     int counter;
-    title_state_t* state;
+    TitleState* state;
     int i;
     int j;
     int k;
@@ -536,8 +536,8 @@ bool32 title_main(void)
     int v81;
     int v82;
     int v83;
-    scene_state_t* sceneState;
-    idk_t* menuItems;
+    SceneState* sceneState;
+    Struct1* menuItems;
     u32* v19;
 
     stateId = 1;
@@ -550,7 +550,7 @@ bool32 title_main(void)
     sio2_stop();
     sceneState = &gSceneState;
     frmheap_init(&sceneState->raceState.frameHeap, gMainFrmHeap, sizeof(gMainFrmHeap));
-    state = title_sState = (title_state_t*)frmheap_calloc(&sceneState->raceState.frameHeap, 1, sizeof(title_state_t));
+    state = title_sState = (TitleState*)frmheap_calloc(&sceneState->raceState.frameHeap, 1, sizeof(TitleState));
     state->field_34 = frmheap_calloc(&sceneState->raceState.frameHeap, 1, 0x1400);
     state->isSunset = TRUE;
     v19 = &state->inLinkSubMenu + 1;
@@ -1017,6 +1017,6 @@ bool32 title_main(void)
 
 static void vcount70(void)
 {
-    title_state_t* state = title_sState;
+    TitleState* state = title_sState;
     REG_WINOUT = state->winOut;
 }

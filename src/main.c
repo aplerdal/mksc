@@ -26,9 +26,9 @@ static int sFrameCounter;
 
 void AgbMain(void)
 {
-    irq_handler_t vblankFunc;
-    irq_handler_t vcountFunc;
-    scene_state_t* sceneState = &gSceneState;
+    IrqHandler vblankFunc;
+    IrqHandler vcountFunc;
+    SceneState* sceneState = &gSceneState;
 
     irq_disableIme();
     REG_DISPCNT |= DISPCNT_FORCED_BLANK;
@@ -87,7 +87,7 @@ void AgbMain(void)
 
 static void vblankHandler(void)
 {
-    scene_state_t* sceneState = &gSceneState;
+    SceneState* sceneState = &gSceneState;
 
     SoundVSync_rev01();
     main_increaseFrameCounter();
@@ -112,7 +112,7 @@ static void vcountHandler(void)
 static void initKeys(void)
 {
     int i;
-    scene_state_t* sceneState = &gSceneState;
+    SceneState* sceneState = &gSceneState;
 
     main_setKeyRepeat(24, 6);
     for (i = 0; i < 4; i++)
@@ -129,7 +129,7 @@ static void updateKeys(void)
     u16 keys;
     u16 trigKeys;
     u16* ptr;
-    scene_state_t* sceneState = &gSceneState;
+    SceneState* sceneState = &gSceneState;
 
     for (i = 0; i < 4; i++)
     {
@@ -155,7 +155,7 @@ static void updateKeys(void)
 void main_setKeyRepeat(int initialRepeatWait, int nextRepeatWait)
 {
     int i;
-    scene_state_t* sceneState = &gSceneState;
+    SceneState* sceneState = &gSceneState;
 
     sceneState->initialRepeatWait = initialRepeatWait;
     sceneState->nextRepeatWait = nextRepeatWait;
@@ -217,7 +217,7 @@ u32 main_checkKeysRepeatTriggered(u16 mask)
     return keys & mask;
 }
 
-static const ioreg_val_t sDefaultRegConfig[] = {
+static const Register sDefaultRegConfig[] = {
     { &REG_BG0HOFS, 0 },  { &REG_BG0VOFS, 0 },   { &REG_BG1HOFS, 0 }, { &REG_BG1VOFS, 0 },    { &REG_BG2HOFS, 0 },
     { &REG_BG2VOFS, 0 },  { &REG_BG3HOFS, 0 },   { &REG_BG3VOFS, 0 }, { &REG_BG2PA, 0x100 },  { &REG_BG2PB, 0 },
     { &REG_BG2PC, 0 },    { &REG_BG2PD, 0x100 }, { &REG_BG2X_L, 0 },  { &REG_BG2X_H, 0 },     { &REG_BG2Y_L, 0 },
@@ -226,15 +226,15 @@ static const ioreg_val_t sDefaultRegConfig[] = {
     { &REG_BLDALPHA, 0 }, { &REG_BLDY, 0 },      { &REG_SIOCNT, 0 },  { &REG_SIOMLT_SEND, 0 }
 };
 
-void main_configureIoRegs(const ioreg_val_t* regs, int count)
+void main_configureIoRegs(const Register* regs, int count)
 {
     int i;
-    const ioreg_val_t* ptr = regs;
+    const Register* ptr = regs;
 
     if (!ptr)
     {
         ptr = sDefaultRegConfig;
-        count = sizeof(sDefaultRegConfig) / sizeof(ioreg_val_t);
+        count = sizeof(sDefaultRegConfig) / sizeof(Register);
     }
     for (i = 0; i < count; i++)
     {

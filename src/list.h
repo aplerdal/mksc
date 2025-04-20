@@ -1,36 +1,36 @@
 #pragma once
 
-typedef struct list_link_single_t
+typedef struct ListLinkSingle
 {
-    struct list_link_single_t* next;
-} list_link_single_t;
+    struct ListLinkSingle* next;
+} ListLinkSingle;
 
-typedef struct list_link_double_t
+typedef struct ListLinkDouble
 {
-    struct list_link_double_t* next;
-    struct list_link_double_t* prev;
-} list_link_double_t;
+    struct ListLinkDouble* next;
+    struct ListLinkDouble* prev;
+} ListLinkDouble;
 
 typedef struct
 {
     void* head;
     void* tail;
-} list_t;
+} List;
 
-void list_insertHeadSingle(list_t* list, list_link_single_t* item);
-void list_insertTailSingle(list_t* list, list_link_single_t* item);
-list_link_single_t* list_takeHeadSingle(list_t* list);
+void list_insertHeadSingle(List* list, ListLinkSingle* item);
+void list_insertTailSingle(List* list, ListLinkSingle* item);
+ListLinkSingle* list_takeHeadSingle(List* list);
 
-bool32 list_isEmpty(list_t* list);
-void* list_getHead(list_t* list);
-void* list_getTail(list_t* list);
-list_link_double_t* list_getNext(list_t* list, list_link_double_t* item);
-list_link_double_t* list_getPrevious(list_t* list, list_link_double_t* item);
-void list_insertHead(list_t* list, list_link_double_t* item);
-void list_insertTail(list_t* list, list_link_double_t* item);
-void list_insertBefore(list_t* list, list_link_double_t* target, list_link_double_t* item);
-void list_insertAfter(list_t* list, list_link_double_t* target, list_link_double_t* item);
-list_link_double_t* list_takeHead(list_t* list);
-list_link_double_t* list_takeTail(list_t* list);
-void list_remove(list_t* list, list_link_double_t* item);
-void list_init(list_t* list);
+bool32 list_isEmpty(List* list);
+void* list_getHead(List* list);
+void* list_getTail(List* list);
+ListLinkDouble* list_getNext(List* list, ListLinkDouble* item);
+ListLinkDouble* list_getPrevious(List* list, ListLinkDouble* item);
+void list_insertHead(List* list, ListLinkDouble* item);
+void list_insertTail(List* list, ListLinkDouble* item);
+void list_insertBefore(List* list, ListLinkDouble* target, ListLinkDouble* item);
+void list_insertAfter(List* list, ListLinkDouble* target, ListLinkDouble* item);
+ListLinkDouble* list_takeHead(List* list);
+ListLinkDouble* list_takeTail(List* list);
+void list_remove(List* list, ListLinkDouble* item);
+void list_init(List* list);

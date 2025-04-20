@@ -1,11 +1,11 @@
 #pragma once
 #include "math.h"
 
-struct actor_t;
+struct Actor;
 
-typedef void (*actor_collide_func_t)(struct actor_t* a, struct actor_t* b);
+typedef void (*ActorCollide)(struct Actor* a, struct Actor* b);
 
-typedef struct actor_t
+typedef struct Actor
 {
   int posX;
   int posY;
@@ -15,9 +15,9 @@ typedef struct actor_t
   u8 sizeZ;
   u16 typeFlags;
   int updateFunc;
-  actor_collide_func_t collideFunc;
-  vec2s16_t field_1C;
-  vec2s16_t positionS16;
+  ActorCollide collideFunc;
+  Vec2s16 field_1C;
+  Vec2s16 positionS16;
   u16 scale;
   u16 field_26;
   int field_28;
@@ -26,6 +26,6 @@ typedef struct actor_t
   u16 flags;
   u8 checkpointId;
   u16 field_38;
-  struct actor_t *next;
-  struct actor_t *prev;
-} actor_t;
+  struct Actor *next;
+  struct Actor *prev;
+} Actor;

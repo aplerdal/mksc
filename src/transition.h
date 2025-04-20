@@ -4,20 +4,20 @@
 #define TRNS_FLAG_UPDATE_FRAME (1 << 1)
 #define TRNS_FLAG_SUSPENDED    (1 << 7)
 
-typedef void (*trns_func_t)(void);
+typedef void (*Transition_fn)(void);
 
 typedef struct
 {
-    trns_func_t applyFunc;
-    trns_func_t initFunc;
-    trns_func_t finishFunc;
+    Transition_fn applyFunc;
+    Transition_fn initFunc;
+    Transition_fn finishFunc;
     u8 flags;
     s8 waitCounter;
     u8 updateDelay;
     u8 frame;
-} trns_state_t;
+} TransitionState;
 
-extern trns_state_t gTransitionState;
+extern TransitionState gTransitionState;
 
 void trns_update(void);
 void trns_init(void);
@@ -28,7 +28,7 @@ void trns_finishDefaultInTransition(void);
 void trns_initDefaultOutTransition(void);
 void trns_applyDefaultOutTransition(void);
 
-static inline void trns_setInitFunc(trns_func_t func)
+static inline void trns_setInitFunc(Transition_fn func)
 {
     gTransitionState.initFunc = func;
 }

@@ -7,6 +7,6 @@ typedef struct
     u8 gap37[0xF];
     u8 field46[5][3];
     //...
-} save_t;
+} Save;
 
-save_t* save_getSavePointer_805D9B0(void);
+Save* save_getSavePointer_805D9B0(void);

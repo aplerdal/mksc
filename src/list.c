@@ -1,18 +1,18 @@
 #include "common.h"
 #include "list.h"
 
-void list_insertHeadSingle(list_t* list, list_link_single_t* item)
+void list_insertHeadSingle(List* list, ListLinkSingle* item)
 {
-    list_link_single_t* head = list->head;
+    ListLinkSingle* head = list->head;
     item->next = head;
     if (!head)
         list->tail = item;
     list->head = item;
 }
 
-void list_insertTailSingle(list_t* list, list_link_single_t* item)
+void list_insertTailSingle(List* list, ListLinkSingle* item)
 {
-    list_link_single_t* tail;
+    ListLinkSingle* tail;
 
     item->next = NULL;
     tail = list->tail;
@@ -23,9 +23,9 @@ void list_insertTailSingle(list_t* list, list_link_single_t* item)
     list->tail = item;
 }
 
-list_link_single_t* list_takeHeadSingle(list_t* list)
+ListLinkSingle* list_takeHeadSingle(List* list)
 {
-    list_link_single_t* head = list->head;
+    ListLinkSingle* head = list->head;
     list->head = head->next;
     if (!list->head)
         list->tail = NULL;
@@ -33,34 +33,34 @@ list_link_single_t* list_takeHeadSingle(list_t* list)
     return head;
 }
 
-bool32 list_isEmpty(list_t* list)
+bool32 list_isEmpty(List* list)
 {
     return list->head == NULL;
 }
 
-void* list_getHead(list_t* list)
+void* list_getHead(List* list)
 {
     return list->head;
 }
 
-void* list_getTail(list_t* list)
+void* list_getTail(List* list)
 {
     return list->tail;
 }
 
-list_link_double_t* list_getNext(list_t* list, list_link_double_t* item)
+ListLinkDouble* list_getNext(List* list, ListLinkDouble* item)
 {
     return item->next;
 }
 
-list_link_double_t* list_getPrevious(list_t* list, list_link_double_t* item)
+ListLinkDouble* list_getPrevious(List* list, ListLinkDouble* item)
 {
     return item->prev;
 }
 
-void list_insertHead(list_t* list, list_link_double_t* item)
+void list_insertHead(List* list, ListLinkDouble* item)
 {
-    list_link_double_t* head;
+    ListLinkDouble* head;
 
     item->prev = NULL;
     head = list->head;
@@ -72,9 +72,9 @@ void list_insertHead(list_t* list, list_link_double_t* item)
     list->head = item;
 }
 
-void list_insertTail(list_t* list, list_link_double_t* item)
+void list_insertTail(List* list, ListLinkDouble* item)
 {
-    list_link_double_t* tail = list->tail;
+    ListLinkDouble* tail = list->tail;
     item->prev = tail;
     item->next = NULL;
     if (tail)
@@ -84,7 +84,7 @@ void list_insertTail(list_t* list, list_link_double_t* item)
     list->tail = item;
 }
 
-void list_insertBefore(list_t* list, list_link_double_t* target, list_link_double_t* item)
+void list_insertBefore(List* list, ListLinkDouble* target, ListLinkDouble* item)
 {
     item->prev = target->prev;
     item->next = target;
@@ -95,7 +95,7 @@ void list_insertBefore(list_t* list, list_link_double_t* target, list_link_doubl
     target->prev = item;
 }
 
-void list_insertAfter(list_t* list, list_link_double_t* target, list_link_double_t* item)
+void list_insertAfter(List* list, ListLinkDouble* target, ListLinkDouble* item)
 {
     item->prev = target;
     item->next = target->next;
@@ -106,9 +106,9 @@ void list_insertAfter(list_t* list, list_link_double_t* target, list_link_double
     target->next = item;
 }
 
-list_link_double_t* list_takeHead(list_t* list)
+ListLinkDouble* list_takeHead(List* list)
 {
-    list_link_double_t* item = list->head;
+    ListLinkDouble* item = list->head;
     list->head = item->next;
     if (item->next)
         item->next->prev = NULL;
@@ -119,9 +119,9 @@ list_link_double_t* list_takeHead(list_t* list)
     return item;
 }
 
-list_link_double_t* list_takeTail(list_t* list)
+ListLinkDouble* list_takeTail(List* list)
 {
-    list_link_double_t* item = list->tail;
+    ListLinkDouble* item = list->tail;
     list->tail = item->prev;
     if (item->prev)
         item->prev->next = NULL;
@@ -132,7 +132,7 @@ list_link_double_t* list_takeTail(list_t* list)
     return item;
 }
 
-void list_remove(list_t* list, list_link_double_t* item)
+void list_remove(List* list, ListLinkDouble* item)
 {
     if (item == list->head)
         list->head = item->next;
@@ -146,7 +146,7 @@ void list_remove(list_t* list, list_link_double_t* item)
     item->prev = NULL;
 }
 
-void list_init(list_t* list)
+void list_init(List* list)
 {
     list->tail = NULL;
     list->head = NULL;

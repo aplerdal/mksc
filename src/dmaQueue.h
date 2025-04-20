@@ -4,26 +4,26 @@
 
 typedef struct
 {
-    list_link_single_t link;
+    ListLinkSingle link;
     const void* src;
     void* dst;
     u32 config;
-} dmaq_entry_t;
+} DmaQueueEntry;
 
 typedef struct
 {
-    list_t list;
-    frmheap_t heap;
+    List list;
+    FrameHeap heap;
     volatile bool32 inUse;
-} dmaq_t;
+} DmaQueue;
 
-void dmaq_process(dmaq_t* queue);
-void dmaq_init(dmaq_t* queue);
-void dmaq_reset(dmaq_t* queue);
-dmaq_entry_t* dmaq_enqueue(dmaq_t* queue, const void* src, void* dst, u32 config);
-dmaq_t* dmaq_getVBlankDmaQueue(void);
-bool32 dmaq_beginUse(dmaq_t* queue);
-void dmaq_endUse(dmaq_t* queue);
+void dmaq_process(DmaQueue* queue);
+void dmaq_init(DmaQueue* queue);
+void dmaq_reset(DmaQueue* queue);
+DmaQueueEntry* dmaq_enqueue(DmaQueue* queue, const void* src, void* dst, u32 config);
+DmaQueue* dmaq_getVBlankDmaQueue(void);
+bool32 dmaq_beginUse(DmaQueue* queue);
+void dmaq_endUse(DmaQueue* queue);
 
 static inline void dmaq_enqueueVBlank(const void* src, void* dst, u32 config)
 {
