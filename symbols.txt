@@ -2,6 +2,7 @@ title_sDriversBgMapBuf = 0x2004400;
 byte_2010400 = 0x02010400;
 gTempBuffer = 0x2025400;
 unk_203EBE0 = 0x0203EBE0;
+gTrackNumber = 0x0203EC00;
 dword_203EC20 = 0x0203EC20;
 
 gFlashMaxTime = 0x030023E0;
@@ -113,6 +114,9 @@ dword_80DA30C = 0x80DA30C;
 dword_80DA334 = 0x80DA334;
 dword_80CAE30 = 0x80CAE30;
 
+gCupSelectInputs = 0x80D94B8;
+gTrackSelectInputs = 0x80D94E0;
+gUnkUIElements = 0x80D9508;
 
 gMPlayTable = 0x08102414;
 gSongTable = 0x08102498;

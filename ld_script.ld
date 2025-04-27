@@ -10,6 +10,9 @@ SECTIONS
 
         . = 0x2A400;
         gMainFrmHeap = .; . += 0x8000;
+
+        . = 0x3EBE8;
+        gMenuState = .; . += 4;
     }
 
     . = 0x3000000;

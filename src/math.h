@@ -5,6 +5,11 @@ typedef struct
     s16 x;
     s16 y;
 } Vec2s16;
+typedef struct
+{
+    s32 x;
+    s32 y;
+} Vec2s32;
 
 extern int gSinTable[];
 

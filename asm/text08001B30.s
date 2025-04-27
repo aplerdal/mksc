@@ -2102,8 +2102,8 @@ movs r0, #0x00
 ldsb r0, [r1, r0]
 bx lr
 _08002CEC: .4byte 0x03000010
-thumb_func_start sub_8002CF0
-sub_8002CF0:
+thumb_func_start spm_getSavedCup
+spm_getSavedCup:
 ldr r2, _08002D04 @ =0x03000010
 ldr r0, [r0, #0x10]
 cmp r0, #0x05
@@ -2124,8 +2124,8 @@ _08002D42:
 movs r0, #0x00
 bx lr
 .byte 0x00, 0x00
-thumb_func_start sub_8002D48
-sub_8002D48:
+thumb_func_start spm_getSavedTrack
+spm_getSavedTrack:
 ldr r2, _08002D5C @ =0x03000010
 ldr r0, [r0, #0x10]
 cmp r0, #0x05
@@ -2516,8 +2516,8 @@ _0800316C: .4byte 0xFFFFF200
 _08003170: .4byte 0xFFFFEE00
 _08003174: .4byte 0x06012400
 _08003178: .4byte 0x80000C00
-thumb_func_start sub_800317C
-sub_800317C:
+thumb_func_start spm_loadOtherGfx
+spm_loadOtherGfx:
 push {r4, r5, r6, r7, lr}
 mov r7, r9
 mov r6, r8
@@ -5113,7 +5113,7 @@ add r4, r8
 movs r0, #0x01
 str r0, [r4, #0x00]
 mov r0, r8
-bl sub_800317C
+bl spm_loadOtherGfx
 cmp r0, #0x00
 beq _08005480
 bl dmaq_getVBlankDmaQueue
@@ -6407,8 +6407,8 @@ bx r0
 .byte 0x00, 0x00
 _08005EF0: .4byte 0x080E645C
 _08005EF4: .4byte 0x000003FF
-thumb_func_start sub_8005EF8
-sub_8005EF8:
+thumb_func_start renderCharacterSprites
+renderCharacterSprites:
 push {r4, r5, r6, r7, lr}
 add sp, #-0x004
 adds r7, r1, #0x0
@@ -6752,7 +6752,7 @@ str r0, [sp, #0x000]
 mov r0, r8
 adds r1, r3, #0x0
 movs r3, #0x00
-bl sub_8005EF8
+bl renderCharacterSprites
 movs r2, #0xF4
 lsls r2, r2, #0x01
 adds r1, r7, r2
@@ -6780,7 +6780,7 @@ str r0, [sp, #0x000]
 mov r0, r8
 adds r1, r3, #0x0
 movs r3, #0x00
-bl sub_8005EF8
+bl renderCharacterSprites
 movs r2, #0xF4
 lsls r2, r2, #0x01
 adds r1, r7, r2
@@ -7681,7 +7681,7 @@ bl CpuFastSet
 movs r0, #0x01
 bl pltt_setDirtyFlag
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 mov r2, r8
 cmp r2, #0x00
@@ -7776,7 +7776,7 @@ ldr r3, _080070E4 @ =0x80000110
 adds r1, r4, #0x0
 bl dmaq_enqueue
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 mov r0, r8
 cmp r0, #0x00
@@ -8061,14 +8061,14 @@ adds r0, r7, #0x0
 ldr r1, [sp, #0x06C]
 bl sub_8006E08
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 movs r0, #0x0F
 str r0, [sp, #0x000]
 adds r0, r7, #0x0
 movs r1, #0x00
 movs r2, #0x00
 movs r3, #0x01
-bl sub_8005EF8
+bl renderCharacterSprites
 movs r1, #0x00
 ldr r2, _08007374 @ =0x000004FC
 adds r2, r7, r2
@@ -8604,7 +8604,7 @@ adds r4, r7, r0
 movs r6, #0x01
 str r6, [r4, #0x00]
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 cmp r0, #0x00
 beq _080084EC
 bl dmaq_getVBlankDmaQueue
@@ -9383,8 +9383,8 @@ _08008B48: .4byte 0x02004400
 _08008B4C: .4byte 0x06004400
 _08008B50: .4byte 0x80000400
 _08008B54: .4byte 0x0203EBFC
-thumb_func_start sub_8008B58
-sub_8008B58:
+thumb_func_start spm_loadCupGfx
+spm_loadCupGfx:
 push {r4, lr}
 ldr r0, [r0, #0x10]
 cmp r0, #0x03
@@ -10425,7 +10425,7 @@ str r0, [sp, #0x000]
 mov r0, r8
 movs r2, #0x20
 movs r3, #0x00
-bl sub_8005EF8
+bl renderCharacterSprites
 ldr r2, _08009C80 @ =0x00000514
 adds r1, r7, r2
 movs r2, #0x00
@@ -11426,8 +11426,8 @@ bx r0
 _0800A8E4: .4byte 0x080D9574
 _0800A8E8: .4byte 0x080D9560
 _0800A8EC: .4byte 0x00000754
-thumb_func_start sub_800A8F0
-sub_800A8F0:
+thumb_func_start spm_loadBgGfx
+spm_loadBgGfx:
 push {r4, r5, r6, r7, lr}
 mov r7, r10
 mov r6, r9
@@ -11606,7 +11606,7 @@ bl CpuSet
 movs r0, #0x01
 bl pltt_setDirtyFlag
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 mov r1, r9
 cmp r1, #0x00
@@ -11763,7 +11763,7 @@ ldr r3, _0800AD44 @ =0x80000100
 bl dmaq_enqueue
 _0800AC42:
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 ldr r0, _0800AD48 @ =0x080B0848
 ldr r5, _0800AD4C @ =0x02016000
@@ -11799,7 +11799,7 @@ adds r1, r4, #0x0
 bl dmaq_enqueue
 _0800AC9C:
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 ldr r0, _0800AD74 @ =0x080B9890
 movs r2, #0x80
@@ -11839,7 +11839,7 @@ ldr r2, _0800ADA4 @ =0x06007400
 ldr r3, _0800ADA8 @ =0x80000600
 bl dmaq_enqueue
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 ldr r0, [r7, #0x10]
 cmp r0, #0x03
@@ -11852,7 +11852,7 @@ adds r0, r7, #0x0
 adds r1, r4, #0x0
 bl sub_800873C
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 ldr r0, [r5, #0x00]
 adds r0, #0x01
@@ -11913,7 +11913,7 @@ cmp r4, #0x00
 bge _0800ADBA
 _0800ADD8:
 adds r0, r7, #0x0
-bl sub_800317C
+bl spm_loadOtherGfx
 bl main_frameProc
 mov r2, r9
 cmp r2, #0x00
@@ -11965,7 +11965,7 @@ bl sub_8008850
 mov r0, r10
 ldr r1, [r0, #0x00]
 adds r0, r7, #0x0
-bl sub_8008B58
+bl spm_loadCupGfx
 ldr r1, _0800AEA0 @ =0x000011E4
 adds r0, r7, r1
 ldr r0, [r0, #0x00]
@@ -12372,27 +12372,27 @@ ldr r1, _0800B224 @ =0x06001000
 movs r0, #0x01
 bl map_setBufferDestination
 mov r0, r8
-bl sub_8002CF0
+bl spm_getSavedCup
 mov r3, r8
 str r0, [r3, #0x1C]
 str r0, [r7, #0x00]
 mov r0, r8
-bl sub_8002D48
+bl spm_getSavedTrack
 mov r6, r8
 str r0, [r6, #0x20]
 str r0, [r7, #0x04]
 mov r0, r8
 ldr r1, [sp, #0x018]
-bl sub_800A8F0
+bl spm_loadBgGfx
 mov r0, r8
-bl sub_800317C
+bl spm_loadOtherGfx
 ldr r1, [r6, #0x18]
 movs r0, #0x07
 str r0, [sp, #0x000]
 mov r0, r8
 movs r2, #0x00
 movs r3, #0x01
-bl sub_8005EF8
+bl renderCharacterSprites
 ldr r1, [r6, #0x10]
 str r4, [sp, #0x038]
 cmp r1, #0x03
@@ -12552,7 +12552,7 @@ movs r3, #0x00
 bl oam_renderCellData
 _0800B34C:
 mov r0, r8
-bl sub_800317C
+bl spm_loadOtherGfx
 ldr r0, _0800B3DC @ =0x03000040
 ldr r0, [r0, #0x00]
 ldr r1, _0800B3E0 @ =0x00000D88
