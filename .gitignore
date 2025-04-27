@@ -21,5 +21,5 @@ _ReSharper*/
 /lib/*/*.h
 
 # Use this files for diffing, exclude from git
-#/src/function.c
-#/asm/function.s
+/src/function.c
+/asm/function.s
