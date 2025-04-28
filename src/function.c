@@ -7,7 +7,9 @@
 #include "mp2000/m4a.h"
 #include "songs.h"
 #include "math.h"
+#include "palette.h"
 
+extern s32 anim_ease(s32 start,s32 end,s32 time, s32 modifier,Easing type);
 extern u32 sub_8003fd0(u16 param_1,u16 param_2,SpmUnk2 *param_3, u16 **param_4);
 extern void sub_8001FC0();
 extern void map_setBufferDestination(s32 a1, s32 a2);
@@ -49,7 +51,7 @@ bool8 track_select(SpmState* menuState, int status){
     trackSelectState->field2_0x8 = -1;
     trackSelectState->field3_0xc = 0;
     trackSelectState->field4_0x10 = 1;
-    trackSelectState->field5_0x14 = 0;
+    trackSelectState->numCups = 0;
     trackSelectState->field6_0x18 = 0;
     trackSelectState->field16_0xac = 0;
     trackSelectState->field17_0xb0 = 0;
@@ -172,7 +174,9 @@ bool8 track_select(SpmState* menuState, int status){
       DAT_03000040 = 0xc;
       DAT_03000044 = (void*)0x80d9588; // Table 2.
     }
-    sub_8003fd0(0x80,0x18,&menuState->spmUnk2,DAT_03000044);
+    sub_8003fd0(0x80,0x18,&menuState->spmUnk2[0],DAT_03000044);
+    // Menu loop
+    while (TRUE) {
     while(TRUE) {
         while(TRUE) {
             if (*(u32*)0x203ebfc == 0) {
@@ -183,7 +187,7 @@ bool8 track_select(SpmState* menuState, int status){
             trackSelectState->field56_0x534 = 0;
             trackSelectState->field57_0x538 = 0;
             menuState->field216_0x11f4 = menuState->field216_0x11f4 + 1;
-            menuState->field17_0x4c = menuState->field17_0x4c + 1;
+            menuState->unlockedTracks = menuState->unlockedTracks + 1;
             if (menuState->gamemode == GAMEMODE_GP) {
                 trackSelectState->field3_0xc = 1;
             }
@@ -195,7 +199,7 @@ bool8 track_select(SpmState* menuState, int status){
         }
         if (menuState->field173_0xd34 == 0) break;
         if (menuState->unk_hasSpecialUnlocked != 0) {
-            if ((menuState->field17_0x4c & 0x2f) < 0x20) {
+            if ((menuState->unlockedTracks & 0x2f) < 0x20) {
                 oam_renderCellData((u16*)0x80c9010,(Vec2s16*)0x80d9654,0,0,0,NULL);
             }
             oam_renderCellData((u16*)0x80c902c,(Vec2s16*)0x80d9658,0,0,0,NULL);
@@ -276,93 +280,70 @@ bool8 track_select(SpmState* menuState, int status){
         }
         irq_updateMask(2, 4);
         v27 = 1;
-        //goto Label270;
-        break;
     }
     case 1:
     {
         s32 iVar2;
-        s32 iVar11 = local50 + 1;
-        if ( iVar11 < 16) {
-            menuState->bgState.BLDCNT = 12096;
-            menuState->bgState.BLDALPHA = 1546;
+        local50++;
+        if ( local50 <= 16) {
+            if (status != 0) {
+                menuState->bgState.BLDCNT = 0xff;
+                menuState->bgState.BLDY = (short)(adjust_fixed(local50 * -16) >> 4) + 16;
+            }
+            menuState->field213_0x11e8 = adjust_fixed(local50*-10) + 360;
             v35 = 2;
             //goto Label321;
         }
-        if (status != 0) {
-            menuState->bgState.BLDCNT = 0xff;
-            iVar2 = iVar11 * -16;
-            if (iVar2 < 0) {
-                // Adjust fixed point rounding on negative numbers
-                iVar2 = iVar2 + 0xf;
-            }
-            menuState->bgState.BLDY = (short)(iVar2 >> 4) + 0x10;
-        }
-        iVar2 = iVar11 * -0xA0;
-        if (iVar2 < 0) {
-            iVar2 = iVar2 + 0xf;
-        }
-        //v31 = &menuState->field213_0x11e8;
-        //v32 = (iVar2 >> 4) + 0x168;
-        //goto Label332;
+        menuState->bgState.BLDCNT = 0x2f40;
+        menuState->bgState.BLDALPHA = 0x60a;
         break;
     }
     case 2:
     {
-        if ((menuState->gamemode == GAMEMODE_BATTLE && local50 == 0) || (menuState->gamemode != GAMEMODE_BATTLE && local50 == 20)) {
+        if (menuState->gamemode == GAMEMODE_BATTLE) {
+            if (local50 == 0)  trackSelectState->field16_0xac = 1;;
+        } else if (local50 == 20) {
             trackSelectState->field16_0xac = 1;
-        } else {
-            local50++;
-            if (trackSelectState->field5_0x14 * 4 + 0x10 < local50) {
-                trackSelectState->field35_0xec = 0;
-                trackSelectState->field41_0x100 = 0;
-                if (menuState->gamemode == GAMEMODE_BATTLE) {
-                    local54 = 5;
-                }else if (status != 0) {
-                    for (i = 0; i < trackSelectState->field5_0x14; i++){
-                        if (i != trackSelectState->cup) {
-                            trackSelectState->unkCupContainer[i].pos.y = 0;
-                            trackSelectState->unkCupContainer[i].pos.x = 0;
-                            trackSelectState->unkCupContainer[i].scale.x = 0;
+        }
+        local50++;
+        if (trackSelectState->numCups * 4 + 16 >= local50) {
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                if (local50 >= 0 && local50 <= 20) {
+                    s32 end, start, param3;
+                    if (menuState->gamemode == GAMEMODE_BATTLE) {
+                        end = *(s16*)(0x203655b+i*5);
+                        start = end + 240;
+                    } else {
+                        if (status == 0) {
+                            start = gUnkUIElements[i].pos.x + 0xf0;
+                        }
+                        else {
+                            start = 0x11e;
+                        }
+                        end = 0x2e;
+                        if (status == 0) {
+                            end = gUnkUIElements[i].pos.x;
                         }
                     }
-                    trackSelectState->field45_0x50c = 1;
-                    local54 = 5;
-                } else {
-                    local54 = 3;
-                }
-            } else {
-                u32 **ppuVar15 = (u32**)(0x080d94fc);
-                s32 iVar16 = 0;
-                SpmUnk1* pSVar14 = &trackSelectState->field7_0x1c;
-                s32 iVar2, iVar8;
-                for (i = 0; i < trackSelectState->field5_0x14; i++) {
-                    if (local50 >= 0 && local50 <= 20) {
-                        if (menuState->gamemode == GAMEMODE_BATTLE) {
-                            iVar2 = (s32)*(s16*)(0x80d956c + iVar16);
-                            iVar8 = iVar2 + 0xf0;
-                        } else {
-                            if (status == 0) {
-                                iVar8 = *(s16 *)(ppuVar15 + 3) + 0xf0;
-                            } else {
-                                iVar8 = 0x11e;
-                            }
-                            iVar2 = 0x2e;
-                            if (status == 0) {
-                                iVar2 = (s32)*(s16 *)(ppuVar15 + 3);
-                            }
-                        }
-                        pSVar14->field1_0x4 = (s16)FUN_0800e930(iVar8,iVar2,local50,0x14,10);
-                    }
-                    
-                    local50 -= 4;
-                    ppuVar15 += 5;
-                    iVar16 += 0x14;
-                    pSVar14 += 3;
+                    trackSelectState->unkCupContainer[i].unk_x = anim_ease(start, end, local50-4*i, 20, EASE_BOUNCE_OUT);
                 }
             }
+        } else {
+            trackSelectState->field35_0xec = 0;
+            trackSelectState->field41_0x100 = 0;
+            if (menuState->gamemode == GAMEMODE_BATTLE) {
+                local54 = local4c;
+            } else if (status != 0) {
+                for (i = 0; i < trackSelectState->numCups; i++) {
+                    if (i != trackSelectState->cup) {
+                        trackSelectState->unkCupContainer[i].x = 0;
+                        trackSelectState->unkCupContainer[i].y = 0;
+                        trackSelectState->unkCupContainer[i].unk2 = 0;
+                    }
+                }
+                trackSelectState->field45_0x50c = 1;
+            }
         }
-        // goto Label368;
         break;
     }
     case 3:
@@ -444,11 +425,11 @@ bool8 track_select(SpmState* menuState, int status){
                     if (
                         (menuState->gamemode != GAMEMODE_BATTLE) &&
                         (menuState->unk_hasSpecialUnlocked != 0) &&
-                        (trackSelectState->unkCupContainer[trackSelectState->field5_0x14 + -1].scale.x == 1)
+                        (trackSelectState->unkCupContainer[trackSelectState->numCups + -1].scale == 1)
                     ) {
                         m4aSongNumStart(SONG_147);
-                        for (i = 0; i < trackSelectState->field5_0x14; i++) {
-                            trackSelectState->unkCupContainer[i].scale.x = 5;
+                        for (i = 0; i < trackSelectState->numCups; i++) {
+                            trackSelectState->unkCupContainer[i].scale = 5;
                         }
                         trackSelectState->field17_0xb0 = 8;
                         menuState->field174_0xd38 = 1;
@@ -471,7 +452,7 @@ bool8 track_select(SpmState* menuState, int status){
             break;
         }
         if (menuState->unk_hasSpecialUnlocked != 0) {
-            if ((menuState->field17_0x4c & 0x2f) < 0x20) {
+            if ((menuState->unlockedTracks & 0x2f) < 0x20) {
                 oam_renderCellData((u16*)0x080C9010, (Vec2s16*)0x80d9654, 0, 0, 0, NULL);
             }
             oam_renderCellData((u16*)0x080C902C, (Vec2s16*)0x80d9658, 0, 0, 0, NULL);
@@ -482,14 +463,15 @@ bool8 track_select(SpmState* menuState, int status){
     case 4:
     {
         if (menuState->gamemode == GAMEMODE_GP && local50 < 9) {
-            trackSelectState->unkCupContainer[4].field0x14 = (short)((math_sin((s16)(adjust_fixed((u16)(local50<<11))>>6)) * -48 >> 0xf) + 0x10c);
+            trackSelectState->field_0x98 = scale_sine(local50<<11, -48, 268);
             trackSelectState->field13_0x9e = 0x100;
             trackSelectState->field12_0x9c = 0x100;
         }
         local50++;
         if (local50 > 16) {
-            for (i = 0; i < trackSelectState->field5_0x14; i++) {
-                trackSelectState->unkCupContainer[i].pos = (Vec2s16){.x=0, .y=0};
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                trackSelectState->unkCupContainer[i].x = 0;
+                trackSelectState->unkCupContainer[i].y = 0;
             }
             if (menuState->gamemode != GAMEMODE_GP) {
                 local54 = 8;
@@ -498,20 +480,18 @@ bool8 track_select(SpmState* menuState, int status){
         } else {
             s32 unkPageRel;
             s16 sin;
-            s16 angle = (local50<<26)>>10;
-            for (i = 0; i < trackSelectState->field5_0x14; i++) {
-                Vec2s16 orgin, pos;
-                orgin = gUnkUIElements[i].pos;
-                pos.x = (s16)(math_sin(angle) * (0x2e - orgin.x >> 0xf)) + orgin.x;
-                pos.y = (s16)(math_sin(angle) * ((menuState->gamemode==GAMEMODE_GP ? 0x50 : 0x3c) - orgin.y >> 0xf)) + orgin.y;
-                trackSelectState->unkCupContainer[i].pos = pos;
-                if (i != trackSelectState->cup) {
-                    u16 scale = (math_sin(angle) * 62 >> 0xf) + 0x110;
-                    trackSelectState->unkCupContainer[i].scale = (Vec2s16){.x=scale,.y=scale};
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                trackSelectState->unkCupContainer[i].unk_x = scale_sine(local50<<11, 46 - gUnkUIElements[i].pos.x, gUnkUIElements[i].pos.x);
+                trackSelectState->unkCupContainer[i].unk_y = scale_sine(local50<<11, ((menuState->gamemode == GAMEMODE_GP)?80:60) - gUnkUIElements[i].pos.y, gUnkUIElements[i].pos.y);
+                if (cup != trackSelectState->cup) {
+                    s32 scale = scale_sine(local50<<11, 98, 110);
+                    trackSelectState->unkCupContainer[i].x = scale;
+                    trackSelectState->unkCupContainer[i].y = scale;
+                    trackSelectState->unkCupContainer[i].unk2 = 0;
                 }
+            
             }
-            sin = math_sin((s16)adjust_fixed(angle));
-            trackSelectState->unk_trackSelectionFlags1 = (s16)(sin*-2 >>0xf) + 96;
+            trackSelectState->unk_trackSelectionFlags1 = scale_sine(local50<<11, -2, 96);
 
             if (menuState->gamemode == GAMEMODE_GP) {
                 if (menuState->trackPage == 0) {
@@ -525,12 +505,11 @@ bool8 track_select(SpmState* menuState, int status){
                 unkPageRel = (sin * 16) + sin;
             }
             trackSelectState->trackSelectionFlags = (unkPageRel>>0xf) + 48;
-            trackSelectState->unk_trackSelectionFlags2 = (sin * -48 >> 0xf) + 112;
-            trackSelectState->unk_trackSelectionFlags3 = ((sin * (menuState->trackPage == 0 ? 16 : 21)) >> 0xf) + 88;
-            trackSelectState->field35_0xec = ((sin * 4) >> 0xf) + 100;
-            trackSelectState->unk_trackSelectionFlags5 = ((sin * (menuState->trackPage == 0 ? 32 : 37)) >> 0xf) + 100;
+            trackSelectState->unk_trackSelectionFlags2 = scale_sine(local50<<11, -48, 112);
+            trackSelectState->unk_trackSelectionFlags3 = scale_sine(local50<<11, (menuState->trackPage == 0 ? 16 : 21), 88);
+            trackSelectState->field35_0xec = scale_sine(local50<<11, 4, 100);
+            trackSelectState->unk_trackSelectionFlags5 = scale_sine(local50<<11, (menuState->trackPage == 0 ? 32 : 37), 100);
         }
-        //goto Label368;
         break;
     }
     case 5:
@@ -578,16 +557,13 @@ bool8 track_select(SpmState* menuState, int status){
                 local50 = 0;
             }
         }
-        if (spm_loadOtherGfx(menuState) != 0) {
-            trackSelectState->field57_0x538 = 1;
-        } 
         break;
     }
     case 6:
     {
         if (menuState->gamemode == GAMEMODE_GP) {
             if (local50 < 9) {
-                trackSelectState->unkCupContainer[4].field0x14 = (s16)(math_sin(adjust_fixed((s16)local50<<11)) * 48 >> 0xf) + 220;
+                trackSelectState->field_0x98 = scale_sine(local50<<11, 48, 220);
                 trackSelectState->field13_0x9e = 1<<8;
                 trackSelectState->field12_0x9c = 1<<8;
             } else {
@@ -597,116 +573,332 @@ bool8 track_select(SpmState* menuState, int status){
         }
         local50++;
         if (local50 > 16) {
-            for (i = 0; i < trackSelectState->field5_0x14; i++) {
-                trackSelectState->unkCupContainer[i].buf1[0] = 1;
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                trackSelectState->unkCupContainer[i].unk2 = 1;
             }
         } else {
-            s32 sVar3,iVar15,iVar4;
-            s32 sin = math_sin(adjust_fixed((s16)local50<<10));
-            for (i = 0; i < trackSelectState->field5_0x14; i++) {
+            for (i = 0; i < trackSelectState->numCups; i++) {
                 s32 offset;
-                trackSelectState->field_0x20 = (s16)(sin * (gUnkUIElements[i].pos.x - 46) >> 0xf) + 46;
+                trackSelectState->unkCupContainer[i].unk_x = scale_sine(local50<<11, gUnkUIElements[i].pos.x - 46, 46);
                 offset = (menuState->gamemode = GAMEMODE_GP) ? 80 : 60;
-                trackSelectState->field_0x22 = (s16)(sin * (gUnkUIElements[i].pos.y - offset) >> 0xf) + offset;
+                trackSelectState->unkCupContainer[i].unk_y = scale_sine(local50<<11, gUnkUIElements[i].pos.x - offset, offset);
 
                 if (trackSelectState != trackSelectState->cup) {
-                    s32 var = (s16)(sin * -98 >>0xf) + 370;
-                    trackSelectState->unkCupContainer[0].pos.x = var;
-                    trackSelectState->unkCupContainer[0].pos.y = var;
-                    trackSelectState->unkCupContainer[0].scale.y = 0;    
+                    s32 scale = scale_sine(local50<<11, -98, 370);
+                    trackSelectState->unkCupContainer[i].x = scale;
+                    trackSelectState->unkCupContainer[i].y = scale;
+                    trackSelectState->unkCupContainer[i].unk2 = 0;    
                 }
             }
-            trackSelectState->unk_trackSelectionFlags1 = (s16)(sin * 2 >> 0xf) + 94;
-            trackSelectState->trackSelectionFlags = ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60) + ((menuState->trackPage == 0) ? 0 : 5) + (s16)((sin * -((menuState->gamemode == GAMEMODE_GP) ? 32 : 12) + ((menuState->trackPage == 0) ? 0 : 5)) >> 0xf);
-            trackSelectState->unk_trackSelectionFlags2 = (s16)((sin * 48) >> 0xf) + 64;
-            trackSelectState->unk_trackSelectionFlags3 = (s16)(sin * -((menuState->trackPage == 0)?16:21) >> 0xf) + ((menuState->trackPage == 0)?104:109);
-            trackSelectState->field35_0xec = (s16)((sin * -4) >> 0xf) + 104;
-            trackSelectState->unk_trackSelectionFlags5 = 96 + ((menuState->trackPage == 0) ? 0 : 5) + (u16)((sin * ((menuState->trackPage == 0) ? 32 : 37)) >> 0xf);
-        }
-        if (spm_loadOtherGfx(menuState)) {
-            trackSelectState->field57_0x538 = 1;
+            trackSelectState->unk_trackSelectionFlags1 = scale_sine(local50<<11, 2, 94);
+            if (menuState->gamemode == GAMEMODE_GP) {
+                if (menuState->trackPage == 0) {
+                    trackSelectState->trackSelectionFlags = scale_sine(local50<<11, 32, 80);
+                } else {
+                    trackSelectState->trackSelectionFlags = scale_sine(local50<<11, 37, 85);
+                }
+            } else {
+                if (menuState->trackPage == 0) {
+                    trackSelectState->trackSelectionFlags = scale_sine(local50<<11, 12, 60);
+                } else {
+                    trackSelectState->trackSelectionFlags = scale_sine(local50<<11, 17, 65);
+                }
+            }
+            trackSelectState->unk_trackSelectionFlags2 = scale_sine(local50<<11, 48, 64);
+            if (menuState->trackPage == 0) {
+                trackSelectState->unk_trackSelectionFlags3 = scale_sine(local50<<11, 16, 104);
+            } else {
+                trackSelectState->unk_trackSelectionFlags3 = scale_sine(local50<<11, 21, 109);
+            }
+            trackSelectState->field35_0xec = scale_sine(local50<<11, -4, 104);
+            if (menuState->trackPage == 0) {
+                trackSelectState->unk_trackSelectionFlags5 = scale_sine(local50<<11, 32, 96);
+            } else {
+                trackSelectState->unk_trackSelectionFlags5 = scale_sine(local50<<11, 37, 101);
+            }
         }
         break;
     }
     case 7:
     {
-        // 
+        local50++;
+        if (local50 < 7){
+            trackSelectState->field3_0xc = 1;
+            sub_8008fa4(menuState, trackSelectState->track, local50);
+            trackSelectState->field3_0xc = 0;
+            trackSelectState->field_0x98 = sin_scale(FUN_08061eb0(local50 << 14, 6), -48, 268);
+            trackSelectState->field13_0x9e = 1 << 8;
+            trackSelectState->field12_0x9c = 1 << 8;
+        }
         break;
     }
     case 8:
     {
-        // 
+        s16 scale;
+        if ((menuState->unlockedTracks & 0x2f) < 0x10) {
+            scale = 0x100;
+          }
+          else {
+            scale = 0;
+          }
+          trackSelectState->field13_0x9e = scale;
+          trackSelectState->field12_0x9c = scale;
+          for (i = 0; i < menuState->playerIndex; i++) {
+            if (gKeyTriggerBuf[i] & A_BUTTON|START_BUTTON != 0) {
+                m4aSongNumStart(SONG_143);
+                trackSelectState->field45_0x50c = 4;
+                break;
+            }
+            if (gKeyTriggerBuf[i] & B_BUTTON != 0) {
+                m4aSongNumStart(SONG_144);
+                break;
+            }
+          }
         break;
     }
     case 9:
     {
-        // 
+        local50 = local50 + 1;
+        if (local50 < 7) {
+            sub_8008fa4(menuState,trackSelectState->track,6 - local50);
+            trackSelectState->field_0x98 = scale_sine(FUN_08061eb0(local50 * 0x4000,6), 48, 220);
+            trackSelectState->field13_0x9e = 0x100;
+            trackSelectState->field12_0x9c = 0x100;
+        }
+        else {
+            trackSelectState->field13_0x9e = 0;
+            trackSelectState->field12_0x9c = 0;
+        }
         break;
     }
+    case 14:
     case 10:
     {
-        // 
+        // trackSelectState->field26_0xcc == stack[0x4C]:4
+        // trackSelectState->field35_0xec == stack[0x30]:4
+        // local54 == stack[0x1c]:4
+        trackSelectState->field17_0xb0 = 5;
+        trackSelectState->field35_0xec = 3;
+        trackSelectState->field41_0x100 = 3;
+        if (trackSelectState->field26_0xcc < 3) {
+            trackSelectState->field26_0xcc = 3;
+        }
+        for (i = 0; i < DAT_03000040; i++) {
+            menuState->spmUnk2[i].field6_0xe = 17;
+        }
+        // I dont think this code ever gets hit. 
+        if (local54 != 10 && local54 != 14) {
+            for (i = 0; i < trackSelectState->numCups; i++){
+                trackSelectState->unkCupContainer[i].unk2 = 0;
+            }
+        }
+        local50 = 0;
         break;
     }
     case 11:
     {
-        // 
+        local50++;
+        if (local50 < 9) {
+          trackSelectState->field_0x98 = scale_sine(local50<<11, 48, 220);
+        }
+        if ((trackSelectState->field17_0xb0 == 7) && (8 < local50)) {
+          trackSelectState->field51_0x520 = (menuState->gamemode == GAMEMODE_GP)? 1 : 4;
+        }
         break;
     }
     case 12:
     {
-        // 
+        local50++;
+        if (local50 > 20) {
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                trackSelectState->unkCupContainer[i].unk2 = 0;
+            }
+        }
         break;
     }
+    case 18:
     case 13:
     {
-        // 
-        break;
-    }
-    case 14:
-    {
-        // 
+        local50++;
+        if (local50 < 0x21) {
+          menuState->bgState.BLDCNT = 0xff;
+          menuState->bgState.BLDY = (short)(local50 / 2);
+          menuState->field213_0x11e8 = (adjust_fixed(local50* -0x180) >> 5) + 200;
+          menuState->field215_0x11f0 -= 2048;
+        } else {
+            irq_updateMask(IRQ_UPDATE_MODE_AND, ~IRQ_MASK_VCOUNT);
+            FUN_08002e08(menuState,(u8)menuState->menuPage);
+            FUN_08002e50(menuState,(u8)menuState->unk_multiplayerMirror);
+            if (local54 == 13) {
+                return;
+            }
+        }
         break;
     }
     case 15:
     {
-        // 
+        if (local50 < 9) {
+            trackSelectState->field_0x98 = scale_sine(local50<<11, 48, 220);
+        }
+        local50++;
+        if (local50 < 17) {
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                trackSelectState->unkCupContainer[i].x = local50 * 80 + 256;
+                trackSelectState->unkCupContainer[i].y = local50 * 80 + 256;
+                trackSelectState->unkCupContainer[i].scale = (local50 * 80 + 256) * 4096;
+            }
+        }
         break;
     }
     case 16:
     {
-        // 
+        for (i = 0; i < trackSelectState->numCups; i++) {
+            trackSelectState->unkCupContainer[i].unk1 = 0;
+        }
         break;
     }
     case 17:
     {
-        // 
-        break;
-    }
-    case 18:
-    {
-        // 
+        // Empty
         break;
     }
     case 19:
     {
-        // 
+        local54 = 20;
         break;
     }
     case 20:
     {
-        // 
+        sub_8002e08(menuState,(u8)trackSelectState->cup);
+        sub_8002e50(menuState,(u8)trackSelectState->track);
+        switch (local4c)
+        {
+        case -1:
+            irq_updateMask(IRQ_UPDATE_MODE_AND,~IRQ_MASK_VCOUNT);
+            (menuState->bgState).BLDCNT = 255;
+            (menuState->bgState).BLDY = 16;
+            menuState->field18_0x50 = 1;
+            break;
+        case 5:
+        case 3:
+            irq_updateMask(IRQ_UPDATE_MODE_OR,IRQ_MASK_VCOUNT);
+            if (menuState->gamemode == GAMEMODE_BATTLE) {
+                sub_800a84c(menuState, status);
+            } else {
+                sub_800a75c(menuState, status);
+            }
+            for (i = 0; i < trackSelectState->numCups; i++) {
+                if (menuState->gamemode == GAMEMODE_BATTLE) {
+                    trackSelectState->unkCupContainer[i].unk_x = gUnkUIElements[i+5].pos.x;
+                } else {
+                    if (status == 0) {
+                        trackSelectState->unkCupContainer[i].unk_x = gUnkUIElements[i].pos.x;
+                    } else {
+                        trackSelectState->unkCupContainer[i].unk_x = 0x2e;
+                    }
+                }
+            }
+            trackSelectState->field17_0xb0 = 2;
+            trackSelectState->field18_0xb4 = 0;
+            trackSelectState->field19_0xb8 = 0xa0;
+            trackSelectState->field35_0xec = 0;
+            trackSelectState->field41_0x100 = 0;
+            if ((status != 0) && (menuState->gamemode != GAMEMODE_BATTLE)) {
+                for (i = 0; i < trackSelectState->numCups; i++) {
+                    if (i != trackSelectState->cup) {
+                        trackSelectState->unkCupContainer[i].x = 0;
+                        trackSelectState->unkCupContainer[i].y = 0;
+                        trackSelectState->unkCupContainer[i].unk2 = 0;
+                    }
+                }
+                trackSelectState->field45_0x50c = 1;
+              }
+              menuState->field213_0x11e8 = 200;
+            break;
+        default:
+            irq_updateMask(IRQ_UPDATE_MODE_AND,~IRQ_MASK_VCOUNT);
+            menuState->bgState.BLDCNT = 0xff;
+            menuState->bgState.BLDY = 0x10;
+            break;
+        }
         break;
     }
     case 21:
     {
-        // 
+        menuState->bgState.BLDCNT = 0x2f40;
+        menuState->bgState.BLDALPHA = 0x60a;
+        local54 = local4c;
         break;
     }
-    default:
-    {
-        // func_0x0800c422
+    }
+    if (spm_loadOtherGfx(menuState) != 0) {
+        trackSelectState->field57_0x538 = 1;
+    }
+    sub_8008d14(menuState);
+    sub_8005dac(DAT_03000040,menuState->spmUnk2);
+    sub_8009c84(menuState);
+    sub_8009590(menuState);
+    sub_8009754(menuState);
+    sub_800a1a4(menuState);
+    sub_8009fac(menuState);
+    sub_8009124(menuState,status);
+    if ((menuState->gamemode == GAMEMODE_GP) && ((menuState->trackSelectState).field17_0xb0 == 0)) {
+        menuState->trackSelectState.field53_0x528++;
+        if (0x40 < menuState->trackSelectState.field53_0x528 + 1) {
+            menuState->trackSelectState.field53_0x528 = 0;
+            menuState->trackSelectState.track = menuState->trackSelectState.track + 1 & 3;
+            gTrackNumber = menuState->trackSelectState.cup * 4 + menuState->trackSelectState.track;
+            *(u32*)(0x0203ebfc) = 2;
+        }
+    }
+    if ((trackSelectState->field2_0x8 != trackSelectState->track) || (trackSelectState->field3_0xc != trackSelectState->field4_0x10)) {
+        sub_8008fa4(menuState,trackSelectState->track,0);
+        trackSelectState->field2_0x8 = trackSelectState->track;
+        trackSelectState->field4_0x10 = trackSelectState->field3_0xc;
+    }
+    FUN_08005e04((u16*)0x80b23b0, (u16*)0x80b23d0, pltt_getBuffer(PLTT_BUFFER_BG) + 0xb0, menuState->unlockedTracks, 0x10);
+    menuState->bgState.MOSAIC = 0;
+    menuState->bgState.BG0CNT &= ~BGCNT_MOSAIC;
+
+    if (menuState->gamemode != GAMEMODE_BATTLE && menuState->trackPage == 0) {
+        RaceSpeed speed;
+        speed = RACE_SPEED_150cc;
+        if (menuState->gamemode != GAMEMODE_TIME_TRIALS) {
+            speed = menuState->raceSpeed;
+        }
+        if (menuState->unlockedTracksTable[trackSelectState->cup * 3 + speed] != 0) {
+            menuState->bgState.MOSAIC = 0x2222;
+            menuState->bgState.BG0CNT |= BGCNT_MOSAIC;
+        }
+    }
+    if ((menuState->gamemode == GAMEMODE_TIME_TRIALS) && (trackSelectState->field55_0x530 != 0)) {
+        FUN_08008e0c(menuState,trackSelectState->cup * 4 + trackSelectState->track);
+        trackSelectState->field56_0x534 = 1;
+    }
+    sub_8009998(menuState);
+    sub_8003948(menuState);
+
+    if (sub_8003930(menuState)) {
+        *(u32*)0x3004f74 = 0x80306fc + 1;
+        *(u32*)0x3004f70 = 0x8030738 + 1;
+        *(u32*)0x3004f78 = 0;
+        *(u32*)0x3004f7e = 1;
+        sub_8030630();
+        pltt_getBuffer(PLTT_BUFFER_BG)[0] = 0;
+        pltt_setDirtyFlag(TRUE);
+        main_frameProc();
+        while ((*(u32*)0x3004f7c & 2) != 0) {
+          main_frameProc();
+        }
+        menuState->field204_0x109c = 1;
         break;
+    } else {
+        if (trackSelectState->field56_0x534 != 0) {
+            sub_802e6fc(1);
+        }
+        if (trackSelectState->field57_0x538 != 0) {
+            dmaq_enqueueVBlank((void*)0x2015400,(void*)0x6015000,0x80000600);    
+        }  
     }
     }
 }

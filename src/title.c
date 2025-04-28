@@ -97,7 +97,7 @@ static void title_80001D8(TitleState* state)
                 break;
             case 4:
                 if (++v3->field_10 <= 16)
-                    v3->scale = sub_800E930(64, 256, v3->field_10, 16, 5);
+                    v3->scale = anim_ease(64, 256, v3->field_10, 16, 5);
                 else
                 {
                     v3->field_10 = 0;
@@ -121,7 +121,7 @@ static void title_80001D8(TitleState* state)
                 break;
             case 7:
                 if (++v3->field_10 <= 16)
-                    v3->scale = sub_800E930(1024, 256, v3->field_10, 16, 9);
+                    v3->scale = anim_ease(1024, 256, v3->field_10, 16, 9);
                 else
                 {
                     v3->scale = 256;

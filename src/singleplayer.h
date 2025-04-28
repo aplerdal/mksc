@@ -40,6 +40,14 @@ typedef enum Character {
     CHARACTER_WARIO=6,
     CHARACTER_BOWSER=7
 } Character;
+typedef enum {
+    EASE_LINEAR,
+    EASE_QUADRATIC,
+    EASE_CUBIC,
+    EASE_LINEAR,
+    EASE_QUARTIC,
+    EASE_BOUNCE_OUT = 10,
+} Easing;
 
 typedef enum TrackCup {
     CUP_UNSET=-1,
@@ -81,11 +89,14 @@ typedef struct __attribute__((packed)) {
 } SpmUnk2;
 
 typedef struct __attribute__((packed)) {
-    Vec2s16 pos;
-    Vec2s16 scale;
-    u8 buf1[12];
-    s16 field0x14;
-    u8 buf2[2];
+    u32 unk1;
+    s16 unk_x;
+    s16 unk_y;
+    s16 x;
+    s16 y;
+    s16 scale;
+    s8 unk2;
+    u8 buf1[9];
 } CupUnkContainer;
 
 typedef struct __attribute__((packed)) {
@@ -151,12 +162,12 @@ typedef struct __attribute__((packed)) {
     s32 field2_0x8;
     u32 field3_0xc;
     u32 field4_0x10;
-    s32 field5_0x14;
+    s32 numCups;
     u32 field6_0x18;
-    u8 *field_0x1C;
-    s16 field_0x20;
-    u16 field_0x22;
     CupUnkContainer unkCupContainer[5];
+    u8 *field_0x90;
+    s16 field_0x94;
+    u16 field_0x98;
     short field12_0x9c;
     short field13_0x9e;
     short field14_0xa0;
@@ -223,7 +234,7 @@ typedef struct __attribute__((packed)) {
     s32 field14_0x40;
     s32 field15_0x44;
     s32 field16_0x48;
-    u32 field17_0x4c;
+    u32 unlockedTracks;
     s32 field18_0x50;
     s32 field19_0x54;
     s32 field20_0x58;
@@ -349,8 +360,7 @@ typedef struct __attribute__((packed)) {
     u32 field193_0xd7c;
     s32 field194_0xd80;
     u32 field195_0xd84;
-    SpmUnk2 spmUnk2;
-    u8 field197_0xda0[744];
+    SpmUnk2 spmUnk2[32];
     u32 playerCount;
     s32 *field199_0x108c;
     s32 field200_0x1090;
@@ -400,4 +410,7 @@ inline s16 adjust_fixed(s16 fixed) {
         return fixed + 0x3f;
     }
     return fixed;
+}
+inline s16 scale_sine(s16 value, s16 scale, s16 offset){
+    return (s16)(math_sin(adjust_fixed(value)) * scale >> 0xf) + offset;
 }

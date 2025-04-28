@@ -7545,7 +7545,7 @@
     str r0, [sp, #0x000]
     movs r0, #0x80
     movs r3, #0x10
-    bl sub_800E930
+    bl anim_ease
     adds r5, r0, #0x0
     movs r4, #0x9F
     lsls r4, r4, #0x02
@@ -20002,7 +20002,7 @@
     movs r1, #0x80
     adds r2, r4, #0x0
     movs r3, #0x40
-    bl sub_800E930
+    bl anim_ease
     adds r5, r0, #0x0
     movs r0, #0x00
     b _0802827C
