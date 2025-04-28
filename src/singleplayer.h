@@ -90,10 +90,10 @@ typedef struct __attribute__((packed)) {
 
 typedef struct __attribute__((packed)) {
     u32 unk1;
-    s16 unk_x;
-    s16 unk_y;
-    s16 x;
-    s16 y;
+    s16 posX;
+    s16 posY;
+    s16 scaleX;
+    s16 scaleY;
     s16 scale;
     s8 unk2;
     u8 buf1[9];
@@ -235,7 +235,7 @@ typedef struct __attribute__((packed)) {
     s32 field15_0x44;
     s32 field16_0x48;
     u32 unlockedTracks;
-    s32 field18_0x50;
+    bool32 field18_0x50;
     s32 field19_0x54;
     s32 field20_0x58;
     s32 field21_0x5c;
@@ -337,7 +337,7 @@ typedef struct __attribute__((packed)) {
     s32 field112_0x730;
     s32 field113_0x734;
     TrackSelectState trackSelectState;
-    s32 field173_0xd34;
+    bool32 unkReloadGfx;
     u32 field174_0xd38;
     u32 field175_0xd3c;
     u32 field176_0xd40;
@@ -370,7 +370,7 @@ typedef struct __attribute__((packed)) {
     s32 field204_0x109c;
     u32 field205_0x10a0;
     s32 unlockedTracksTable[34];
-    s32 unk_hasSpecialUnlocked;
+    bool32 unlockedSpecialCup;
     UnkTrackDataTable unkTrackDataTable;
     u8 field209_0x11bc[4];
     UnkStruct1 field210_0x11c0;
