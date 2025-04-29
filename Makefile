@@ -18,7 +18,6 @@ CPP				:= $(BIN_DIR)/./$(PREFIX)cpp$(EXE)
 OBJCOPY 		:= $(BIN_DIR)/./$(PREFIX)objcopy$(EXE)
 LD 				:= $(BIN_DIR)/./$(PREFIX)ld$(EXE)
 AS 			    := $(BIN_DIR)/./$(PREFIX)as$(EXE)
-SHA1			:= $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 FIX				:= gbafix
 SHELL			:= /bin/bash -o pipefail
 AGBCC			:= tools/agbcc/bin/old_agbcc$(EXE)
@@ -28,7 +27,7 @@ AIF2PCM   		:= tools/aif2pcm/aif2pcm$(EXE)
 # Flags
 ASFLAGS			:= -mcpu=arm7tdmi -I include
 CFLAGS			:= -mthumb-interwork -Wimplicit -Wparentheses -O2
-CPPFLAGS		:= -I tools/agbcc -I tools/agbcc/include -I lib -iquote include -nostdinc
+CPPFLAGS		:= -I tools/agbcc -I tools/agbcc/include -I lib -I src -iquote include -nostdinc
 LDFLAGS			= -L../tools/agbcc/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=../symbols.txt
 
 # Files
@@ -39,6 +38,7 @@ OBJ_DIR := build
 C_SUBDIR = src
 ASM_SUBDIR = asm
 SOUND_SUBDIR = sound
+ADDON_SUBDIR = addon
 DATA_SRC_SUBDIR = src/data
 # DATA_ASM_SUBDIR = data
 DATA_SUBDIR = data
@@ -46,12 +46,17 @@ DATA_SUBDIR = data
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 SOUND_BUILDDIR = $(OBJ_DIR)/$(SOUND_SUBDIR)
+ADDON_BUILDDIR = $(OBJ_DIR)/$(ADDON_SUBDIR)
 # DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 DATA_BUILDDIR = $(OBJ_DIR)/$(DATA_SUBDIR)
 
 C_SRCS := $(wildcard $(C_SUBDIR)/*.c $(C_SUBDIR)/*/*.c $(C_SUBDIR)/*/*/*.c)
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 C_DEPS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.d,$(C_SRCS))
+
+ADDON_SRCS := $(wildcard $(ADDON_SUBDIR)/*.c $(ADDON_SUBDIR)/*/*.c $(ADDON_SUBDIR)/*/*/*.c)
+ADDON_OBJS := $(patsubst $(ADDON_SUBDIR)/%.c,$(ADDON_BUILDDIR)/%.o,$(ADDON_SRCS))
+ADDON_DEPS := $(patsubst $(ADDON_SUBDIR)/%.c,$(ADDON_BUILDDIR)/%.d,$(ADDON_SRCS))
 
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
@@ -67,7 +72,7 @@ DATA_OBJS := $(patsubst $(DATA_SUBDIR)/%.bin,$(DATA_BUILDDIR)/%.o,$(DATA_BINS))
 # DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
 # DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
-OBJS     := $(C_OBJS) $(ASM_OBJS) $(DATA_OBJS) $(SOUND_OBJS) $(SOUND_AIF_OBJS)
+OBJS     := $(C_OBJS) $(ASM_OBJS) $(DATA_OBJS) $(SOUND_OBJS) $(SOUND_AIF_OBJS) $(ADDON_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 SUBDIRS  := $(sort $(dir $(OBJS)))
@@ -81,10 +86,7 @@ endef
 # Rules
 .PHONY: tools libraries rom clean
 
-rom: tools libraries $(ROM) compare
-
-compare: $(ROM)
-	@$(SHA1) rom.sha1
+rom: tools libraries $(ROM)
 
 libraries:
 	@$(MAKE) -C lib/libunk
@@ -124,6 +126,13 @@ $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
+$(ADDON_BUILDDIR)/%.o : $(ADDON_SUBDIR)/%.c
+	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(ADDON_BUILDDIR)/$*.i
+	@$(CC1) $(ADDON_BUILDDIR)/$*.i $(CFLAGS) -o $(ADDON_BUILDDIR)/$*.s
+	@echo -e ".text\n\t.align\t2, 0\n" >> $(ADDON_BUILDDIR)/$*.s
+	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(ADDON_BUILDDIR)/$*.s
+	$(AS) $(ASFLAGS) -o $@ $(ADDON_BUILDDIR)/$*.s
+
 $(SOUND_BUILDDIR)/%.o: $(SOUND_SUBDIR)/%.aif
 	$(AIF2PCM) $< $(patsubst %.o,%,$@)
 	bin2s -H $(@).h $(patsubst %.o,%,$@) | $(AS) -o $(@)
@@ -143,9 +152,9 @@ $(ELF): $(OBJS)
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
-	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
+	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION)
 
 show:
-	echo $(ASM_SRCS)
+	@echo $(ASM_SRCS)
 
--include $(C_DEPS)
+-include $(C_DEPS) $(ADDON_DEPS)

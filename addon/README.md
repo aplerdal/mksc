@@ -1,0 +1,2 @@
+# Addons
+Add your addon functions here. You must modify the existing game code to properly call your function. Be sure that the new function call replaces the exact length of the original function call.

@@ -1,5 +1,5 @@
 #pragma once
-#include "irq.h"
+#include "libunk/irq.h"
 #include "frameHeap.h"
 #include "actor.h"
 #include "track.h"

@@ -18,7 +18,7 @@ SHELL			:= /bin/bash -o pipefail
 
 # Flags
 ASFLAGS			:= -mcpu=arm7tdmi
-CFLAGS			:= -mno-thumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm
+CFLAGS			:= -mno-thumb-interwork -Wimplicit -Wparentheses -O2
 CPPFLAGS		:= -I ../../tools/agbcc -I ../../tools/agbcc/include -iquote ../../include -nostdinc
 
 # Files
@@ -46,7 +46,7 @@ clean:
 $(OBJ_DIR)/%.o : $(SUBDIR)/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
 	@$(CC1) $(OBJ_DIR)/$*.i $(CFLAGS) -o $(OBJ_DIR)/$*.s
-	@echo -e ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
+#   @echo -e ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/$*.s
 
 $(LIB): $(OBJS)

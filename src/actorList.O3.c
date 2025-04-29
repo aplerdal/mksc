@@ -1,18 +1,18 @@
 #include "common.h"
 #include "actorList.h"
 
-bool32 actlist_isEmpty(actlist_t* list)
+bool32 actlist_isEmpty(ActorList* list)
 {
     return list->head == NULL;
 }
 
-void actlist_init(actlist_t* list)
+void actlist_init(ActorList* list)
 {
     list->tail = NULL;
     list->head = NULL;
 }
 
-void actlist_insertHead(actlist_t* list, Actor* item)
+void actlist_insertHead(ActorList* list, Actor* item)
 {
     Actor* head;
     Actor* prev;
@@ -29,7 +29,7 @@ void actlist_insertHead(actlist_t* list, Actor* item)
     list->head = item;
 }
 
-void actlist_insertTail(actlist_t* list, Actor* item)
+void actlist_insertTail(ActorList* list, Actor* item)
 {
     Actor* tail;
     Actor* next;
@@ -45,7 +45,7 @@ void actlist_insertTail(actlist_t* list, Actor* item)
     list->tail = item;
 }
 
-void actlist_insertBefore(actlist_t* list, Actor* target, Actor* item)
+void actlist_insertBefore(ActorList* list, Actor* target, Actor* item)
 {
     item->prev = target->prev;
     item->next = target;
@@ -56,7 +56,7 @@ void actlist_insertBefore(actlist_t* list, Actor* target, Actor* item)
     target->prev = item;
 }
 
-void actlist_insertAfter(actlist_t* list, Actor* target, Actor* item)
+void actlist_insertAfter(ActorList* list, Actor* target, Actor* item)
 {
     Actor* next = target->next;
     item->prev = target;
@@ -68,7 +68,7 @@ void actlist_insertAfter(actlist_t* list, Actor* target, Actor* item)
     target->next = item;
 }
 
-Actor* actlist_takeHead(actlist_t* list)
+Actor* actlist_takeHead(ActorList* list)
 {
     Actor* item = list->head;
     list->head = item->next;
@@ -81,7 +81,7 @@ Actor* actlist_takeHead(actlist_t* list)
     return item;
 }
 
-Actor* actlist_takeTail(actlist_t* list)
+Actor* actlist_takeTail(ActorList* list)
 {
     Actor* item = list->tail;
     list->tail = item->prev;
@@ -94,7 +94,7 @@ Actor* actlist_takeTail(actlist_t* list)
     return item;
 }
 
-void actlist_remove(actlist_t* list, Actor* item)
+void actlist_remove(ActorList* list, Actor* item)
 {
     Actor* item2 = item;
     if (item2 == list->head)
@@ -110,7 +110,7 @@ void actlist_remove(actlist_t* list, Actor* item)
     }
 }
 
-void actlist_clear(actlist_t* list)
+void actlist_clear(ActorList* list)
 {
     list->tail = NULL;
     list->head = NULL;

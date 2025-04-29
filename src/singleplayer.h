@@ -44,7 +44,6 @@ typedef enum {
     EASE_LINEAR,
     EASE_QUADRATIC,
     EASE_CUBIC,
-    EASE_LINEAR,
     EASE_QUARTIC,
     EASE_BOUNCE_OUT = 10,
 } Easing;

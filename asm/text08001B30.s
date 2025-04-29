@@ -9128,8 +9128,8 @@ add sp, #0x004
 pop {r4, r5, r6, r7}
 pop {r0}
 bx r0
-thumb_func_start sub_8008938
-sub_8008938:
+thumb_func_start spm_loadTrackSelectGfx
+spm_loadTrackSelectGfx:
 push {r4, r5, r6, r7, lr}
 adds r6, r0, #0x0
 ldr r0, _08008974 @ =0x0203EC00
@@ -12512,7 +12512,7 @@ _0800B2F8:
 str r2, [r7, #0x0C]
 _0800B2FA:
 mov r0, r8
-bl sub_8008938
+bl spm_loadTrackSelectGfx
 cmp r0, #0x00
 bne _0800B30C
 mov r0, r8
