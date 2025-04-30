@@ -111,8 +111,8 @@ SECTIONS
         libunk.a(.rodata);
         asm/rodata081E9B1C.o(.rodata);
         /*  Insert needed objects here: */
-        /* addon/titleSelect.o(.text); */
-        . = 0x08234000;
+        addon/titleSelect.o(.text); 
+        . = 0x234000;
         data/skyData.o(.rodata*);
         data/courseData.o(.rodata*);
         data/mbChild.o(.rodata*);

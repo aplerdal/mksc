@@ -2,6 +2,14 @@
 #include "common.h"
 #include "math.h"
 
+typedef enum TrackSelectMode{
+    TRACK_SEL_FADE_IN = 1,
+    TRACK_SEL_LOAD_GFX = 2,
+    TRACK_SEL_STATE_CUP_SELECT = 3,
+    TRACK_SEL_STATE_TRACK_SELECT = 5,
+    TRACK_SEL_CUP_CONFIRM = 8,
+} TrackSelectMode;
+
 typedef enum SpmPage {
     MENU_PAGE_UNSET=-1,
     MENU_PAGE_MODE=0,
@@ -93,7 +101,7 @@ typedef struct __attribute__((packed)) {
     s16 posY;
     s16 scaleX;
     s16 scaleY;
-    s16 scale;
+    s16 unk_palette;
     s8 unk2;
     u8 buf1[9];
 } CupUnkContainer;
@@ -214,6 +222,7 @@ typedef struct __attribute__((packed)) {
     s32 field56_0x534;
     s32 field57_0x538;
     u8 field58_0x53c[192];
+    bool32 unkReloadGfx;
 } TrackSelectState;
 
 typedef struct __attribute__((packed)) {
@@ -234,7 +243,7 @@ typedef struct __attribute__((packed)) {
     s32 field15_0x44;
     s32 field16_0x48;
     u32 unlockedTracks;
-    bool32 field18_0x50;
+    bool32 transitioning;
     s32 field19_0x54;
     s32 field20_0x58;
     s32 field21_0x5c;
@@ -336,7 +345,6 @@ typedef struct __attribute__((packed)) {
     s32 field112_0x730;
     s32 field113_0x734;
     TrackSelectState trackSelectState;
-    bool32 unkReloadGfx;
     u32 field174_0xd38;
     u32 field175_0xd3c;
     u32 field176_0xd40;
