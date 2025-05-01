@@ -2,14 +2,6 @@
 #include "common.h"
 #include "math.h"
 
-typedef enum TrackSelectMode{
-    TRACK_SEL_FADE_IN = 1,
-    TRACK_SEL_LOAD_GFX = 2,
-    TRACK_SEL_STATE_CUP_SELECT = 3,
-    TRACK_SEL_STATE_TRACK_SELECT = 5,
-    TRACK_SEL_CUP_CONFIRM = 8,
-} TrackSelectMode;
-
 typedef enum SpmPage {
     MENU_PAGE_UNSET=-1,
     MENU_PAGE_MODE=0,
