@@ -60,9 +60,9 @@ enum TrackSelectMode {
     TSM_TRNS_CUP_SELECT,
     //TSM_TRANSITION_PLAY_TRACK, // TODO: could be wrong.
     TSM_CONFIRM = 8, //8
-    TSM_TRANSITION_TRACK_SELECT,
-    TSM_TRANSITION_PLAY = 10,
-    TSM_TRANSITION_EXIT = 14,
+    TSM_TRNS_TRACK_SELECT = 9,
+    TSM_TRNS_PLAY = 10,
+    TSM_TRNS_EXIT = 14,
 };
 
 bool8 track_select(SpmState *menuState, s32 status) {
@@ -77,7 +77,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
 
     local4c = 0;
     frame = 0;
-    mode = 0;
+    mode = TSM_INIT;
     trackSelectState = &menuState->trackSelectState;
     trackSelectState->cup = CUP_MUSHROOM;
     trackSelectState->track = 0;
@@ -170,7 +170,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
     menuState->field175_0xd3c = 0;
     menuState->field176_0xd40 = 0;
     trackSelectState->field54_0x52c = 0;
-    trackSelectState->field55_0x530 = 0;
+    trackSelectState->trackSelectShown = FALSE;
     trackSelectState->field56_0x534 = 0;
     trackSelectState->field57_0x538 = 0;
     sub_8001FC0(menuState);
@@ -210,7 +210,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                     oam_update();
                 }
                 main_frameProc();
-                trackSelectState->field55_0x530 = 0;
+                trackSelectState->trackSelectShown = FALSE;
                 trackSelectState->field56_0x534 = 0;
                 trackSelectState->field57_0x538 = 0;
                 menuState->field216_0x11f4 = menuState->field216_0x11f4 + 1;
@@ -258,22 +258,25 @@ bool8 track_select(SpmState *menuState, s32 status) {
             keyRepeatTriggerBuf[i] = 0;
         }
 
-        if (mode >= 0 && (mode <= 2 || (mode <= 18 && mode >= 10)) && menuState->playerIndex > -1) {
+        if (((mode >= 0 && mode <= 2) || (mode <= 18 && mode >= 10))) {
+            // Skip transition code. Only active durring any transition
             for (i = 0; i <= menuState->playerIndex; i++) {
                 int mask = B_BUTTON;
-                if (status < 14) {
+                if (mode < 14) {
                     mask = A_BUTTON;
                 }
                 if ((mask & gKeyRepeatTriggerBuf[i]) != 0) {
-                    if (status < 3) {
-                        if (menuState->gamemode == GAMEMODE_BATTLE || status != 0) {
+                    if (mode < 3) {
+                        if (menuState->gamemode == GAMEMODE_BATTLE || mode != 0) {
                             local4c = 5;
                         } else {
                             local4c = 3;
                         }
                     } else {
+                        // Return to Menu Transition skip
                         local4c = -1;
-                        if (status < 14) {
+                        if (mode < 14) {
+                            // Play track transition skip
                             local4c = 100;
                         }
                     }
@@ -294,14 +297,14 @@ bool8 track_select(SpmState *menuState, s32 status) {
         }
 
         switch (mode) {
-        case 0: {
+        case TSM_INIT: {
             if (menuState->gamemode == GAMEMODE_BATTLE) {
                 sub_800A84C(menuState, status);
             } else {
                 sub_800A75C(menuState, status);
             }
             irq_updateMask(IRQ_UPDATE_MODE_OR, IRQ_MASK_VCOUNT);
-            mode = 1;
+            mode = TSM_FADE_IN;
             frame = 0;
         }
         case TSM_FADE_IN: {
@@ -315,11 +318,12 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 }
                 menuState->field213_0x11e8 = adjust_fixed(frame * -10) + 360;
                 menuState->field215_0x11f0 -= 2048;
+            } else {
+                menuState->bgState.BLDCNT = 0x2f40;
+                menuState->bgState.BLDALPHA = 0x60a;
+                mode = TSM_LOAD_GFX;
+                frame = 0;
             }
-            menuState->bgState.BLDCNT = 0x2f40;
-            menuState->bgState.BLDALPHA = 0x60a;
-            mode = TSM_LOAD_GFX;
-            frame = 0;
             break;
         }
         case TSM_LOAD_GFX: {
@@ -335,7 +339,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                     if (frame >= 0 && frame <= 20) {
                         s32 end, start, param3;
                         if (menuState->gamemode == GAMEMODE_BATTLE) {
-                            end = *(s16 *)(0x203655b + i * 5);
+                            end = *(s16*)&((u32*)0x80D956C)[i * 5];
                             start = end + 240;
                         } else {
                             if (status == 0) {
@@ -356,7 +360,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->field35_0xec = 0;
                 trackSelectState->field41_0x100 = 0;
                 if (menuState->gamemode == GAMEMODE_BATTLE) {
-                    mode = 5;
+                    mode = TSM_TRACK_SELECT;
                 } else if (status != 0) {
                     for (i = 0; i < trackSelectState->numCups; i++) {
                         if (i != trackSelectState->cup) {
@@ -366,15 +370,15 @@ bool8 track_select(SpmState *menuState, s32 status) {
                         }
                     }
                     trackSelectState->field45_0x50c = 1;
-                    mode = 5;
+                    mode = TSM_TRACK_SELECT;
                 } else {
-                    mode = 3;
+                    mode = TSM_CUP_SELECT;
                 }
                 frame = 0;
             } 
             break;
         }
-        case 3: {
+        case TSM_CUP_SELECT: {
             TrackCup newCup;
 
             for (i = 0; i <= menuState->playerIndex; i++) {
@@ -405,7 +409,8 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 if (cup != trackSelectState->cup) {
                     RaceSpeed speed;
                     m4aSongNumStart(SONG_141);
-                    spm_loadCupGfx(menuState, cup);
+                    spm_loadCupGfx(menuState, trackSelectState->cup);
+                    menuState->cup = trackSelectState->cup;
                     speed = RACE_SPEED_150cc;
                     if (menuState->gamemode != GAMEMODE_TIME_TRIALS) {
                         speed = menuState->raceSpeed;
@@ -441,14 +446,14 @@ bool8 track_select(SpmState *menuState, s32 status) {
                             m4aSongNumStart(SONG_142);
                             trackSelectState->field45_0x50c = 1;
                             trackSelectState->cup = menuState->cup;
-                            mode = 4;
+                            mode = TSM_TRNS_CONFIRM;
                             //frame = 0;
                         } else {
                             m4aSongNumStart(SONG_145);
                         }
                     } else if ((key & B_BUTTON) != 0) {
                         m4aSongNumStart(SONG_144);
-                        mode = 14;
+                        mode = TSM_TRNS_EXIT;
                         frame = 0;
                     } else if ((key & (R_BUTTON | L_BUTTON)) != 0) {
                         if ((menuState->gamemode != GAMEMODE_BATTLE) && menuState->unlockedSpecialCup && trackSelectState->unkCupContainer[trackSelectState->numCups-1].unk2 == 1) {
@@ -486,7 +491,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             }
             break;
         }
-        case 4: {
+        case TSM_TRNS_CONFIRM: {
             if (menuState->gamemode == GAMEMODE_GP && frame < 9) {
                 trackSelectState->field_0x98 = scale_sine(frame << 11, -48, 268);
                 trackSelectState->field13_0x9e = 0x100;
@@ -498,16 +503,16 @@ bool8 track_select(SpmState *menuState, s32 status) {
                     trackSelectState->unkCupContainer[i].scaleX = 0;
                     trackSelectState->unkCupContainer[i].scaleY = 0;
                 }
-                mode = 5;
+                mode = TSM_TRACK_SELECT;
                 if (menuState->gamemode == GAMEMODE_GP) {
-                    mode = 8;
+                    mode = TSM_CONFIRM;
                 }
                 frame = 0;
             } else {
                 s32 unkPageRel;
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].posX = scale_sine(frame << 11, 46 - gUnkUIElements[i].pos.x, gUnkUIElements[i].pos.x);
-                    trackSelectState->unkCupContainer[i].posY = scale_sine(frame << 11, ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60) - gUnkUIElements[i].pos.y, gUnkUIElements[i].pos.y);
+                    trackSelectState->unkCupContainer[i].posX = scale_sine(frame << 11, 46, gUnkUIElements[i].pos.x);
+                    trackSelectState->unkCupContainer[i].posY = scale_sine(frame << 11, ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), gUnkUIElements[i].pos.y);
                     if (i != trackSelectState->cup) {
                         s32 scale = scale_sine(frame << 11, 98, 272);
                         trackSelectState->unkCupContainer[i].scaleX = scale;
@@ -532,10 +537,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->field35_0xec = scale_sine(frame << 11, 4, 100);
                 trackSelectState->unk_trackSelectionFlags5 = scale_sine(frame << 11, (menuState->trackPage == 0 ? 32 : 37), 100);
             }
-            frame = 0;
             break;
         }
-        case 5: {
+        case TSM_TRACK_SELECT: {
             trackSelectState->field54_0x52c = 0;
             trackSelectState->field3_0xc = 1;
             for (i = 0; i <= menuState->playerIndex; i++) {
@@ -558,7 +562,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                     m4aSongNumStart(SONG_141);
                     *(u32 *)(0x0203ebfc) = 2;
                     gTrackNumber = trackSelectState->cup * 4 + trackSelectState->track;
-                    trackSelectState->field55_0x530 = 1;
+                    trackSelectState->trackSelectShown = TRUE;
                     break;
                 }
                 if ((gKeyTriggerBuf[i] & (A_BUTTON | START_BUTTON)) != 0) {
@@ -571,16 +575,16 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 if ((gKeyTriggerBuf[i] & B_BUTTON) != 0) {
                     m4aSongNumStart(SONG_144);
                     trackSelectState->field45_0x50c = 4;
-                    mode = 6;
+                    mode = TSM_TRNS_CUP_SELECT;
                     if (menuState->gamemode == GAMEMODE_BATTLE) {
-                        mode = 14;
+                        mode = TSM_TRNS_EXIT;
                     }
                     frame = 0;
                 }
             }
             break;
         }
-        case 6: {
+        case TSM_TRNS_CUP_SELECT: {
             if (menuState->gamemode == GAMEMODE_GP) {
                 if (frame < 9) {
                     trackSelectState->field_0x98 = scale_sine(frame << 11, 48, 220);
@@ -592,16 +596,12 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 }
             }
             frame++;
-            if (frame > 16) {
-                for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].unk2 = 1;
-                }
-            } else {
+            if (frame < 16) {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     s32 offset;
-                    trackSelectState->unkCupContainer[i].posX = scale_sine(frame << 11, gUnkUIElements[i].pos.x - 46, 46);
+                    trackSelectState->unkCupContainer[i].posX = scale_sine(frame << 11, 46, gUnkUIElements[i].pos.x - 8);
                     offset = (menuState->gamemode = GAMEMODE_GP) ? 80 : 60;
-                    trackSelectState->unkCupContainer[i].posY = scale_sine(frame << 11, gUnkUIElements[i].pos.x - offset, offset);
+                    trackSelectState->unkCupContainer[i].posY = scale_sine(frame << 11, offset, gUnkUIElements[i].pos.y - 11);
 
                     if (i != trackSelectState->cup) {
                         s32 scale = scale_sine(frame << 11, -98, 370);
@@ -636,9 +636,13 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 } else {
                     trackSelectState->unk_trackSelectionFlags5 = scale_sine(frame << 11, 37, 101);
                 }
+            } else {
+                for (i = 0; i < trackSelectState->numCups; i++) {
+                    trackSelectState->unkCupContainer[i].unk2 = 1;
+                }
+                mode = TSM_CUP_SELECT;
+                frame = 0;
             }
-            mode = 3;
-            frame = 0;
             break;
         }
         case 7: {
@@ -653,7 +657,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             }
             break;
         }
-        case 8: {
+        case TSM_CONFIRM: {
             s16 scale;
             if ((menuState->unlockedTracks & 0x2f) < 0x10) {
                 scale = 0x100;
@@ -666,22 +670,22 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 if ((gKeyTriggerBuf[i] & (A_BUTTON | START_BUTTON)) != 0) {
                     m4aSongNumStart(SONG_143);
                     trackSelectState->field45_0x50c = 4;
-                    mode = 10;
+                    mode = TSM_TRNS_PLAY;
                     frame = 0;
                     break;
                 }
                 if ((gKeyTriggerBuf[i] & B_BUTTON) != 0) {
                     m4aSongNumStart(SONG_144);
-                    mode = 9;
+                    mode = TSM_TRNS_TRACK_SELECT;
                     if (menuState->gamemode == GAMEMODE_GP) {
-                        mode = 4;
+                        mode = TSM_TRNS_CUP_SELECT;
                     }
                     frame = 0;
                 }
             }
             break;
         }
-        case 9: {
+        case TSM_TRNS_TRACK_SELECT: {
             frame = frame + 1;
             if (frame < 7) {
                 sub_8008FA4(menuState, trackSelectState->track, 6 - frame);
@@ -691,13 +695,13 @@ bool8 track_select(SpmState *menuState, s32 status) {
             } else {
                 trackSelectState->field13_0x9e = 0;
                 trackSelectState->field12_0x9c = 0;
-                mode = 5;
+                mode = TSM_TRACK_SELECT;
                 frame = 0;
             }
             break;
         }
-        case 14:
-        case 10: {
+        case TSM_TRNS_EXIT:
+        case TSM_TRNS_PLAY: {
             trackSelectState->field17_0xb0 = 5;
             trackSelectState->field35_0xec = 3;
             trackSelectState->field41_0x100 = 3;
@@ -707,10 +711,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
             for (i = 0; i < DAT_03000040; i++) {
                 menuState->spmUnk2[i].field6_0xe = 17;
             }
-            // I dont think this code ever gets hit.
-            if (mode == 10) {
+            if (mode == TSM_TRNS_PLAY) {
                 mode = 11;
-            } else if (mode == 14) {
+            } else {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     trackSelectState->unkCupContainer[i].unk2 = 0;
                 }
@@ -723,12 +726,13 @@ bool8 track_select(SpmState *menuState, s32 status) {
             frame++;
             if (frame < 9) {
                 trackSelectState->field_0x98 = scale_sine(frame << 11, 48, 220);
+            } else {
+                if (trackSelectState->field17_0xb0 == 7) {
+                    trackSelectState->field51_0x520 = (menuState->gamemode == GAMEMODE_GP) ? 1 : 4;
+                }
+                mode = 12;
+                frame = 0;
             }
-            if ((trackSelectState->field17_0xb0 == 7) && (8 < frame)) {
-                trackSelectState->field51_0x520 = (menuState->gamemode == GAMEMODE_GP) ? 1 : 4;
-            }
-            mode = 12;
-            frame = 0;
             break;
         }
         case 12: {
@@ -737,9 +741,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     trackSelectState->unkCupContainer[i].unk2 = 0;
                 }
+                mode = 13;
+                frame = 0;
             }
-            mode = 13;
-            frame = 0;
             break;
         }
         case 18:
@@ -754,10 +758,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 irq_updateMask(IRQ_UPDATE_MODE_AND, ~IRQ_MASK_VCOUNT);
                 sub_8002E08(menuState, (u8)menuState->menuPage);
                 sub_8002E50(menuState, (u8)menuState->unk_multiplayerMirror);
-
-                if (mode == 13) {
-                    return;
-                }
+                return mode == 13;
             }
             break;
         }
@@ -772,9 +773,10 @@ bool8 track_select(SpmState *menuState, s32 status) {
                     trackSelectState->unkCupContainer[i].scaleY = frame * 80 + 256;
                     trackSelectState->unkCupContainer[i].unk2 = (frame * 80 + 256) * 4096;
                 }
+            } else {
+                mode = 16;
+                frame = 0;
             }
-            mode = 16;
-            frame = 0;
             break;
         }
         case 16: {
@@ -782,7 +784,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->unkCupContainer[i].unk1 = 0;
             }
             if (trackSelectState->field17_0xb0 == 7) {
-                mode = 19;
+                mode = 18;
                 frame = 0;
             }
             break;
@@ -895,7 +897,8 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 menuState->bgState.BG0CNT |= BGCNT_MOSAIC;
             }
         }
-        if ((menuState->gamemode == GAMEMODE_TIME_TRIALS) && (trackSelectState->field55_0x530 != 0)) {
+        if ((menuState->gamemode == GAMEMODE_TIME_TRIALS) && trackSelectState->trackSelectShown) {
+            // Probably render records
             sub_8008E0C(menuState, trackSelectState->cup * 4 + trackSelectState->track);
             trackSelectState->field56_0x534 = 1;
         }

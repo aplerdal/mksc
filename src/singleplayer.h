@@ -210,7 +210,7 @@ typedef struct __attribute__((packed)) {
     u32 field52_0x524;
     u32 field53_0x528;
     u32 field54_0x52c;
-    u32 field55_0x530;
+    bool32 trackSelectShown;
     s32 field56_0x534;
     s32 field57_0x538;
     u8 field58_0x53c[192];
