@@ -53,12 +53,12 @@ extern u16 gKeyRepeatTriggerBuf[4];
 enum TrackSelectMode {
     TSM_INIT,
     TSM_FADE_IN,
-    TSM_LOAD_GFX,
+    TSM_LOAD,
     TSM_CUP_SELECT,
-    TSM_TRNS_CONFIRM,
+    TSM_TRNS_CONFIRM_CUP,
     TSM_TRACK_SELECT,
     TSM_TRNS_CUP_SELECT,
-    //TSM_TRANSITION_PLAY_TRACK, // TODO: could be wrong.
+    TSM_TRNS_CONFIRM_TRACK, // TODO: could be wrong.
     TSM_CONFIRM = 8, //8
     TSM_TRNS_TRACK_SELECT = 9,
     TSM_TRNS_PLAY = 10,
@@ -226,7 +226,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             if (!trackSelectState->unkReloadGfx)
                 break;
             // Blinky text stuff
-            if (menuState->unlockedSpecialCup) {
+            if (/*menuState->unlockedSpecialCup*/TRUE) {
                 if ((menuState->unlockedTracks & 0x2f) < 0x20) {
                     oam_renderCellData((u16 *)0x80c9010, (Vec2s16 *)0x80d9654, 0, 0, 0, NULL);
                 }
@@ -320,12 +320,12 @@ bool8 track_select(SpmState *menuState, s32 status) {
             } else {
                 menuState->bgState.BLDCNT = 0x2f40;
                 menuState->bgState.BLDALPHA = 0x60a;
-                mode = TSM_LOAD_GFX;
+                mode = TSM_LOAD;
                 frame = 0;
             }
             break;
         }
-        case TSM_LOAD_GFX: {
+        case TSM_LOAD: {
             if (menuState->gamemode == GAMEMODE_BATTLE) {
                 if (frame == 0)
                     trackSelectState->field16_0xac = 1;
@@ -445,7 +445,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                             m4aSongNumStart(SONG_142);
                             trackSelectState->field45_0x50c = 1;
                             trackSelectState->cup = menuState->cup;
-                            mode = TSM_TRNS_CONFIRM;
+                            mode = TSM_TRNS_CONFIRM_CUP;
                             //frame = 0;
                         } else {
                             m4aSongNumStart(SONG_145);
@@ -455,7 +455,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                         mode = TSM_TRNS_EXIT;
                         frame = 0;
                     } else if ((key & (R_BUTTON | L_BUTTON)) != 0) {
-                        if ((menuState->gamemode != GAMEMODE_BATTLE) && menuState->unlockedSpecialCup && trackSelectState->unkCupContainer[trackSelectState->numCups-1].unk2 == 1) {
+                        if ((menuState->gamemode != GAMEMODE_BATTLE) /*&& menuState->unlockedSpecialCup /*&& trackSelectState->unkCupContainer[trackSelectState->numCups-1].unk2 == 18*/) {
                             m4aSongNumStart(SONG_147);
                             for (i = 0; i < trackSelectState->numCups; i++) {
                                 trackSelectState->unkCupContainer[i].unk_palette = 5;
@@ -482,7 +482,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 break;
             }
             
-            if (menuState->unlockedSpecialCup) {
+            if (/*menuState->unlockedSpecialCup*/TRUE) {
                 if ((menuState->unlockedTracks & 0x2f) < 0x20) {
                     oam_renderCellData((u16 *)0x080C9010, (Vec2s16 *)0x80d9654, 0, 0, 0, NULL);
                 }
@@ -490,7 +490,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             }
             break;
         }
-        case TSM_TRNS_CONFIRM: {
+        case TSM_TRNS_CONFIRM_CUP: {
             if (menuState->gamemode == GAMEMODE_GP && frame < 9) {
                 trackSelectState->field_0x98 = scale_sine(frame << 11, -48, 268);
                 trackSelectState->field13_0x9e = 0x100;
@@ -567,7 +567,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 if ((gKeyTriggerBuf[i] & (A_BUTTON | START_BUTTON)) != 0) {
                     m4aSongNumStart(SONG_142);
                     menuState->track = trackSelectState->track;
-                    mode = 7;
+                    mode = TSM_TRNS_CONFIRM_TRACK;
                     frame = 0;
                     break;
                 }
@@ -633,7 +633,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             }
             break;
         }
-        case 7: {
+        case TSM_TRNS_CONFIRM_TRACK: {
             frame++;
             if (frame < 7) {
                 trackSelectState->field3_0xc = 1;
@@ -642,6 +642,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->field_0x98 = scale_sine(((frame << 14) / 6), -48, 268);
                 trackSelectState->field13_0x9e = 1 << 8;
                 trackSelectState->field12_0x9c = 1 << 8;
+            } else {
+                mode = TSM_CONFIRM;
+                frame = 0;
             }
             break;
         }
