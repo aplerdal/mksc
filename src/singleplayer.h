@@ -178,8 +178,7 @@ typedef struct __attribute__((packed)) {
     u16 field20_0xba;
     u32 field21_0xbc;
     u32 field22_0xc0;
-    u16 unk_trackSelectionFlags1;
-    u16 trackSelectionFlags;
+    Vec2s16 cupTextPos;
     u32 field25_0xc8;
     u32 field26_0xcc;
     u32 field27_0xd0;
@@ -192,8 +191,7 @@ typedef struct __attribute__((packed)) {
     u32 field34_0xe8;
     u32 field35_0xec;
     u32 field36_0xf0;
-    u16 unk_trackSelectionFlags4;
-    u16 unk_trackSelectionFlags5;
+    Vec2s16 rankTextPos;
     u32 field39_0xf8;
     u32 field40_0xfc;
     u32 field41_0x100;
@@ -412,4 +410,13 @@ inline s16 adjust_fixed(s16 fixed) {
 }
 inline s16 scale_sine(s16 value, s16 scale, s16 offset){
     return (s16)(math_sin(adjust_fixed(value)) * scale >> 0xf) + offset;
+}
+inline s16 oscillate(s16 time, s16 position, s16 amplitude) {
+    return (s16)((math_sin(time)*amplitude) >> 15) + position;
+}
+inline s16 oscillateFrame(s16 frame, s16 position, s16 amplitude) {
+    return oscillate(frame<<11, position, amplitude);
+}
+inline s16 easeOutSine(s16 start, s16 end, s16 progress) {
+    return (s16)(start + (((end-start)*math_sin(progress))>>15));
 }

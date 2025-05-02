@@ -97,21 +97,20 @@ bool8 track_select(SpmState *menuState, s32 status) {
     if (status != 0) {
         unkFlags1 = 94;
     }
-    trackSelectState->unk_trackSelectionFlags1 = unkFlags1;
+    trackSelectState->cupTextPos.x = unkFlags1;
     if (status == 0) {
-        trackSelectionFlags = 48;
+        trackSelectState->cupTextPos.y = 48;
     } else if (menuState->gamemode == GAMEMODE_GP) {
-        trackSelectionFlags = 85;
+        trackSelectState->cupTextPos.y = 85;
         if (menuState->trackPage == 0) {
-            trackSelectionFlags = 80;
+            trackSelectState->cupTextPos.y = 80;
         }
     } else {
-        trackSelectionFlags = 65;
+        trackSelectState->cupTextPos.y = 65;
         if (menuState->trackPage == 0) {
-            trackSelectionFlags = 60;
+            trackSelectState->cupTextPos.y = 60;
         }
     }
-    trackSelectState->trackSelectionFlags = trackSelectionFlags;
     trackSelectState->field25_0xc8 = 0;
     trackSelectState->field26_0xcc = 0;
     trackSelectState->field27_0xd0 = 0;
@@ -141,7 +140,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
     if (status != 0) {
         unkFlags4 = 104;
     }
-    trackSelectState->unk_trackSelectionFlags4 = unkFlags4;
+    trackSelectState->rankTextPos.x = unkFlags4;
     if (status == 0) {
         unkFlags5 = 64;
     } else {
@@ -150,7 +149,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             unkFlags5 == 96;
         }
     }
-    trackSelectState->unk_trackSelectionFlags5 = unkFlags5;
+    trackSelectState->rankTextPos.y = unkFlags5;
     trackSelectState->field39_0xf8 = 0;
     trackSelectState->field40_0xfc = 0;
     trackSelectState->field41_0x100 = 5;
@@ -498,7 +497,35 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->field12_0x9c = 0x100;
             }
             frame++;
-            if (frame > 16) {
+            if (frame < 16){
+                s32 unkPageRel;
+                for (i = 0; i < trackSelectState->numCups; i++) {
+                    trackSelectState->unkCupContainer[i].posX = easeOutSine(gUnkUIElements[i].pos.x, 46, (frame<<10));
+                    trackSelectState->unkCupContainer[i].posY = easeOutSine(gUnkUIElements[i].pos.y, ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), (frame<<10));
+                    if (i != trackSelectState->cup) {
+                        s32 scale = scale_sine(frame << 11, 98, 272);
+                        trackSelectState->unkCupContainer[i].scaleX = scale;
+                        trackSelectState->unkCupContainer[i].scaleY = scale;
+                        trackSelectState->unkCupContainer[i].unk2 = 0;
+                    }
+                }
+                trackSelectState->cupTextPos.x = easeOutSine(96, 94, frame << 10);
+                if (menuState->gamemode == GAMEMODE_GP) {
+                    if (menuState->trackPage == 0) {
+                        trackSelectState->cupTextPos.y = easeOutSine(48, 80, frame << 10);
+                    } else {
+                        trackSelectState->cupTextPos.y = easeOutSine(48, 85, frame << 10);
+                    }
+                } else if (menuState->trackPage == 0) {
+                    trackSelectState->cupTextPos.y = easeOutSine(48, 60, frame << 10);
+                } else {
+                    trackSelectState->cupTextPos.y = easeOutSine(48, 65, frame << 10);
+                }
+                trackSelectState->unk_trackSelectionFlags2 = easeOutSine(112, 64, frame << 10);
+                trackSelectState->unk_trackSelectionFlags3 = easeOutSine(88, (menuState->trackPage == 0 ? 104 : 109), frame << 10);
+                trackSelectState->field35_0xec = easeOutSine(100, 104, frame << 10);
+                trackSelectState->rankTextPos.y = easeOutSine(64, (menuState->trackPage == 0 ? 96 : 101), frame << 10);
+            } else {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     trackSelectState->unkCupContainer[i].scaleX = 0;
                     trackSelectState->unkCupContainer[i].scaleY = 0;
@@ -508,34 +535,6 @@ bool8 track_select(SpmState *menuState, s32 status) {
                     mode = TSM_CONFIRM;
                 }
                 frame = 0;
-            } else {
-                s32 unkPageRel;
-                for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].posX = scale_sine(frame << 11, 46, gUnkUIElements[i].pos.x);
-                    trackSelectState->unkCupContainer[i].posY = scale_sine(frame << 11, ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), gUnkUIElements[i].pos.y);
-                    if (i != trackSelectState->cup) {
-                        s32 scale = scale_sine(frame << 11, 98, 272);
-                        trackSelectState->unkCupContainer[i].scaleX = scale;
-                        trackSelectState->unkCupContainer[i].scaleY = scale;
-                        trackSelectState->unkCupContainer[i].unk2 = 0;
-                    }
-                }
-                trackSelectState->unk_trackSelectionFlags1 = scale_sine(frame << 11, -2, 96);
-                if (menuState->gamemode == GAMEMODE_GP) {
-                    if (menuState->trackPage == 0) {
-                        trackSelectState->trackSelectionFlags = scale_sine(frame << 1, 32, 48);
-                    } else {
-                        trackSelectState->trackSelectionFlags = scale_sine(frame << 1, 37, 48);
-                    }
-                } else if (menuState->trackPage == 0) {
-                    trackSelectState->trackSelectionFlags = scale_sine(frame << 1, 12, 48);
-                } else {
-                    trackSelectState->trackSelectionFlags = scale_sine(frame << 1, 17, 48);
-                }
-                trackSelectState->unk_trackSelectionFlags2 = scale_sine(frame << 11, -48, 112);
-                trackSelectState->unk_trackSelectionFlags3 = scale_sine(frame << 11, (menuState->trackPage == 0 ? 16 : 21), 88);
-                trackSelectState->field35_0xec = scale_sine(frame << 11, 4, 100);
-                trackSelectState->unk_trackSelectionFlags5 = scale_sine(frame << 11, (menuState->trackPage == 0 ? 32 : 37), 100);
             }
             break;
         }
@@ -599,9 +598,8 @@ bool8 track_select(SpmState *menuState, s32 status) {
             if (frame < 16) {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     s32 offset;
-                    trackSelectState->unkCupContainer[i].posX = scale_sine(frame << 11, 46, gUnkUIElements[i].pos.x - 8);
-                    offset = (menuState->gamemode = GAMEMODE_GP) ? 80 : 60;
-                    trackSelectState->unkCupContainer[i].posY = scale_sine(frame << 11, offset, gUnkUIElements[i].pos.y - 11);
+                    trackSelectState->unkCupContainer[i].posX = easeOutSine(46, gUnkUIElements[i].pos.x, (frame<<10));
+                    trackSelectState->unkCupContainer[i].posY = easeOutSine(((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), gUnkUIElements[i].pos.y, (frame<<10));
 
                     if (i != trackSelectState->cup) {
                         s32 scale = scale_sine(frame << 11, -98, 370);
@@ -610,32 +608,22 @@ bool8 track_select(SpmState *menuState, s32 status) {
                         trackSelectState->unkCupContainer[i].unk2 = 0;
                     }
                 }
-                trackSelectState->unk_trackSelectionFlags1 = scale_sine(frame << 11, 2, 94);
+                trackSelectState->cupTextPos.x = easeOutSine(94, 96, frame << 10);
                 if (menuState->gamemode == GAMEMODE_GP) {
                     if (menuState->trackPage == 0) {
-                        trackSelectState->trackSelectionFlags = scale_sine(frame << 11, 32, 80);
+                        trackSelectState->cupTextPos.y = easeOutSine(80, 48, frame << 10);
                     } else {
-                        trackSelectState->trackSelectionFlags = scale_sine(frame << 11, 37, 85);
+                        trackSelectState->cupTextPos.y = easeOutSine(85, 48, frame << 10);
                     }
+                } else if (menuState->trackPage == 0) {
+                    trackSelectState->cupTextPos.y = easeOutSine(60, 48, frame << 10);
                 } else {
-                    if (menuState->trackPage == 0) {
-                        trackSelectState->trackSelectionFlags = scale_sine(frame << 11, 12, 60);
-                    } else {
-                        trackSelectState->trackSelectionFlags = scale_sine(frame << 11, 17, 65);
-                    }
+                    trackSelectState->cupTextPos.y = easeOutSine(65, 48, frame << 10);
                 }
-                trackSelectState->unk_trackSelectionFlags2 = scale_sine(frame << 11, 48, 64);
-                if (menuState->trackPage == 0) {
-                    trackSelectState->unk_trackSelectionFlags3 = scale_sine(frame << 11, 16, 104);
-                } else {
-                    trackSelectState->unk_trackSelectionFlags3 = scale_sine(frame << 11, 21, 109);
-                }
-                trackSelectState->field35_0xec = scale_sine(frame << 11, -4, 104);
-                if (menuState->trackPage == 0) {
-                    trackSelectState->unk_trackSelectionFlags5 = scale_sine(frame << 11, 32, 96);
-                } else {
-                    trackSelectState->unk_trackSelectionFlags5 = scale_sine(frame << 11, 37, 101);
-                }
+                trackSelectState->unk_trackSelectionFlags2 = easeOutSine(64, 112, frame << 10);
+                trackSelectState->unk_trackSelectionFlags3 = easeOutSine((menuState->trackPage == 0 ? 104 : 109), 88, frame << 10);
+                trackSelectState->field35_0xec = easeOutSine(104, 100, frame << 10);
+                trackSelectState->rankTextPos.y = easeOutSine((menuState->trackPage == 0 ? 96 : 101), 64, frame << 10);
             } else {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     trackSelectState->unkCupContainer[i].unk2 = 1;
