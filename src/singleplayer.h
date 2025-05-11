@@ -93,10 +93,10 @@ typedef struct __attribute__((packed)) {
     s16 posY;
     s16 scaleX;
     s16 scaleY;
-    s16 unk_palette;
-    s8 unk2;
+    s16 buf;
+    s8 mode;
     u8 buf1[9];
-} CupUnkContainer;
+} CupIcon;
 
 typedef struct __attribute__((packed)) {
     u8 *field0_0x0;
@@ -158,12 +158,12 @@ typedef struct __attribute__((packed)) {
 typedef struct __attribute__((packed)) {
     enum TrackCup cup;
     s32 track;
-    s32 field2_0x8;
+    s32 lastCup;
     u32 field3_0xc;
     u32 field4_0x10;
     s32 numCups;
     u32 field6_0x18;
-    CupUnkContainer unkCupContainer[5];
+    CupIcon cupIcons[5];
     u8 *field_0x90;
     s16 field_0x94;
     u16 field_0x98;
@@ -388,8 +388,9 @@ typedef struct __attribute__((packed)) {
 } Transform;
 
 typedef struct __attribute__((packed)) {
+    u8 buf[12];
     Vec2s16 pos;
-    u8 buf[0x10];
+    u8 buf1[4];
 } UIElement;
 
 typedef struct __attribute__((packed)) {

@@ -10764,8 +10764,8 @@ bx r0
 .byte 0x00, 0x00
 _0800A19C: .4byte 0x080C8F90
 _0800A1A0: .4byte 0x080D95F8
-thumb_func_start sub_800A1A4
-sub_800A1A4:
+thumb_func_start spm_cupIconUpdate
+spm_cupIconUpdate:
 push {r4, r5, r6, r7, lr}
 mov r7, r10
 mov r6, r9
@@ -12565,7 +12565,7 @@ bl sub_8009590
 mov r0, r8
 bl sub_8009754
 mov r0, r8
-bl sub_800A1A4
+bl spm_cupIconUpdate
 mov r0, r8
 bl sub_8009FAC
 mov r0, r8

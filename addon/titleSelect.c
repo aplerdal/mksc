@@ -22,7 +22,7 @@ extern void sub_8005DAC(u32 param_1, SpmUnk2* spmUnk2);
 extern void sub_8003948(SpmState* menuState);
 extern void sub_8009590(SpmState* menuState);
 extern void sub_8009754(SpmState* menuState);
-extern void sub_800A1A4(SpmState* menuState);
+extern void spm_cupIconUpdate(SpmState* menuState);
 extern void sub_8009FAC(SpmState* menuState);
 extern void sub_8009998(SpmState* menuState);
 extern void sub_8008D14(SpmState* menuState);
@@ -58,10 +58,10 @@ enum TrackSelectMode {
     TSM_TRNS_CONFIRM_CUP,
     TSM_TRACK_SELECT,
     TSM_TRNS_CUP_SELECT,
-    TSM_TRNS_CONFIRM_TRACK, // TODO: could be wrong.
-    TSM_CONFIRM = 8, //8
-    TSM_TRNS_TRACK_SELECT = 9,
-    TSM_TRNS_PLAY = 10,
+    TSM_TRNS_CONFIRM_TRACK,
+    TSM_CONFIRM,
+    TSM_TRNS_TRACK_SELECT,
+    TSM_TRNS_PLAY,
     TSM_TRNS_EXIT = 14,
 };
 
@@ -81,7 +81,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
     trackSelectState = &menuState->trackSelectState;
     trackSelectState->cup = CUP_MUSHROOM;
     trackSelectState->track = 0;
-    trackSelectState->field2_0x8 = -1;
+    trackSelectState->lastCup = -1;
     trackSelectState->field3_0xc = 0;
     trackSelectState->field4_0x10 = 1;
     trackSelectState->numCups = 0;
@@ -236,7 +236,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             sub_8005DAC(DAT_03000040, menuState->spmUnk2);
             sub_8009590(menuState);
             sub_8009754(menuState);
-            sub_800A1A4(menuState);
+            spm_cupIconUpdate(menuState);
             sub_8009FAC(menuState);
             sub_8009124(menuState, status);
             sub_8003948(menuState);
@@ -351,7 +351,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                                 end = gUnkUIElements[i].pos.x;
                             }
                         }
-                        trackSelectState->unkCupContainer[i].posX = anim_ease(start, end, frame - 4 * i, 20, EASE_BOUNCE_OUT);
+                        trackSelectState->cupIcons[i].posX = anim_ease(start, end, frame - 4 * i, 20, EASE_BOUNCE_OUT);
                     }
                 }
             } else {
@@ -363,9 +363,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 } else if (status != 0) {
                     for (i = 0; i < trackSelectState->numCups; i++) {
                         if (i != trackSelectState->cup) {
-                            trackSelectState->unkCupContainer[i].scaleX = 0;
-                            trackSelectState->unkCupContainer[i].scaleY = 0;
-                            trackSelectState->unkCupContainer[i].unk2 = 0;
+                            trackSelectState->cupIcons[i].scaleX = 0;
+                            trackSelectState->cupIcons[i].scaleY = 0;
+                            trackSelectState->cupIcons[i].mode = 0;
                         }
                     }
                     trackSelectState->field45_0x50c = 1;
@@ -451,14 +451,15 @@ bool8 track_select(SpmState *menuState, s32 status) {
                             m4aSongNumStart(SONG_145);
                         }
                     } else if ((key & B_BUTTON) != 0) {
-                        m4aSongNumStart(SONG_144);
+                        m4aSongNumStart(SONG_144
+                        );
                         mode = TSM_TRNS_EXIT;
                         frame = 0;
                     } else if ((key & (R_BUTTON | L_BUTTON)) != 0) {
-                        if ((menuState->gamemode != GAMEMODE_BATTLE) /*&& menuState->unlockedSpecialCup /*&& trackSelectState->unkCupContainer[trackSelectState->numCups-1].unk2 == 18*/) {
+                        if ((menuState->gamemode != GAMEMODE_BATTLE) /*&& menuState->unlockedSpecialCup /*&& trackSelectState->cupIcons[trackSelectState->numCups-1].mode == 18*/) {
                             m4aSongNumStart(SONG_147);
                             for (i = 0; i < trackSelectState->numCups; i++) {
-                                trackSelectState->unkCupContainer[i].unk_palette = 5;
+                                trackSelectState->cupIcons[i].mode = 5;
                             }
                             trackSelectState->field17_0xb0 = 8;
                             menuState->field174_0xd38 = 1;
@@ -500,13 +501,13 @@ bool8 track_select(SpmState *menuState, s32 status) {
             if (frame < 16){
                 s32 unkPageRel;
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].posX = easeOutSine(gUnkUIElements[i].pos.x, 46, (frame<<10));
-                    trackSelectState->unkCupContainer[i].posY = easeOutSine(gUnkUIElements[i].pos.y, ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), (frame<<10));
+                    trackSelectState->cupIcons[i].posX = easeOutSine(gUnkUIElements[i].pos.x, 46, (frame<<10));
+                    trackSelectState->cupIcons[i].posY = easeOutSine(gUnkUIElements[i].pos.y, ((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), (frame<<10));
                     if (i != trackSelectState->cup) {
                         s32 scale = scale_sine(frame << 11, 98, 272);
-                        trackSelectState->unkCupContainer[i].scaleX = scale;
-                        trackSelectState->unkCupContainer[i].scaleY = scale;
-                        trackSelectState->unkCupContainer[i].unk2 = 0;
+                        trackSelectState->cupIcons[i].scaleX = scale;
+                        trackSelectState->cupIcons[i].scaleY = scale;
+                        trackSelectState->cupIcons[i].mode = 0;
                     }
                 }
                 trackSelectState->cupTextPos.x = easeOutSine(96, 94, frame << 10);
@@ -527,8 +528,8 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->rankTextPos.y = easeOutSine(64, (menuState->trackPage == 0 ? 96 : 101), frame << 10);
             } else {
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].scaleX = 0;
-                    trackSelectState->unkCupContainer[i].scaleY = 0;
+                    trackSelectState->cupIcons[i].scaleX = 0;
+                    trackSelectState->cupIcons[i].scaleY = 0;
                 }
                 mode = TSM_TRACK_SELECT;
                 if (menuState->gamemode == GAMEMODE_GP) {
@@ -598,14 +599,14 @@ bool8 track_select(SpmState *menuState, s32 status) {
             if (frame < 16) {
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     s32 offset;
-                    trackSelectState->unkCupContainer[i].posX = easeOutSine(46, gUnkUIElements[i].pos.x, (frame<<10));
-                    trackSelectState->unkCupContainer[i].posY = easeOutSine(((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), gUnkUIElements[i].pos.y, (frame<<10));
+                    trackSelectState->cupIcons[i].posX = easeOutSine(46, gUnkUIElements[i].pos.x, (frame<<10));
+                    trackSelectState->cupIcons[i].posY = easeOutSine(((menuState->gamemode == GAMEMODE_GP) ? 80 : 60), gUnkUIElements[i].pos.y, (frame<<10));
 
                     if (i != trackSelectState->cup) {
                         s32 scale = scale_sine(frame << 11, -98, 370);
-                        trackSelectState->unkCupContainer[i].scaleX = scale;
-                        trackSelectState->unkCupContainer[i].scaleY = scale;
-                        trackSelectState->unkCupContainer[i].unk2 = 0;
+                        trackSelectState->cupIcons[i].scaleX = scale;
+                        trackSelectState->cupIcons[i].scaleY = scale;
+                        trackSelectState->cupIcons[i].mode = 0;
                     }
                 }
                 trackSelectState->cupTextPos.x = easeOutSine(94, 96, frame << 10);
@@ -626,7 +627,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 trackSelectState->rankTextPos.y = easeOutSine((menuState->trackPage == 0 ? 96 : 101), 64, frame << 10);
             } else {
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].unk2 = 1;
+                    trackSelectState->cupIcons[i].mode = 1;
                 }
                 mode = TSM_CUP_SELECT;
                 frame = 0;
@@ -706,7 +707,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 mode = 11;
             } else {
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].unk2 = 0;
+                    trackSelectState->cupIcons[i].mode = 0;
                 }
                 mode = 15;
             }
@@ -730,7 +731,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
             frame++;
             if (frame > 20) {
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].unk2 = 0;
+                    trackSelectState->cupIcons[i].mode = 0;
                 }
                 mode = 13;
                 frame = 0;
@@ -760,9 +761,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
             frame++;
             if (frame < 17) {
                 for (i = 0; i < trackSelectState->numCups; i++) {
-                    trackSelectState->unkCupContainer[i].scaleX = frame * 80 + 256;
-                    trackSelectState->unkCupContainer[i].scaleY = frame * 80 + 256;
-                    trackSelectState->unkCupContainer[i].unk2 = (frame * 80 + 256) * 4096;
+                    trackSelectState->cupIcons[i].scaleX = frame * 80 + 256;
+                    trackSelectState->cupIcons[i].scaleY = frame * 80 + 256;
+                    trackSelectState->cupIcons[i].mode = (frame * 80 + 256) * 4096;
                 }
             } else {
                 mode = 16;
@@ -772,7 +773,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
         }
         case 16: {
             for (i = 0; i < trackSelectState->numCups; i++) {
-                trackSelectState->unkCupContainer[i].unk1 = 0;
+                trackSelectState->cupIcons[i].unk1 = 0;
             }
             if (trackSelectState->field17_0xb0 == 7) {
                 mode = 18;
@@ -804,12 +805,12 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 }
                 for (i = 0; i < trackSelectState->numCups; i++) {
                     if (menuState->gamemode == GAMEMODE_BATTLE) {
-                        trackSelectState->unkCupContainer[i].posX = gUnkUIElements[i + 5].pos.x;
+                        trackSelectState->cupIcons[i].posX = gUnkUIElements[i + 5].pos.x;
                     } else {
                         if (status == 0) {
-                            trackSelectState->unkCupContainer[i].posX = gUnkUIElements[i].pos.x;
+                            trackSelectState->cupIcons[i].posX = gUnkUIElements[i].pos.x;
                         } else {
-                            trackSelectState->unkCupContainer[i].posX = 0x2e;
+                            trackSelectState->cupIcons[i].posX = 0x2e;
                         }
                     }
                 }
@@ -821,9 +822,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 if ((status != 0) && (menuState->gamemode != GAMEMODE_BATTLE)) {
                     for (i = 0; i < trackSelectState->numCups; i++) {
                         if (i != trackSelectState->cup) {
-                            trackSelectState->unkCupContainer[i].scaleX = 0;
-                            trackSelectState->unkCupContainer[i].scaleY = 0;
-                            trackSelectState->unkCupContainer[i].unk2 = 0;
+                            trackSelectState->cupIcons[i].scaleX = 0;
+                            trackSelectState->cupIcons[i].scaleY = 0;
+                            trackSelectState->cupIcons[i].mode = 0;
                         }
                     }
                     trackSelectState->field45_0x50c = 1;
@@ -856,7 +857,7 @@ bool8 track_select(SpmState *menuState, s32 status) {
         sub_8009C84(menuState);
         sub_8009590(menuState);
         sub_8009754(menuState);
-        sub_800A1A4(menuState);
+        spm_cupIconUpdate(menuState);
         sub_8009FAC(menuState);
         sub_8009124(menuState, status);
         if ((menuState->gamemode == GAMEMODE_GP) && ((menuState->trackSelectState).field17_0xb0 == 0)) {
@@ -868,9 +869,9 @@ bool8 track_select(SpmState *menuState, s32 status) {
                 *(u32 *)(0x0203ebfc) = 2;
             }
         }
-        if ((trackSelectState->field2_0x8 != trackSelectState->track) || (trackSelectState->field3_0xc != trackSelectState->field4_0x10)) {
+        if ((trackSelectState->lastCup != trackSelectState->track) || (trackSelectState->field3_0xc != trackSelectState->field4_0x10)) {
             sub_8008FA4(menuState, trackSelectState->track, 0);
-            trackSelectState->field2_0x8 = trackSelectState->track;
+            trackSelectState->lastCup = trackSelectState->track;
             trackSelectState->field4_0x10 = trackSelectState->field3_0xc;
         }
         sub_8005E04((u16 *)0x80b23b0, (u16 *)0x80b23d0, pltt_getBuffer(PLTT_BUFFER_BG) + 0xb0, menuState->unlockedTracks, 0x10);

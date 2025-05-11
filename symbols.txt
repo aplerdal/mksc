@@ -118,7 +118,7 @@ dword_80CAE30 = 0x80CAE30;
 
 gCupSelectInputs = 0x80D94B8;
 gTrackSelectInputs = 0x80D94E0;
-gUnkUIElements = 0x80D9508;
+gUnkUIElements = 0x80d94fc;
 
 gMPlayTable = 0x08102414;
 gSongTable = 0x08102498;
