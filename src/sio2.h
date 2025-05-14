@@ -15,5 +15,6 @@ typedef struct
 } struc_71;
 
 extern struc_71 sio2_sMPlayerId;
+extern u8 sio2_sMPlayerCount;
 
 void sio2_stop(void);

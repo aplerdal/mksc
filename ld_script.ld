@@ -91,7 +91,7 @@ SECTIONS
         asm/text08030774.o(.text);
         src/track.o(.text);
         asm/text08033f14.o(.text);
-        asm/play.o(.text);
+        asm/race.o(.text);
         asm/text08051f84.o(.text);
         asm/m4a_1.o(.text);
         src/mp2000/m4a.o(.text);

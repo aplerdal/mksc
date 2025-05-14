@@ -209,7 +209,7 @@ void col_clearLists(CollisionList* colList)
 void col_collide(CollisionList* colList)
 {
     int nrCheckpoints = gSceneState.raceState.nrCheckpoints;
-    if (!(gSceneState.raceState.curRaceStateUnknown & RACE_CUR_RACE_STATE_UNKNOWN_MG_MODE))
+    if (!(gSceneState.raceState.modeFlags & RACE_CUR_RACE_STATE_UNKNOWN_MG_MODE))
     {
         sortByCheckpoint(colList->activeList, colList->activeCount, col_sCpoiStartIndicesActive, nrCheckpoints);
         sortByCheckpoint(colList->passiveList, colList->passiveCount, col_sCpoiStartIndicesPassive, nrCheckpoints);

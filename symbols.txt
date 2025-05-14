@@ -19,7 +19,15 @@ unk_03002C40 = 0x03002C40;
 unk_03002C58 = 0x03002C58;
 
 sio2_sMPlayerId = 0x03002C80;
+sio2_sMPlayerCount = 0x03002C80;
+
+DAT_03002c96 = 03002c96;
+
+sio2_isActive = 0x3002c96;
+
 col_sCpoiStartIndicesPassive = 0x03002CA0;
+
+DAT_03003a9c = 0x3003a9c;
 
 dmaq_sHeap = 0x030048A0;
 
@@ -27,8 +35,13 @@ gKeyTriggerBuf = 0x03004EA0;
 col_sCpoiStartIndicesActive = 0x03004EB0;
 gKeyBuf = 0x03004F30;
 gKeyRepeatTriggerBuf = 0x03004F48;
+DAT_03004f50 = 0x03004F50;
 sio2_sKeyBuf = 0x03004F58;
 gIrqTable = 0x03004F80;
+PTR_03004f70 = 0x3004f70;
+PTR_03004f74 = 0x3004f74;
+PTR_03004f78 = 0x3004f78;
+DAT_03004f7e = 0x3004f7e;
 dword_3005C50 = 0x03005C50;
 gSoundInfo = 0x03005CA0;
 gMPlayJumpTable = 0x03006720;
