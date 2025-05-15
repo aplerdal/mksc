@@ -6,4 +6,4 @@ if errorlevel 1 (
     PAUSE
     exit /b 1
 )
-docker run --rm -v "%cd%":/project -w /project antimattur/mksc %*
+docker run --rm -v "%cd%":/project -w /project antimattur/mksc make %*

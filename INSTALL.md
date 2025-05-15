@@ -11,7 +11,7 @@ The recommended way to build is using the [Dcker image](https://hub.docker.com/r
 # Build rom
 ./buildrom.sh
 # Clean build
-./buildrom.sh make clean
+./buildrom.sh clean
 ```
 #### Windows
 double click buildrom.bat or
@@ -19,7 +19,7 @@ double click buildrom.bat or
 # Build rom
 buildrom.bat
 # Clean build
-buildrom.bat make clean
+buildrom.bat clean
 ```
 
 To run 
