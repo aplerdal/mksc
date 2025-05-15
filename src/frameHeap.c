@@ -29,7 +29,7 @@ void* frmheap_calloc(FrameHeap* heap, int elements, int elemSize)
         result = heap->ptr;
         heap->ptr += size;
         ptr = result;
-        for (i = 0; i<size> > 2; i++)
+        for (i = 0; i< (size>>2); i++)
             *(u32*)ptr++ = 0; // bug, increment is 1 instead of 4
         for (i = 0; i < (size & 3); i++)
             *ptr++ = 0;
