@@ -56,8 +56,7 @@ void oam_cpuCopyToHw(void);
 
 inline void oam_802FE4C(bool32 value);
 
-void oam_renderMipmapCellDataUniform(const OamMipmapCellData* cellData, Vec2s16* position, int scale,
-                                     struc_6* a4);
+void oam_renderMipmapCellDataUniform(const OamMipmapCellData* cellData, Vec2s16* position, int scale, struc_6* a4);
 void oam_renderMipmapCellData(const OamMipmapCellData* cellData, Vec2s16* position, int mipmapScale, int scaleX,
                               int scaleY, int rotation, struc_6* a7);
 void oam_renderCellDataSimple(const u16* cellData, int x, int y, int scale, struc_6* a6);

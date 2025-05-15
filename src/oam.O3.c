@@ -31,8 +31,8 @@ inline void oam_802FE4C(bool32 value)
 }
 
 void oam_renderMipmapCellDataUniform(const OamMipmapCellData* a1, Vec2s16* position, int scale, struc_6* a4);
-void oam_renderMipmapCellData(const OamMipmapCellData* a1, Vec2s16* position, int mipmapScale, int scaleX,
-                              int scaleY, int rotation, struc_6* a7);
+void oam_renderMipmapCellData(const OamMipmapCellData* a1, Vec2s16* position, int mipmapScale, int scaleX, int scaleY,
+                              int rotation, struc_6* a7);
 void oam_renderCellDataSimple(const u16* cellData, int x, int y, int scale, struc_6* a6);
 bool32 sub_802FF58(Vec2s16* a1, s16 a2);
 
@@ -455,8 +455,7 @@ void oam_cpuCopyToHw(void)
     if (!sCopyDisabled)
         CpuCopy32(sBuffer, (void*)OAM, sizeof(sBuffer));
 }
-void oam_renderMipmapCellDataUniform(const OamMipmapCellData* cellData, Vec2s16* position, int scale,
-                                     struc_6* a4)
+void oam_renderMipmapCellDataUniform(const OamMipmapCellData* cellData, Vec2s16* position, int scale, struc_6* a4)
 {
     if (scale <= 511)
         oam_renderCellData(cellData->level0Data, position, scale >> cellData->level0Shift,

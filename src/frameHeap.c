@@ -7,7 +7,7 @@ void frmheap_init(FrameHeap* heap, void* address, u32 size)
     heap->head = address;
     heap->ptr = address;
     heap->size = size;
-    for (i = 0; i < heap->size >> 2; i++)
+    for (i = 0; i < (heap->size >> 2); i++)
         *(u32*)&heap->head[i << 2] = 0;
 }
 
@@ -29,7 +29,7 @@ void* frmheap_calloc(FrameHeap* heap, int elements, int elemSize)
         result = heap->ptr;
         heap->ptr += size;
         ptr = result;
-        for (i = 0; i < size >> 2; i++)
+        for (i = 0; i<size> > 2; i++)
             *(u32*)ptr++ = 0; // bug, increment is 1 instead of 4
         for (i = 0; i < (size & 3); i++)
             *ptr++ = 0;

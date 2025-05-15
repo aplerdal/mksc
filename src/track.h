@@ -1,25 +1,27 @@
 #pragma once
 #include "common.h"
 
-typedef struct TrackDef {
+typedef struct TrackDef
+{
     int trackID;
     int backgroundID;
     int backgroundBehavior;
     int paletteAnimation;
     int material;
-    int *upcomingTurns;
+    int* upcomingTurns;
     int musicID;
-    int *randomTargetTable;
-    int *unk1;
-    int *trackCover;
-    int *trackCoverPalette;
-    int *notUnlockedPalette;
-    int *trackNameText;
+    int* randomTargetTable;
+    int* unk1;
+    int* trackCover;
+    int* trackCoverPalette;
+    int* notUnlockedPalette;
+    int* trackNameText;
 } TrackDef;
 
 extern const TrackDef* gTrackDefTable[56];
 
-typedef struct {
+typedef struct
+{
     u8 size;
     u8 cmp_flgs;
     s32 gfx_offset;
@@ -46,10 +48,9 @@ typedef struct
     u16 gap1;
 } BgState;
 
-
 u32 track_isRetroTrack(u8 header_idx);
 u32 track_getTrackIndex(u8 header_idx);
 u8 track_getCup(u8 header_idx);
 u8 track_getCupIndex(u8 header_idx);
-void track_loadSky(TrackDef * td);
+void track_loadSky(TrackDef* td);
 void track_loadSkySize();
