@@ -275,7 +275,7 @@ void* main_copyThumbFunc(const void* src, void* dst, u32 length)
 
     srcPtr = (int*)((u32)src & ~1);
     dstFuncPtr = (void*)((u32)dst | 1);
-    for (i = 0; i < length >> 2; i++)
+    for (i = 0; i < (length >> 2); i++)
         ((u32*)dst)[i] = srcPtr[i];
     return dstFuncPtr;
 }

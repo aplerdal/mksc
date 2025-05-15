@@ -2,69 +2,77 @@
 #include "common.h"
 #include "math.h"
 
-typedef enum SpmPage {
-    MENU_PAGE_UNSET=-1,
-    MENU_PAGE_MODE=0,
-    MENU_PAGE_CHARACTER=1,
-    MENU_PAGE_TRACK=2,
-    MENU_PAGE_UNKNOWN=3,
-    MENU_PAGE_4=4,
-    MENU_PAGE_5=5
+typedef enum SpmPage
+{
+    MENU_PAGE_UNSET = -1,
+    MENU_PAGE_MODE = 0,
+    MENU_PAGE_CHARACTER = 1,
+    MENU_PAGE_TRACK = 2,
+    MENU_PAGE_UNKNOWN = 3,
+    MENU_PAGE_4 = 4,
+    MENU_PAGE_5 = 5
 } SpmPage;
 
-typedef enum Gamemode {
-    GAMEMODE_UNSET=-1,
-    GAMEMODE_GP=0,
-    GAMEMODE_TIME_TRIALS=1,
-    GAMEMODE_VS=2,
-    GAMEMODE_BATTLE=3,
-    GAMEMODE_REPLAY=4,
-    GAMEMODE_QUICKRUN=5
+typedef enum Gamemode
+{
+    GAMEMODE_UNSET = -1,
+    GAMEMODE_GP = 0,
+    GAMEMODE_TIME_TRIALS = 1,
+    GAMEMODE_VS = 2,
+    GAMEMODE_BATTLE = 3,
+    GAMEMODE_REPLAY = 4,
+    GAMEMODE_QUICKRUN = 5
 } Gamemode;
 
-typedef enum RaceSpeed {
-    RACE_SPEED_UNSET=-1,
-    RACE_SPEED_50cc=0,
-    RACE_SPEED_100cc=1,
-    RACE_SPEED_150cc=2
+typedef enum RaceSpeed
+{
+    RACE_SPEED_UNSET = -1,
+    RACE_SPEED_50cc = 0,
+    RACE_SPEED_100cc = 1,
+    RACE_SPEED_150cc = 2
 } RaceSpeed;
 
-typedef enum Character {
-    CHARACTER_UNSET=-1,
-    CHARACTER_MARIO=0,
-    CHARACTER_LUIGI=1,
-    CHARACTER_PEACH=2,
-    CHARACYER_TOAD=3,
-    CHARACTER_YOSHI=4,
-    CHARACTER_DONKEY_KONG=5,
-    CHARACTER_WARIO=6,
-    CHARACTER_BOWSER=7
+typedef enum Character
+{
+    CHARACTER_UNSET = -1,
+    CHARACTER_MARIO = 0,
+    CHARACTER_LUIGI = 1,
+    CHARACTER_PEACH = 2,
+    CHARACYER_TOAD = 3,
+    CHARACTER_YOSHI = 4,
+    CHARACTER_DONKEY_KONG = 5,
+    CHARACTER_WARIO = 6,
+    CHARACTER_BOWSER = 7
 } Character;
 
-typedef enum TrackCup {
-    CUP_UNSET=-1,
-    CUP_MUSHROOM=0,
-    CUP_FLOWER=1,
-    CUP_LIGHTNING=2,
-    CUP_STAR=3,
-    CUP_SPECIAL=4
+typedef enum TrackCup
+{
+    CUP_UNSET = -1,
+    CUP_MUSHROOM = 0,
+    CUP_FLOWER = 1,
+    CUP_LIGHTNING = 2,
+    CUP_STAR = 3,
+    CUP_SPECIAL = 4
 } TrackCup;
 
-typedef struct __attribute__((packed)) VramBuffer {
+typedef struct __attribute__((packed)) VramBuffer
+{
     struct VramBuffer* next;
-    void *bufferAddress;
-    void *vramAddress;
+    void* bufferAddress;
+    void* vramAddress;
     u32 cpuSetFlags;
 } VramBuffer;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     VramBuffer* vramBuffers[4];
     int unk1;
     bool32 writeBusClear;
 } LoadStatus;
 
-typedef struct __attribute__((packed)) {
-    u16 *field0_0x0;
+typedef struct __attribute__((packed))
+{
+    u16* field0_0x0;
     u16 field1_0x4;
     s16 field2_0x6;
     u16 field3_0x8;
@@ -80,7 +88,8 @@ typedef struct __attribute__((packed)) {
     u8 field13_0x17;
 } SpmUnk2;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     Vec2s16 pos;
     Vec2s16 scale;
     u8 buf1[12];
@@ -88,19 +97,22 @@ typedef struct __attribute__((packed)) {
     u8 buf2[2];
 } CupUnkContainer;
 
-typedef struct __attribute__((packed)) {
-    u8 *field0_0x0;
+typedef struct __attribute__((packed))
+{
+    u8* field0_0x0;
     s16 field1_0x4;
     u16 field2_0x6;
 } SpmUnk1;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     s32 field0_0x0[20];
     u8 field1_0x50[20];
     s16 field2_0x64[20];
 } UnkTrackDataTable;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     s16 DISPCNT;
     u16 BG0CNT;
     u16 BG0HOFT;
@@ -130,11 +142,13 @@ typedef struct __attribute__((packed)) {
     u8 field26_0x33;
 } MenuBgData;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     u8 field0_0x0[8];
 } UnkStruct2;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     s32 field0_0x0[2];
     u8 field1_0x8;
     u8 field2_0x9;
@@ -145,7 +159,8 @@ typedef struct __attribute__((packed)) {
     u8 field7_0x22;
 } UnkStruct1;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     enum TrackCup cup;
     s32 track;
     s32 field2_0x8;
@@ -153,7 +168,7 @@ typedef struct __attribute__((packed)) {
     u32 field4_0x10;
     s32 field5_0x14;
     u32 field6_0x18;
-    u8 *field_0x1C;
+    u8* field_0x1C;
     s16 field_0x20;
     u16 field_0x22;
     CupUnkContainer unkCupContainer[5];
@@ -206,7 +221,8 @@ typedef struct __attribute__((packed)) {
     u8 field58_0x53c[192];
 } TrackSelectState;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     enum SpmPage menuPage;
     s32 unk_multiplayerMirror;
     s32 playerIndex;
@@ -286,7 +302,7 @@ typedef struct __attribute__((packed)) {
     u8 field72_0x394[344];
     s32 charcterSelectedTile;
     u8 field74_0x4f0[12];
-    s32 *unk_menuPageRelated;
+    s32* unk_menuPageRelated;
     u8 field76_0x500[8];
     s32 unk_ccRelatedPos32er;
     u8 field78_0x50c[36];
@@ -352,7 +368,7 @@ typedef struct __attribute__((packed)) {
     SpmUnk2 spmUnk2;
     u8 field197_0xda0[744];
     u32 playerCount;
-    s32 *field199_0x108c;
+    s32* field199_0x108c;
     s32 field200_0x1090;
     s32 field201_0x1094;
     s16 field202_0x1098;
@@ -369,23 +385,26 @@ typedef struct __attribute__((packed)) {
     s32 field213_0x11e8;
     s32 field214_0x11ec;
     u32 field215_0x11f0;
-    u8 *field216_0x11f4;
+    u8* field216_0x11f4;
     u32 field217_0x11f8;
     MenuBgData bgState;
 } SpmState;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     s16 x;
     s16 y;
     s16 scale;
 } Transform;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     Vec2s16 pos;
     u8 buf[0x10];
 } UIElement;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed))
+{
     s8 up;
     s8 down;
     s8 left;
@@ -393,10 +412,10 @@ typedef struct __attribute__((packed)) {
     u8 buf[4];
 } MenuInput;
 
-
-
-inline s16 adjust_fixed(s16 fixed) {
-    if (fixed < 0){
+inline s16 adjust_fixed(s16 fixed)
+{
+    if (fixed < 0)
+    {
         return fixed + 0x3f;
     }
     return fixed;
