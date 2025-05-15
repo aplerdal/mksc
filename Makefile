@@ -1,9 +1,3 @@
-ifeq ($(OS),Windows_NT)
-EXE := .exe
-else
-EXE :=
-endif
-
 # Configuration
 TITLE			:= MARIO KART
 GAME_CODE		:= AMKE
@@ -14,22 +8,22 @@ ROM				:= mksc.gba
 # Tools
 BIN_DIR			:= $(DEVKITARM)/bin
 PREFIX			:= arm-none-eabi-
-CPP				:= $(BIN_DIR)/./$(PREFIX)cpp$(EXE)
-OBJCOPY 		:= $(BIN_DIR)/./$(PREFIX)objcopy$(EXE)
-LD 				:= $(BIN_DIR)/./$(PREFIX)ld$(EXE)
-AS 			    := $(BIN_DIR)/./$(PREFIX)as$(EXE)
+CPP				:= $(BIN_DIR)/./$(PREFIX)cpp
+OBJCOPY 		:= $(BIN_DIR)/./$(PREFIX)objcopy
+LD 				:= $(BIN_DIR)/./$(PREFIX)ld
+AS 			    := $(BIN_DIR)/./$(PREFIX)as
 SHA1			:= $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 FIX				:= gbafix
 SHELL			:= /bin/bash -o pipefail
-AGBCC			:= tools/agbcc/bin/old_agbcc$(EXE)
-CC1				:= tools/thumb-elf/lib/gcc-lib/thumb-elf/2.9-arm-000512/cc1$(EXE)
-AIF2PCM   		:= tools/aif2pcm/aif2pcm$(EXE)
+AGBCC			:= $(AGBCC_DIR)/bin/old_agbcc
+THUMB_ELF_CC	:= $(ARM000512)/lib/gcc-lib/thumb-elf/2.9-arm-000512/cc1
+AIF2PCM   		:= tools/aif2pcm/aif2pcm
 
 # Flags
 ASFLAGS			:= -mcpu=arm7tdmi -I include
 CFLAGS			:= -mthumb-interwork -Wimplicit -Wparentheses -O2
-CPPFLAGS		:= -I tools/agbcc -I tools/agbcc/include -I lib -iquote include -nostdinc
-LDFLAGS			= -L../tools/agbcc/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=../symbols.txt
+CPPFLAGS		:= -I $(AGBCC_DIR) -I $(AGBCC_DIR)/include -I lib -iquote include -nostdinc
+LDFLAGS			= -L$(AGBCC_DIR)/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=../symbols.txt
 
 # Files
 ELF = $(ROM:.gba=.elf)
@@ -112,14 +106,14 @@ $(C_BUILDDIR)/mp2000/%.o : $(C_SUBDIR)/mp2000/%.c
 
 $(C_BUILDDIR)/%.O3.o : $(C_SUBDIR)/%.O3.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(CC1) $(C_BUILDDIR)/$*.i $(CFLAGS) -O3 -o $(C_BUILDDIR)/$*.s
+	@$(THUMB_ELF_CC) $(C_BUILDDIR)/$*.i $(CFLAGS) -O3 -o $(C_BUILDDIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(CC1) $(C_BUILDDIR)/$*.i $(CFLAGS) -o $(C_BUILDDIR)/$*.s
+	@$(THUMB_ELF_CC) $(C_BUILDDIR)/$*.i $(CFLAGS) -o $(C_BUILDDIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s

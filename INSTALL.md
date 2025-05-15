@@ -1,72 +1,31 @@
 # Installing
+These instructions cover how to build **mksc** which assembles the files into a matching ROM. If you have any issues feel free to ask in the [discord](https://discord.gg/C6dNp2EvGy) or leave an issue on the github repository.
 
-You need to use WSL or a Linux distro to build this, these instructions assume a Debian based distro (Debian, Ubuntu, Linux Mint, etc.). Directions can be found [here](https://learn.microsoft.com/en-us/windows/wsl/install).
+The recommended way to build is using the [Dcker image](https://hub.docker.com/r/antimattur/mksc). In order to do this you have to have the latest version of docker installed on your system. If you don't have it installed, follow the installation instructions on their website and come back ([link](https://docs.docker.com/get-started/get-docker/)).
 
-## Setting up file structure
-First, clone the repository using:
-```sh
-git clone https://github.com/jellees/mksc
-```
-and make sure `apt` is updated:
-```sh
-sudo apt update && sudo apt upgrade
-```
-### Install Devkitpro
-These instructions are for Debian-based distributions or WSL. Installation instructions for Devkitpro on other distributions can be found [on their website](https://devkitpro.org/wiki/Getting_Started).
-```sh
-wget https://apt.devkitpro.org/install-devkitpro-pacman
-chmod +x ./install-devkitpro-pacman
-sudo ./install-devkitpro-pacman
-```
-Then, install the GBA libraries:
-```sh
-sudo dkp-pacman -S gba-dev
-```
-Afterward, export the environment variables:
-```sh
-export DEVKITPRO=/opt/devkitpro
-export DEVKITARM=/opt/devkitpro/devkitARM
-export PATH=$PATH:$DEVKITPRO/tools/bin
-```
-### Installing tools
-#### agbcc
-Clone and install the agbcc compiler:
-```sh
-git clone https://github.com/pret/agbcc
-cd agbcc
-./build.sh
-./install.sh ../mksc
-```
-Return to the initial directory:
-```sh
-cd ..
-```
-#### arm000512
-Download and unpack arm00512: https://mid-kid.root.sx/stash/arm-000512.tar.xz
-```sh
-wget https://mid-kid.root.sx/stash/arm-000512.tar.xz
-tar -xf arm-000512.tar.xz
-cd arm-000512
-```
-Install arm-000512 with the following commands:[^1]
-```sh
-sudo apt install libtinfo-dev
-mkdir build
-cd build
-mkdir ../../mksc/tools/thumb-elf
-../configure --target=thumb-elf --host=x86_64-pc-linux-gnu --without-x --prefix=$PWD/../../mksc/tools/thumb-elf
-make -j$(nproc)
-make install -j$(nproc)
-```
-### Making the project
-Once the build finishes, navigate to the project folder:
-```sh
-cd ../../mksc
-```
-Then, run:[^1]
-```sh
-make -j$(nproc)`
-```
-The project should build successfully. If you encounter any issues, try deleting the build folder and running the command again.
+----
+This guide assumes you know how to use a terminal or command line and have some basic tools like [Git](https://git-scm.com/downloads).
 
-[^1]: `make -j$(nproc)` uses multiple cores to build faster. If you get an "nproc: command not found" error you can alternitively just use `make` with no arguments.
+### Instructions
+
+Clone the repository locally and cd into it
+```sh
+git clone https://github.com/aplerdal/mksc
+cd mksc
+```
+
+Pull the docker image
+```sh
+docker pull antimattur/mksc:latest
+```
+
+To build the repo run
+```sh
+docker run --rm -v "$PWD":/project -w /project antimattur/mksc
+```
+To delete all build files
+```sh
+make clean
+```
+
+If you want to install the repo without docker, you can follow the steps the [Dockerfile](Dockerfile)does. 

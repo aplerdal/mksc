@@ -1,25 +1,19 @@
-ifeq ($(OS),Windows_NT)
-EXE := .exe
-else
-EXE :=
-endif
-
 # Configuration
 LIB				:= libunk.a
 
 # Tools
 BIN_DIR			:= $(DEVKITARM)/bin
 PREFIX			:= arm-none-eabi-
-CPP				:= $(BIN_DIR)/./$(PREFIX)cpp$(EXE)
-AS 			    := $(BIN_DIR)/./$(PREFIX)as$(EXE)
-AR 			    := $(BIN_DIR)/./$(PREFIX)ar$(EXE)
-CC1				:= ../../tools/agbcc/bin/old_agbcc$(EXE)
+CPP				:= $(BIN_DIR)/./$(PREFIX)cpp
+AS 			    := $(BIN_DIR)/./$(PREFIX)as
+AR 			    := $(BIN_DIR)/./$(PREFIX)ar
+AGBCC			:= $(AGBCC_DIR)/bin/old_agbcc
 SHELL			:= /bin/bash -o pipefail
 
 # Flags
 ASFLAGS			:= -mcpu=arm7tdmi
 CFLAGS			:= -mno-thumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm
-CPPFLAGS		:= -I ../../tools/agbcc -I ../../tools/agbcc/include -iquote ../../include -nostdinc
+CPPFLAGS		:= -I $(AGBCC_DIR) -I $(AGBCC_DIR)/include -iquote ../../include -nostdinc
 
 # Files
 OBJ_DIR := build
@@ -45,7 +39,7 @@ clean:
 
 $(OBJ_DIR)/%.o : $(SUBDIR)/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
-	@$(CC1) $(OBJ_DIR)/$*.i $(CFLAGS) -o $(OBJ_DIR)/$*.s
+	@$(AGBCC) $(OBJ_DIR)/$*.i $(CFLAGS) -o $(OBJ_DIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/$*.s
 
