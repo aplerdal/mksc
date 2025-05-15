@@ -28,4 +28,4 @@ To delete all build files
 make clean
 ```
 
-If you want to install the repo without docker, you can follow the steps the [Dockerfile](Dockerfile)does. 
+If you want to install the repo without docker, you can follow the steps the [Dockerfile](Dockerfile) does. 
