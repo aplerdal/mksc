@@ -7,25 +7,16 @@ The recommended way to build is using the [Dcker image](https://hub.docker.com/r
 This guide assumes you know how to use a terminal or command line and have some basic tools like [Git](https://git-scm.com/downloads).
 
 ### Instructions
-
-Clone the repository locally and cd into it
+To build on Linux or WSL, while in the project directory run
 ```sh
-git clone https://github.com/aplerdal/mksc
-cd mksc
+./buildrom.sh
 ```
-
-Pull the docker image
+To delete the build run
 ```sh
-docker pull antimattur/mksc:latest
+./buildrom.sh make clean
 ```
+On windows, run
 
-To build the repo run
-```sh
-docker run --rm -v "$PWD":/project -w /project antimattur/mksc
-```
-To delete all build files
-```sh
-make clean
-```
 
-If you want to install the repo without docker, you can follow the steps the [Dockerfile](Dockerfile) does. 
+
+If you want to install the repo without docker, you can follow the steps the [Dockerfile](Dockerfile) runs. 

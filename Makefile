@@ -137,7 +137,7 @@ $(ELF): $(OBJS)
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
-	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
+	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION)
 
 show:
 	echo $(ASM_SRCS)
