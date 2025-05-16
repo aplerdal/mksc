@@ -80,6 +80,8 @@ rom: tools libraries $(ROM) compare
 compare: $(ROM)
 	@$(SHA1) rom.sha1
 
+progress: $(MAP)
+	@perl calcrom.pl $(MAP)
 libraries:
 	@$(MAKE) -C lib/libunk
 
@@ -138,6 +140,8 @@ $(ELF): $(OBJS)
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION)
+
+$(MAP): rom
 
 show:
 	echo $(ASM_SRCS)
