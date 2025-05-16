@@ -28,6 +28,7 @@ sio2_isActive = 0x3002c96;
 col_sCpoiStartIndicesPassive = 0x03002CA0;
 
 DAT_03003a9c = 0x3003a9c;
+DAT_03003acc = 0x3003acc;
 
 dmaq_sHeap = 0x030048A0;
 
@@ -42,8 +43,11 @@ PTR_03004f70 = 0x3004f70;
 PTR_03004f74 = 0x3004f74;
 PTR_03004f78 = 0x3004f78;
 DAT_03004f7e = 0x3004f7e;
+DAT_03004f7c = 0x3004f7c;
 dword_3005C50 = 0x03005C50;
 gSoundInfo = 0x03005CA0;
+DAT_030066e0 = 0x030066e0;
+DAT_030066e4 = 0x030066e4;
 gMPlayJumpTable = 0x03006720;
 gCgbChans = 0x030067B0;
 gMPlayMemAccArea = 0x030069F0;

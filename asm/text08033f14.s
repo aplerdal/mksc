@@ -26988,8 +26988,8 @@ sub_8043830:
     bx lr
     .byte 0x00, 0x00
 _0804383C: .4byte 0x03002344
-    thumb_func_start sub_8043840
-sub_8043840:
+    thumb_func_start rand_tick
+rand_tick:
     ldr r2, _08043854 @ =0x03002344
     ldr r1, [r2, #0x00]
     ldr r0, _08043858 @ =0x41C64E6D
@@ -27500,7 +27500,7 @@ _08043C18:
     subs r2, r2, r1
     cmp r5, r0
     bne _08043C68
-    bl sub_8043840
+    bl rand_tick
     movs r1, #0x01
     ands r1, r0
     cmp r1, #0x00
@@ -27739,7 +27739,7 @@ _08044054:
     asrs r4, r0, #0x10
     cmp r4, #0x00
     beq _08044076
-    bl sub_8043840
+    bl rand_tick
     lsls r0, r0, #0x10
     asrs r0, r0, #0x10
     adds r1, r4, #0x0

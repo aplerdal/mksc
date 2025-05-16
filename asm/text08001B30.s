@@ -8134,7 +8134,7 @@ str r0, [r1, #0x00]
 ldr r0, [r7, #0x4C]
 adds r0, #0x01
 str r0, [r7, #0x4C]
-bl sub_8043840
+bl rand_tick
 movs r1, #0x92
 lsls r1, r1, #0x02
 add r1, r8

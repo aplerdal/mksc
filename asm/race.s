@@ -662,7 +662,7 @@ _08051BEC:
     ldr r0, [r4, #0x10]
     adds r0, #0x01
     str r0, [r4, #0x10]
-    bl sub_8043840
+    bl rand_tick
     bl sub_804D8F8
     ldr r0, _08051D68 @ =0x03002E44
     bl sub_804A4D8

@@ -59,6 +59,8 @@ typedef struct
     Driver* playerDriver;
     u8 field63_0x7fc[24];
     Driver* activeDriver;
+    u32 field64_0x818;
+    u16 inputs[4];
     //...
 } RaceState;
 
