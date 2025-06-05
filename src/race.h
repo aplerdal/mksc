@@ -5,6 +5,9 @@
 extern u16 gKeyBuf[4];
 extern u16 gKeyTriggerBuf[4];
 
+extern u16 DAT_080aadfc[16];
+extern u16 DAT_080aae1c[16];
+
 extern u16 DAT_03002c96;
 extern u16 DAT_03003a9c;
 extern u16 DAT_03004f50;
@@ -21,6 +24,8 @@ extern u8 DAT_030066e0;
 
 extern void rand_tick();
 extern bool32 FUN_0802dc88();
+extern bool32 FUN_08016b98();
+extern u32 FUN_0802d07c(RaceState* raceState);
 extern void FUN_0802bf94(RaceState* raceState);
 extern void FUN_0802fd3c();
 extern void FUN_0802fe4c(u32 param1);
