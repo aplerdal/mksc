@@ -42138,12 +42138,12 @@ sub_804C030:
     adds r0, #0x7C
     ldrh r1, [r0, #0x00]
     adds r0, r4, #0x0
-    bl sub_8030ECC
+    bl cam_setAngle
     mov r0, r8
     ldr r1, [r0, #0x00]
     ldr r2, [r0, #0x04]
     adds r0, r4, #0x0
-    bl sub_8030EE8
+    bl cam_setPos
     adds r0, r4, #0x0
     bl sub_8031100
     adds r6, #0xBC
