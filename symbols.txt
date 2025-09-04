@@ -29,6 +29,7 @@ gKeyBuf = 0x03004F30;
 gKeyRepeatTriggerBuf = 0x03004F48;
 sio2_sKeyBuf = 0x03004F58;
 gIrqTable = 0x03004F80;
+BgAffineBuf = 0x03004fe0;
 dword_3005C50 = 0x03005C50;
 gSoundInfo = 0x03005CA0;
 gMPlayJumpTable = 0x03006720;

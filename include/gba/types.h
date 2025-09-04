@@ -122,7 +122,7 @@ struct BgAffineSrcData
     u16 alpha;
 };
 
-struct BgAffineDstData
+typedef struct BgAffineDstData
 {
     s16 pa;
     s16 pb;
@@ -130,7 +130,7 @@ struct BgAffineDstData
     s16 pd;
     s32 dx;
     s32 dy;
-};
+} BgAffineDstData;
 
 struct ObjAffineSrcData
 {

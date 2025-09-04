@@ -534,8 +534,8 @@ _08030C2C: .4byte 0x080E645C
 _08030C30: .4byte 0x000003FF
 _08030C34: .4byte 0x03004FE0
 _08030C38: .4byte 0x00007FFF
-    thumb_func_start sub_8030C3C
-sub_8030C3C:
+    thumb_func_start cam_projectActor
+cam_projectActor:
     push {r4, r5, r6, r7, lr}
     mov r7, r10
     mov r6, r9
@@ -887,7 +887,7 @@ sub_8030EB0:
     push {r4, lr}
     adds r4, r0, #0x0
     strh r1, [r4, #0x16]
-    bl sub_803083C
+    bl unk_updateCamAngle
     adds r0, r4, #0x0
     bl sub_8030918
     adds r0, r4, #0x0
@@ -899,7 +899,7 @@ sub_8030EB0:
 cam_setAngle:
     push {lr}
     strh r1, [r0, #0x14]
-    bl sub_803083C
+    bl unk_updateCamAngle
     pop {r0}
     bx r0
     thumb_func_start sub_8030ED8

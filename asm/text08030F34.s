@@ -115,7 +115,7 @@ sub_8030FEC:
     adds r2, #0x1C
     adds r3, r1, #0x0
     adds r3, #0x24
-    bl sub_8030C3C
+    bl cam_projectActor
     pop {r0}
     bx r0
     .byte 0x00, 0x00

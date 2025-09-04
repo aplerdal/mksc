@@ -41196,7 +41196,7 @@ sub_804AF10:
     push {r4, lr}
     ldr r4, _0804AF20 @ =0x00000824
     adds r0, r0, r4
-    bl sub_8030C3C
+    bl cam_projectActor
     pop {r4}
     pop {r0}
     bx r0
