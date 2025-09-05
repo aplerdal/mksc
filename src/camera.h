@@ -9,17 +9,17 @@ typedef struct Camera
     s32 unkZ;
     s32 field_0xc;
     s32 elevation;
-    s16 angle;
-    s16 field_0x16;
+    s16 yaw;
+    s16 pitch;
     Vec2s32 unk_otherPos;
     u32 field_0x20;
     Vec2s32 screenPos;
-    u8 field_0x2c[4];
+    u32 field_0x2c;
     u32 field_0x30;
     u32 field_0x34;
-    
+
     Vec3s32 unk38;
-    
+
     u8 field_0x44[8];
     u32 field_0x4c;
     s32 field_0x50;
@@ -27,9 +27,8 @@ typedef struct Camera
 
     Vec3s32 unk5C[3];
 
-    u32 field_0x80;
-    s32 field_0x84;
     Vec2s32 hdmaBuffer[0x60];
+
     s32 unk380;
     s16 field_0x384;
     u8 field_0x386;

@@ -6,6 +6,102 @@
 
 extern volatile BgAffineDstData BgAffineBuf[2][96];
 
+void unk_updateCamAngle(Camera* camera) {
+    int tempSin1;
+    int tempCos1;
+    int tempSin2;
+    int tempCos2; 
+    Vec3s32* cam5c;
+    
+    cam5c = camera->unk5C;
+    tempCos1 = math_cos(camera->yaw);
+    tempSin1 = math_sin(camera->yaw);
+    
+    tempCos2 = math_cos(camera->pitch);
+    tempSin2 = math_sin(camera->pitch);
+    
+    cam5c[0].x = tempCos1 * 2;
+    cam5c[0].y = ((s32)(-tempSin1 * tempCos2) * 2) / 0x8000;
+    cam5c[0].z = ((s32)(-tempSin1 * tempSin2) * 2) / 0x8000;
+
+
+    cam5c[1].x = tempSin1 * 2;
+    cam5c[1].y = ((s32)(tempCos1 * tempCos2) * 2) / 0x8000;
+    cam5c[1].z = ((s32)(tempCos1 * tempSin2) * 2) / 0x8000;
+
+    cam5c[2].x = 0;
+    cam5c[2].y = -tempSin2 * 2;
+    cam5c[2].z = tempCos2 * 2;
+
+    sub_8031054(camera);
+    sub_8031064(camera);
+    return;
+}
+void sub_8030918(Camera* camera) {
+    s32 sin;
+    s32 cos;
+    s32 iVar1;
+    u32 uVar2;
+    Vec2s32* dest;
+    s32 iVar4;
+    
+    dest = camera->hdmaBuffer;
+    cos = math_cos(camera->pitch);
+    sin = math_sin(camera->pitch);
+    iVar4 = 0x40;
+    do {
+        uVar2 = (s32)camera->field_0x34/ ((cos * (camera->elevation / 0x10000) + (iVar4 - (camera->screenPos).y) * sin) / 0x80);
+        dest->x = uVar2;
+        iVar1 = cos * uVar2;
+        dest->y = iVar1 / 0x8000;
+
+        dest = dest + 1;
+        iVar4 = iVar4 + 1;
+    } while (iVar4 < 0xa0);
+    return;
+}
+
+void sub_80309B0(Camera* camera) {
+    register Camera* cam_r4 asm("r4");
+    s32 elevation;
+    s32 cotan;
+    s32 cotan_temp;
+    s32 pitch;
+    s32 var_r1;
+    s32 var_r0_4;
+    s32 temp_r5;
+
+    cam_r4 = camera;
+    pitch = cam_r4->pitch;
+    temp_r5 = math_sin(pitch);
+
+    if (math_sin(pitch) != 0) {
+         cotan_temp = Div(math_cos(pitch), temp_r5);
+    } else {
+         cotan_temp = 0;
+    }
+    cotan = cotan_temp;
+    elevation = cam_r4->elevation;
+    
+
+    if (((elevation - 1) < 0xFFFFu) || ((elevation < 0) && (elevation > -0x10000))) {
+        var_r0_4 = (elevation * cotan) / 0x10000;
+        goto block_38;
+    }
+    if (((elevation-1) < 0xFFFFFu) || ((elevation < 0) && (elevation > -0x100000))) {
+        var_r1 = ((elevation / 0x10) * cotan) / 0x8000000;
+    } else if (((elevation-1) < 0xFFFFFFu) || ((elevation < 0) && (elevation > (0xFF << 24)))) {
+        var_r1 = ((elevation / 0x100) * cotan) / 0x800000;
+    } else if (((elevation-1) < 0x0FFFFFFFu) || ((elevation < 0) && (elevation > (0xF0 << 24)))) {
+        var_r1 = ((elevation / 0x1000) * cotan) / 0x80000;
+    } else {
+        var_r0_4 = ((elevation / 0x10000) * cotan);
+block_38:
+        var_r1 = var_r0_4 / 0x8000;
+    }
+    cam_r4->field_0x2c = (s32)(cam_r4->screenPos.y - var_r1);
+}
+
 void sub_8030AFC(Camera* camera) {
     s32 pa;
     s32 pb;
@@ -26,8 +122,8 @@ void sub_8030AFC(Camera* camera) {
     s32 y;
     Vec2s32* unk_otherPos;
     
-    cosAngle = math_cos(camera->angle);
-    sinAngle = math_sin(camera->angle);
+    cosAngle = math_cos(camera->yaw);
+    sinAngle = math_sin(camera->yaw);
     i = 159;
     j = i - 0x40;
     srcPos = camera->hdmaBuffer + (i - 65);
@@ -212,7 +308,7 @@ void sub_8030EA0(Camera *camera,int param_2)
 }
 void sub_8030EB0(Camera *camera,short param_2)
 {
-    camera->field_0x16 = param_2;
+    camera->pitch = param_2;
     unk_updateCamAngle(camera);
     sub_8030918(camera);
     sub_803104C(camera);
@@ -220,7 +316,7 @@ void sub_8030EB0(Camera *camera,short param_2)
 }
 void cam_setAngle(Camera *camera,short angle)
 {
-    camera->angle = angle;
+    camera->yaw = angle;
     unk_updateCamAngle(camera);
     return;
 }
