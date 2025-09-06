@@ -113,7 +113,7 @@ _080308E2:
     pop {r0}
     bx r0
     .byte 0x00, 0x00
-_0803090C: .4byte 0x080E645C
+_0803090C: .4byte gSinTable
 _08030910: .4byte 0x000003FF
 _08030914: .4byte 0x00003FFF
     thumb_func_start sub_8030918
@@ -190,7 +190,7 @@ _08030988:
     pop {r0}
     bx r0
     .byte 0x00, 0x00
-_080309A0: .4byte 0x080E645C
+_080309A0: .4byte gSinTable
 _080309A4: .4byte 0x000003FF
 _080309A8: .4byte 0x0000FFFF
 _080309AC: .4byte 0x00007FFF
@@ -228,7 +228,7 @@ _080309C2:
     bl Div
     b _080309FA
     .byte 0x00, 0x00
-_080309F0: .4byte 0x080E645C
+_080309F0: .4byte gSinTable
 _080309F4: .4byte 0x000003FF
 _080309F8:
     movs r0, #0x00
@@ -530,9 +530,9 @@ _08030BC4:
     pop {r0}
     bx r0
     .byte 0x00, 0x00
-_08030C2C: .4byte 0x080E645C
+_08030C2C: .4byte gSinTable
 _08030C30: .4byte 0x000003FF
-_08030C34: .4byte 0x03004FE0
+_08030C34: .4byte BgAffineBuf
 _08030C38: .4byte 0x00007FFF
     thumb_func_start cam_projectActor
 cam_projectActor:
@@ -845,7 +845,7 @@ sub_8030E60:
     adds r2, r2, r1
     adds r0, r0, r2
     bx lr
-_08030E70: .4byte 0x03004FE0
+_08030E70: .4byte BgAffineBuf
 thumb_func_start sub_8030E74
 sub_8030E74:
     ldr r2, [r0, #0x50]

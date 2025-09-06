@@ -50,7 +50,7 @@ void sub_8030918(Camera* camera) {
     sin = math_sin(camera->pitch);
     iVar4 = 0x40;
     do {
-        uVar2 = (s32)camera->field_0x34/ ((cos * (camera->elevation / 0x10000) + (iVar4 - (camera->screenPos).y) * sin) / 0x80);
+        uVar2 = (s32)camera->field_0x34/ (((camera->elevation / 0x10000) * cos + (iVar4 - (camera->screenPos).y) * sin) / 0x80);
         dest->x = uVar2;
         iVar1 = cos * uVar2;
         dest->y = iVar1 / 0x8000;
@@ -126,7 +126,7 @@ void sub_8030AFC(Camera* camera) {
     sinAngle = math_sin(camera->yaw);
     i = 159;
     j = i - 0x40;
-    srcPos = camera->hdmaBuffer + (i - 65);
+    srcPos = camera->hdmaBuffer + (i - 64);
     dest = BgAffineBuf[camera->field_0x50] + j;
 
     unk_otherPos = &camera->unk_otherPos;
@@ -158,9 +158,9 @@ void sub_8030AFC(Camera* camera) {
     return;
 }
 
-#ifndef NONMATCHING
-asm_unified(".include \"nonmatching/camProjectActor.s\"");
-#else
+// #ifndef NONMATCHING
+// asm_unified(".include \"nonmatching/camProjectActor.s\"");
+// #else
 void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *distanceOut)
 {
     s32 dist1_y_impq5;
@@ -190,7 +190,6 @@ void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *di
     s32 dist1_x_impq5;
 
     s32 rel;
-    s32 other_rel;
     s32 rel_x;
     s32 rel_y;
     s32 rel_d;
@@ -232,24 +231,21 @@ void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *di
     dist2_y_impq5 = (camera_5C_p2_y / 16 * (p_point_rel_q8->y / 128)) / 32;
     dist2_z_impq5 = (camera_5C_p2_z / 16 * rel) / 32;
 
-    rel = p_point_rel_q8->z / 128;
-    dist3_y_impq5 = (camera_5C_p3_y / 16 * (p_point_rel_q8->z / 128)) / 32;
-    dist3_z_impq5 = (camera_5C_p3_z / 16 * rel) / 32;
+    rel_d = p_point_rel_q8->z / 128;
+    dist3_y_impq5 = ((camera_5C_p3_y / 16) * (p_point_rel_q8->z / 128)) / 32;
+    dist3_z_impq5 = ((camera_5C_p3_z / 16) * (rel_d)) / 32;
 
-    //@166
     p_point4->x = dist1_x_impq5 + dist2_x_impq5;
     p_point4->y = dist1_y_impq5 + dist2_y_impq5 + dist3_y_impq5;
     p_point4->z = dist1_z_impq5 + dist2_z_impq5 + dist3_z_impq5;
 
     rel_d = camera->elevation - p_point4->z;
     
-    //@182
     if (rel_d <= 0) {
         *distanceOut = -1;
         return;
     }
 
-    //@192
     if (rel_d < 0x00200000) {
         *distanceOut = Div(rel_d * 0x100, camera->elevation);
     }
@@ -257,13 +253,11 @@ void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *di
         *distanceOut = Div(rel_d, camera->elevation / 0x100);
     }
 
-    //@1b0
     if (*distanceOut < 0x20 || *distanceOut > 0x400) {
         *distanceOut = -1;
         return;
     }
 
-    //@1c8
     rel_x = Div(p_point4->x, *distanceOut) / 0x100;
     rel = Div(p_point4->y, *distanceOut) / 0x100;
     drawPosOut->x = rel_x + camera->screenPos.x;
@@ -272,7 +266,7 @@ void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *di
 
     return;
 }
-#endif
+// #endif
 
 u32 sub_8030E5C(Camera *camera)
 {

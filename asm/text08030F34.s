@@ -621,7 +621,7 @@ _0803138A:
     pop {r1}
     bx r1
     .byte 0x00, 0x00
-_080313B0: .4byte 0x080E645C
+_080313B0: .4byte gSinTable
     thumb_func_start sub_80313B4
 sub_80313B4:
     push {r4, lr}
@@ -659,7 +659,7 @@ _080313CA:
     pop {r4}
     pop {r1}
     bx r1
-_080313F8: .4byte 0x080E645C
+_080313F8: .4byte gSinTable
 _080313FC: .4byte 0x000003FF
     thumb_func_start sub_8031400
 sub_8031400:
@@ -4478,7 +4478,7 @@ _080338D6:
     bl sub_8033794
     b _0803398E
     .byte 0x00, 0x00
-_080338E4: .4byte 0x080E645C
+_080338E4: .4byte gSinTable
 _080338E8: .4byte 0x000003FF
 _080338EC: .4byte 0x00007FFF
 _080338F0:
