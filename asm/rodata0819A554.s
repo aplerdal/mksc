@@ -1,6 +1,6 @@
 .syntax unified
 .section .rodata
-.align 2
+.align 2, 0
 
 .global wave0819A554
 wave0819A554:

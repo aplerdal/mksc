@@ -2794,7 +2794,7 @@ ldr r0, _080033F0 @ =0x080D8E80
 mov r9, r0
 b _080033FE
 .byte 0x00, 0x00
-_080033C8: .4byte 0x080E645C
+_080033C8: .4byte gSinTable
 _080033CC: .4byte 0x080D8E88
 _080033D0: .4byte 0xFFFF0000
 _080033D4: .4byte 0x0000FFFF
@@ -2913,7 +2913,7 @@ bl CpuFastSet
 movs r0, #0x01
 bl pltt_setDirtyFlag
 b _08003546
-_080034D0: .4byte 0x080E645C
+_080034D0: .4byte gSinTable
 _080034D4: .4byte 0x080D8E88
 _080034D8: .4byte 0xFFFF0000
 _080034DC: .4byte 0x0000FFFF
@@ -3073,7 +3073,7 @@ cmp r0, #0x0F
 bgt _0800365E
 adds r0, #0x01
 b _0800365C
-_08003634: .4byte 0x080E645C
+_08003634: .4byte gSinTable
 _08003638: .4byte 0x080D8E88
 _0800363C: .4byte 0xFFFF0000
 _08003640: .4byte 0x0000FFFF
@@ -3147,7 +3147,7 @@ mov r9, r4
 pop {r4, r5, r6, r7}
 pop {r1}
 bx r1
-_080036D0: .4byte 0x080E645C
+_080036D0: .4byte gSinTable
 _080036D4: .4byte 0x080D8E88
 _080036D8: .4byte 0xFFFF0000
 _080036DC: .4byte 0x0000FFFF
@@ -3642,7 +3642,7 @@ bx r0
 _08003B6C: .4byte 0x000011F0
 _08003B70: .4byte 0xFFFFFF00
 _08003B74: .4byte 0x000003FF
-_08003B78: .4byte 0x080E645C
+_08003B78: .4byte gSinTable
 _08003B7C: .4byte 0x00007FFF
 _08003B80: .4byte 0x0000121C
 _08003B84: .4byte 0x0000121E
@@ -5872,7 +5872,7 @@ cmp r5, #0x01
 beq _08005AC4
 b _08005C94
 .byte 0x00, 0x00
-_08005AB0: .4byte 0x080E645C
+_08005AB0: .4byte gSinTable
 _08005AB4: .4byte 0x00000494
 _08005AB8: .4byte 0x080C87A0
 _08005ABC:
@@ -6405,7 +6405,7 @@ pop {r4, r5, r6, r7}
 pop {r0}
 bx r0
 .byte 0x00, 0x00
-_08005EF0: .4byte 0x080E645C
+_08005EF0: .4byte gSinTable
 _08005EF4: .4byte 0x000003FF
 thumb_func_start renderCharacterSprites
 renderCharacterSprites:
@@ -7236,7 +7236,7 @@ movs r0, #0x7B
 bl m4aSongNumStart
 b _08006A20
 .byte 0x00, 0x00
-_08006954: .4byte 0x080E645C
+_08006954: .4byte gSinTable
 _08006958: .4byte 0x000006D4
 _0800695C: .4byte 0x000003FF
 _08006960: .4byte 0x000006D6
@@ -10875,7 +10875,7 @@ asrs r0, r0, #0x0F
 adds r0, r0, r2
 b _0800A554
 _0800A4AC: .4byte 0x0000FFFF
-_0800A4B0: .4byte 0x080E645C
+_0800A4B0: .4byte gSinTable
 _0800A4B4: .4byte 0x000003FF
 _0800A4B8:
 cmp r0, #0x7F
@@ -10903,7 +10903,7 @@ lsls r2, r2, #0x04
 adds r0, r0, r2
 b _0800A554
 .byte 0x00, 0x00
-_0800A4E8: .4byte 0x080E645C
+_0800A4E8: .4byte gSinTable
 _0800A4EC:
 cmp r0, #0xBF
 bgt _0800A52C
@@ -10934,7 +10934,7 @@ asrs r0, r0, #0x0F
 adds r0, r0, r2
 b _0800A554
 .byte 0x00, 0x00
-_0800A524: .4byte 0x080E645C
+_0800A524: .4byte gSinTable
 _0800A528: .4byte 0x000003FF
 _0800A52C:
 subs r0, #0xC0
@@ -11105,7 +11105,7 @@ movs r3, #0x00
 bl oam_renderCellData
 b _0800A6C2
 .byte 0x00, 0x00
-_0800A674: .4byte 0x080E645C
+_0800A674: .4byte gSinTable
 _0800A678: .4byte 0xFFE80000
 _0800A67C: .4byte 0x080C863C
 _0800A680: .4byte 0x080D963C
@@ -14724,7 +14724,7 @@ pop {r0}
 bx r0
 _0800D5C0: .4byte 0x00000D44
 _0800D5C4: .4byte 0xFFFF0000
-_0800D5C8: .4byte 0x080E645C
+_0800D5C8: .4byte gSinTable
 _0800D5CC: .4byte 0x0000FFFF
 _0800D5D0: .4byte 0x080C94F8
 _0800D5D4: .4byte 0x080C9500
@@ -16299,7 +16299,7 @@ bl oam_renderCellData
 b _0800F12A
 .byte 0x00, 0x00
 _0800EFE0: .4byte 0x080D9E44
-_0800EFE4: .4byte 0x080E645C
+_0800EFE4: .4byte gSinTable
 _0800EFE8: .4byte 0x00000484
 _0800EFEC: .4byte 0x080CA6E8
 _0800EFF0:
@@ -16367,7 +16367,7 @@ b _0800F076
 _0800F064: .4byte 0xFFFF0000
 _0800F068: .4byte 0x0000FFFF
 _0800F06C: .4byte 0x080D9E10
-_0800F070: .4byte 0x080E645C
+_0800F070: .4byte gSinTable
 _0800F074:
 strh r3, [r4, #0x00]
 _0800F076:
@@ -16655,7 +16655,7 @@ mov r10, r5
 pop {r4, r5, r6, r7}
 pop {r0}
 bx r0
-_0800F3C0: .4byte 0x080E645C
+_0800F3C0: .4byte gSinTable
 _0800F3C4: .4byte 0x000003FF
 thumb_func_start sub_800F3C8
 sub_800F3C8:
@@ -18668,7 +18668,7 @@ _08011354: .4byte 0x080C580C
 _08011358: .4byte 0x06006000
 _0801135C: .4byte 0x00004409
 _08011360: .4byte 0x00000C0A
-_08011364: .4byte 0x080E645C
+_08011364: .4byte gSinTable
 _08011368: .4byte 0xFFFFFF00
 _0801136C:
 movs r0, #0x00
@@ -21434,7 +21434,7 @@ adds r2, r3, #0x0
 bl oam_renderCellData
 b _08012C88
 _08012B18: .4byte 0x080D9E44
-_08012B1C: .4byte 0x080E645C
+_08012B1C: .4byte gSinTable
 _08012B20: .4byte 0x000003D6
 _08012B24: .4byte 0x080D9F70
 _08012B28: .4byte 0x080CA6E8
@@ -21509,7 +21509,7 @@ str r0, [sp, #0x018]
 b _08012BD0
 _08012BAC: .4byte 0x0000FFFF
 _08012BB0: .4byte 0x080D9F5C
-_08012BB4: .4byte 0x080E645C
+_08012BB4: .4byte gSinTable
 _08012BB8:
 lsls r0, r3, #0x10
 lsrs r0, r0, #0x10
@@ -26739,7 +26739,7 @@ ldr r2, [sp, #0x014]
 negs r0, r2
 b _0801622E
 _08016200: .4byte 0x080AAD3C
-_08016204: .4byte 0x080E645C
+_08016204: .4byte gSinTable
 _08016208:
 ldr r0, [sp, #0x010]
 adds r0, #0x01
@@ -26792,7 +26792,7 @@ ldr r0, [sp, #0x00C]
 bl sub_8016778
 b _08016030
 .byte 0x00, 0x00
-_0801626C: .4byte 0x080E645C
+_0801626C: .4byte gSinTable
 _08016270: .4byte 0x080C9174
 .byte 0x07, 0xB0, 0x38, 0xBC, 0x98, 0x46, 0xA1, 0x46, 0xAA, 0x46, 0xF0, 0xBC, 0x02, 0xBC, 0x08, 0x47
 thumb_func_start sub_8016284

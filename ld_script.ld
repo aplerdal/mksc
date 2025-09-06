@@ -89,6 +89,8 @@ SECTIONS
         src/vcount.o(.text);
         src/transition.O3.o(.text);
         asm/text08030774.o(.text);
+        src/camera.o(.text);
+        asm/text08030F34.o(.text);
         src/track.o(.text);
         asm/text08033f14.o(.text);
         asm/play.o(.text);

@@ -4524,7 +4524,7 @@ _0805630E:
     pop {r4}
     pop {r0}
     bx r0
-_08056314: .4byte 0x080E645C
+_08056314: .4byte gSinTable
 _08056318: .4byte 0x0000FFFE
     thumb_func_start sub_805631C
 sub_805631C:
@@ -4915,7 +4915,7 @@ _0805686A:
     asrs r0, r0, #0x0A
     b _0805688C
     .byte 0x00, 0x00
-_08056870: .4byte 0x080E645C
+_08056870: .4byte gSinTable
 _08056874: .4byte 0x000003FF
 _08056878:
     ldr r1, _080568BC @ =0x080E645C
@@ -4955,7 +4955,7 @@ _0805689E:
 _080568B8:
     asrs r0, r0, #0x0A
     b _080568E0
-_080568BC: .4byte 0x080E645C
+_080568BC: .4byte gSinTable
 _080568C0: .4byte 0x000001FF
 _080568C4: .4byte 0x000003FF
 _080568C8:
@@ -5060,7 +5060,7 @@ _08056974:
     .byte 0x00, 0x00
 _08056984: .4byte 0x03002E20
 _08056988: .4byte 0x00000848
-_0805698C: .4byte 0x080E645C
+_0805698C: .4byte gSinTable
 _08056990: .4byte 0x000003FF
 _08056994:
     movs r0, #0x01
@@ -5464,7 +5464,7 @@ _08056F94:
     str r4, [r2, #0x4C]
     b _08057040
     .byte 0x00, 0x00
-_08056FD4: .4byte 0x080E645C
+_08056FD4: .4byte gSinTable
 _08056FD8: .4byte 0x080F07A8
 _08056FDC: .4byte 0x080F07C8
 _08056FE0: .4byte 0x03002E20
@@ -6111,7 +6111,7 @@ _080574E6:
     str r0, [r2, #0x08]
     b _0805754C
     .byte 0x00, 0x00
-_080574FC: .4byte 0x080E645C
+_080574FC: .4byte gSinTable
 _08057500:
     movs r0, #0xF1
     str r0, [r2, #0x60]
@@ -7240,7 +7240,7 @@ _080581C4:
     ldr r0, [r0, #0x00]
     mov pc, r0
     .byte 0x00, 0x00
-_080581D0: .4byte 0x080E645C
+_080581D0: .4byte gSinTable
 _080581D4: .4byte 0x080581D8
     .byte 0x38, 0x83, 0x05, 0x08, 0x38, 0x83, 0x05, 0x08, 0x38, 0x83, 0x05, 0x08, 0x38, 0x83, 0x05, 0x08
     .byte 0x38, 0x83, 0x05, 0x08, 0x38, 0x83, 0x05, 0x08, 0x38, 0x83, 0x05, 0x08, 0x38, 0x83, 0x05, 0x08
@@ -7460,7 +7460,7 @@ _080584CC:
     .byte 0x00, 0x00
 _080584DC: .4byte 0x03002E20
 _080584E0: .4byte 0x00000848
-_080584E4: .4byte 0x080E645C
+_080584E4: .4byte gSinTable
 _080584E8: .4byte 0x000003FF
 _080584EC:
     movs r0, #0x01
@@ -7681,7 +7681,7 @@ _0805867E:
     pop {r4, r5, r6}
     pop {r0}
     bx r0
-_08058684: .4byte 0x080E645C
+_08058684: .4byte gSinTable
 _08058688: .4byte 0x0000FFFE
     thumb_func_start sub_805868C
 sub_805868C:
@@ -7873,7 +7873,7 @@ _0805889E:
     pop {r4}
     pop {r0}
     bx r0
-_080588A4: .4byte 0x080E645C
+_080588A4: .4byte gSinTable
 _080588A8: .4byte 0x0000FFFE
     thumb_func_start sub_80588AC
 sub_80588AC:
@@ -8034,7 +8034,7 @@ _080589CA:
     adds r0, r3, r1
     str r0, [r2, #0x64]
     b _08058A38
-_080589E8: .4byte 0x080E645C
+_080589E8: .4byte gSinTable
 _080589EC:
     movs r0, #0xF1
     str r0, [r2, #0x60]
@@ -8720,7 +8720,7 @@ _08058EEE:
     .byte 0x00, 0x00
 _08058F38: .4byte 0x03002E20
 _08058F3C: .4byte 0xFFFFC000
-_08058F40: .4byte 0x080E645C
+_08058F40: .4byte gSinTable
 _08058F44: .4byte 0x000003FF
 _08058F48: .4byte 0xFFFEFFFF
 _08058F4C: .4byte 0x009EFFFE
@@ -8905,7 +8905,7 @@ _08059084:
     cmp r1, #0x00
     beq _080590BE
     b _080590D4
-_080590B0: .4byte 0x080E645C
+_080590B0: .4byte gSinTable
 _080590B4:
     cmp r1, #0x1A
     beq _080590C8
@@ -9129,7 +9129,7 @@ _0805923A:
     adds r0, r3, r1
     str r0, [r2, #0x64]
     b _080592A8
-_08059258: .4byte 0x080E645C
+_08059258: .4byte gSinTable
 _0805925C:
     movs r0, #0xF1
     str r0, [r2, #0x60]
@@ -9597,7 +9597,7 @@ _080598DE:
     pop {r4}
     pop {r0}
     bx r0
-_080598E4: .4byte 0x080E645C
+_080598E4: .4byte gSinTable
 _080598E8: .4byte 0x0000FFFE
     thumb_func_start sub_80598EC
 sub_80598EC:
@@ -9869,7 +9869,7 @@ _08059E32:
     pop {r0}
     bx r0
 _08059E38: .4byte 0x0000FFFD
-_08059E3C: .4byte 0x080E645C
+_08059E3C: .4byte gSinTable
 _08059E40: .4byte 0x0000FFFE
     thumb_func_start sub_8059E44
 sub_8059E44:
@@ -10012,7 +10012,7 @@ _08059F36:
     adds r0, r3, r1
     str r0, [r2, #0x64]
     b _08059FA4
-_08059F54: .4byte 0x080E645C
+_08059F54: .4byte gSinTable
 _08059F58:
     movs r0, #0xF1
     str r0, [r2, #0x60]
@@ -12993,7 +12993,7 @@ _0805BBAC:
     b _0805BC86
 _0805BBFC: .4byte 0xFFFFE800
 _0805BC00: .4byte 0x0000FFFF
-_0805BC04: .4byte 0x080E645C
+_0805BC04: .4byte gSinTable
 _0805BC08: .4byte 0x000003FF
 _0805BC0C: .4byte 0xFFFA0000
 _0805BC10: .4byte 0x00FFFFFF

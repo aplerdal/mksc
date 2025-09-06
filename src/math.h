@@ -10,6 +10,14 @@ typedef struct
     s32 x;
     s32 y;
 } Vec2s32;
+typedef struct
+{
+    s32 x;
+    s32 y;
+    s32 z;
+} Vec3s32;
+
+#define IN_RANGE(x,min,max) ((x >= min) && (x <= max))
 
 extern int gSinTable[];
 
