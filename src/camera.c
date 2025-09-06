@@ -158,9 +158,9 @@ void sub_8030AFC(Camera* camera) {
     return;
 }
 
-// #ifndef NONMATCHING
-// asm_unified(".include \"nonmatching/camProjectActor.s\"");
-// #else
+#ifndef NONMATCHING
+asm_unified(".include \"nonmatching/camProjectActor.s\"");
+#else
 void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *distanceOut)
 {
     s32 dist1_y_impq5;
@@ -221,19 +221,19 @@ void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *di
         return;
     }
     
-    rel_y = p_point_rel_q8->x / 128;
-    dist1_x_impq5 = (camera_5C_p1_x / 16 * (p_point_rel_q8->x / 128)) / 32;
-    dist1_y_impq5 = (camera_5C_p1_y / 16 * (p_point_rel_q8->x / 128)) / 32;
-    dist1_z_impq5 = (camera_5C_p1_z / 16 * rel_y) / 32;
+    rel_y = p_point_rel_q8->x / 0x80;
+    dist1_x_impq5 = (camera_5C_p1_x / 0x10 * (p_point_rel_q8->x / 128)) / 0x20;
+    dist1_y_impq5 = (camera_5C_p1_y / 0x10 * (p_point_rel_q8->x / 128)) / 0x20;
+    dist1_z_impq5 = (camera_5C_p1_z / 0x10 * rel_y) / 0x20;
 
-    rel = p_point_rel_q8->y / 128;
-    dist2_x_impq5 = (camera_5C_p2_x / 16 * (p_point_rel_q8->y / 128)) / 32;
-    dist2_y_impq5 = (camera_5C_p2_y / 16 * (p_point_rel_q8->y / 128)) / 32;
-    dist2_z_impq5 = (camera_5C_p2_z / 16 * rel) / 32;
+    rel = p_point_rel_q8->y / 0x80;
+    dist2_x_impq5 = (camera_5C_p2_x / 0x10 * (p_point_rel_q8->y / 0x80)) / 0x20;
+    dist2_y_impq5 = (camera_5C_p2_y / 0x10 * (p_point_rel_q8->y / 0x80)) / 0x20;
+    dist2_z_impq5 = (camera_5C_p2_z / 0x10 * rel) / 0x20;
 
-    rel_d = p_point_rel_q8->z / 128;
-    dist3_y_impq5 = ((camera_5C_p3_y / 16) * (p_point_rel_q8->z / 128)) / 32;
-    dist3_z_impq5 = ((camera_5C_p3_z / 16) * (rel_d)) / 32;
+    rel_d = p_point_rel_q8->z / 0x80;
+    dist3_y_impq5 = ((camera_5C_p3_y / 0x10) * (p_point_rel_q8->z / 0x80)) / 0x20;
+    dist3_z_impq5 = ((camera_5C_p3_z / 0x10) * (rel_d)) / 0x20;
 
     p_point4->x = dist1_x_impq5 + dist2_x_impq5;
     p_point4->y = dist1_y_impq5 + dist2_y_impq5 + dist3_y_impq5;
@@ -266,7 +266,7 @@ void cam_projectActor(Camera *camera, Actor *actor, Vec2s16 *drawPosOut, s16 *di
 
     return;
 }
-// #endif
+#endif
 
 u32 sub_8030E5C(Camera *camera)
 {
@@ -274,7 +274,7 @@ u32 sub_8030E5C(Camera *camera)
 }
 void* sub_8030E60(Camera *camera,int param_2,int param_3)
 {
-    return (void*)(0x03004FE0 + param_2 * 0x600 + param_3 * 0x10);
+    return (void*)(((void*)&BgAffineBuf) + param_2 * 0x600 + param_3 * 0x10);
 }
 void sub_8030E74(Camera *camera)
 {
