@@ -15,8 +15,8 @@ AS 			    := $(BIN_DIR)/./$(PREFIX)as
 SHA1			:= $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 FIX				:= gbafix
 SHELL			:= /bin/bash -o pipefail
-AGBCC			:= tools/agbcc/bin/old_agbcc
-CC1				:= tools/agbcc/bin/agbcc -fprologue-bugfix
+OLD_AGBCC		:= tools/agbcc/bin/old_agbcc
+AGBCC			:= tools/agbcc/bin/agbcc -fprologue-bugfix
 AIF2PCM   		:= tools/aif2pcm/aif2pcm
 
 # Flags
@@ -73,13 +73,13 @@ endef
 # Rules
 .PHONY: tools libraries rom clean progress
 
-rom: tools libraries $(ROM) compare
-
+rom: tools libraries $(ROM) compare progress
+ 
 compare: $(ROM)
 	@$(SHA1) rom.sha1
 
 progress: $(MAP)
-	@perl calcrom.pl $(MAP)
+	@perl tools/scripts/calcrom.pl $(MAP)
 
 libraries:
 	@$(MAKE) -C lib/libunk
@@ -95,26 +95,26 @@ tools:
 
 $(OBJ_DIR)/src/agbbackup/%.o : src/agbbackup/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(OBJ_DIR)/src/agbbackup/$*.i
-	@$(AGBCC) $(OBJ_DIR)/src/agbbackup/$*.i $(CFLAGS) -O1 -o $(OBJ_DIR)/src/agbbackup/$*.s
+	@$(OLD_AGBCC) $(OBJ_DIR)/src/agbbackup/$*.i $(CFLAGS) -O1 -o $(OBJ_DIR)/src/agbbackup/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/src/agbbackup/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/src/agbbackup/$*.s
 
 $(C_BUILDDIR)/mp2000/%.o : $(C_SUBDIR)/mp2000/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(OBJ_DIR)/src/mp2000/$*.i
-	@$(AGBCC) $(OBJ_DIR)/src/mp2000/$*.i $(CFLAGS) -o $(OBJ_DIR)/src/mp2000/$*.s
+	@$(OLD_AGBCC) $(OBJ_DIR)/src/mp2000/$*.i $(CFLAGS) -o $(OBJ_DIR)/src/mp2000/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/src/mp2000/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/src/mp2000/$*.s
 
 $(C_BUILDDIR)/%.O3.o : $(C_SUBDIR)/%.O3.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(CC1) $(C_BUILDDIR)/$*.i $(CFLAGS) -O3 -o $(C_BUILDDIR)/$*.s
+	@$(AGBCC) $(C_BUILDDIR)/$*.i $(CFLAGS) -O3 -o $(C_BUILDDIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(CC1) $(C_BUILDDIR)/$*.i $(CFLAGS) -o $(C_BUILDDIR)/$*.s
+	@$(AGBCC) $(C_BUILDDIR)/$*.i $(CFLAGS) -o $(C_BUILDDIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
@@ -139,8 +139,5 @@ $(ELF): $(OBJS)
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
-
-show:
-	echo $(ASM_SRCS)
 
 -include $(C_DEPS)
