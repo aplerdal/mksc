@@ -15,15 +15,15 @@ AS 			    := $(BIN_DIR)/./$(PREFIX)as
 SHA1			:= $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 FIX				:= gbafix
 SHELL			:= /bin/bash -o pipefail
-AGBCC			:= $(AGBCC_DIR)/bin/old_agbcc
-THUMB_ELF_CC	:= $(ARM000512)/lib/gcc-lib/thumb-elf/2.9-arm-000512/cc1
+AGBCC			:= tools/agbcc/bin/old_agbcc
+CC1				:= tools/agbcc/bin/agbcc -fprologue-bugfix
 AIF2PCM   		:= tools/aif2pcm/aif2pcm
 
 # Flags
 ASFLAGS			:= -mcpu=arm7tdmi -I include
 CFLAGS			:= -mthumb-interwork -Wimplicit -Wparentheses -O2
-CPPFLAGS		:= -I $(AGBCC_DIR) -I $(AGBCC_DIR)/include -I lib -iquote include -nostdinc
-LDFLAGS			= -L$(AGBCC_DIR)/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=../symbols.txt
+CPPFLAGS		:= -I tools/agbcc -I tools/agbcc/include -I lib -iquote include -nostdinc
+LDFLAGS			= -L../tools/agbcc/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=../symbols.txt
 
 # Files
 ELF = $(ROM:.gba=.elf)
@@ -58,8 +58,6 @@ SOUND_AIF_OBJS := $(patsubst $(SOUND_SUBDIR)/%.aif,$(SOUND_BUILDDIR)/%.o,$(SOUND
 
 DATA_BINS := $(wildcard $(DATA_SUBDIR)/*.bin)
 DATA_OBJS := $(patsubst $(DATA_SUBDIR)/%.bin,$(DATA_BUILDDIR)/%.o,$(DATA_BINS))
-# DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
-# DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
 OBJS     := $(C_OBJS) $(ASM_OBJS) $(DATA_OBJS) $(SOUND_OBJS) $(SOUND_AIF_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
@@ -73,7 +71,7 @@ define bin2o
 endef
 
 # Rules
-.PHONY: tools libraries rom clean
+.PHONY: tools libraries rom clean progress
 
 rom: tools libraries $(ROM) compare
 
@@ -82,6 +80,7 @@ compare: $(ROM)
 
 progress: $(MAP)
 	@perl calcrom.pl $(MAP)
+
 libraries:
 	@$(MAKE) -C lib/libunk
 
@@ -108,14 +107,14 @@ $(C_BUILDDIR)/mp2000/%.o : $(C_SUBDIR)/mp2000/%.c
 
 $(C_BUILDDIR)/%.O3.o : $(C_SUBDIR)/%.O3.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(THUMB_ELF_CC) $(C_BUILDDIR)/$*.i $(CFLAGS) -O3 -o $(C_BUILDDIR)/$*.s
+	@$(CC1) $(C_BUILDDIR)/$*.i $(CFLAGS) -O3 -o $(C_BUILDDIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
 
 $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(C_BUILDDIR)/$*.i
-	@$(THUMB_ELF_CC) $(C_BUILDDIR)/$*.i $(CFLAGS) -o $(C_BUILDDIR)/$*.s
+	@$(CC1) $(C_BUILDDIR)/$*.i $(CFLAGS) -o $(C_BUILDDIR)/$*.s
 	@echo -e ".text\n\t.align\t2, 0\n" >> $(C_BUILDDIR)/$*.s
 	@sed -i -e 's/\.align\t2/\.align\t2, 0/' $(C_BUILDDIR)/$*.s
 	$(AS) $(ASFLAGS) -o $@ $(C_BUILDDIR)/$*.s
@@ -139,9 +138,7 @@ $(ELF): $(OBJS)
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
-	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION)
-
-$(MAP): rom
+	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
 
 show:
 	echo $(ASM_SRCS)
