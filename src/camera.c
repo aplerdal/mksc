@@ -117,7 +117,7 @@ void sub_SetHDMA(Camera* camera) {
     s32 screenY;
     s32 i, j;
     s32 scanline;
-    s32* srcPos; // Matches pointer arithmetic
+    Vec2s32* srcPos;
     s32 x;
     s32 y;
     Vec2s32* unk_otherPos;
@@ -137,8 +137,8 @@ void sub_SetHDMA(Camera* camera) {
     scanline = (i - camera->screenPos.y);
 
     do {
-        y = srcPos[1];
-        x = srcPos[0];
+        y = srcPos->y;
+        x = srcPos->x;
         pa = (y * cosAngle) / 32768;
         pb = (-x * sinAngle) / 32768;
         pc = (y * sinAngle) / 32768;
@@ -150,7 +150,7 @@ void sub_SetHDMA(Camera* camera) {
         dest->pc = pc;
         dest->pd = pd;
         dest--;
-        srcPos -= 2;
+        srcPos--;
         scanline--;
         i--;
     } while (i >= 64);
@@ -373,6 +373,7 @@ s16 sub_8030F34(s32 arg0, s16 arg1) {
     return ret;
 }
 
+// This is probably a mistake, but I couldn't get it to match otherwise
 static inline s32 alt_math_abs(s32 x)
 {
     register s32 var asm("r2");
@@ -453,4 +454,63 @@ void cam_8031054(Camera *camera)
   (camera->unk_otherPos).y = (camera->pos).y;
   camera->field_0x20 = 0;
   return;
+}
+void sub_8031064(Camera* camera) {
+    s32 temp_r3;
+    s32 shift1;
+    s32 shift2;
+    s32 var_r7;
+    Vec3s32* temp_r6;
+    Vec3s32* temp_r7;
+    Vec3s32* cam_pos;
+    
+    temp_r6 = camera->unk5C;
+    temp_r3 = camera->elevation - camera->field_0xc;
+    temp_r7 = &camera->unk38;
+    cam_pos = &camera->pos;
+    var_r7 = (temp_r3 < 0) ? -temp_r3 : temp_r3;
+    
+    if (var_r7 <= 0xFFFF) {
+        shift1 = 0;
+        shift2 = 16;
+    } else if (var_r7 <= 0xFFFFF) {
+        shift1 = 5;
+        shift2 = 11;
+    } else if (var_r7 <= 0xFFFFFF) {
+        shift1 = 9;
+        shift2 = 7;
+    } else {
+        shift1 = 13;
+        shift2 = 3;
+    }
+    temp_r7->x = (s32) (cam_pos->x - ((s32) ((temp_r3 >> shift1) * temp_r6[0].z) >> shift2));
+    temp_r7->y = (s32) (cam_pos->y - ((s32) ((temp_r3 >> shift1) * temp_r6[1].z) >> shift2));
+    temp_r7->z = (s32) (cam_pos->z - ((s32) ((temp_r3 >> shift1) * temp_r6[2].z) >> shift2));
+}
+void sub_80310E8(Camera* camera) {
+    camera->field_0x50 = 1 - camera->field_0x50;
+}
+void sub_80310F4(Camera* camera) {
+    camera->field_0x4c = camera->field_0x50;
+    camera->field_0x50 = 1 - camera->field_0x50;
+}
+void sub_8031100(Camera* camera) {
+    camera->field_0x398 = camera->unk_otherPos.x;
+    camera->field_0x39c = camera->unk_otherPos.y;
+    camera->field_0x3a0 = camera->yaw;
+    camera->field_0x3a2 = 0;
+    camera->field_0x388 = camera->unk_otherPos.x;
+    camera->field_0x38c = camera->unk_otherPos.y;
+    camera->field_0x390 = camera->yaw;
+    camera->field_0x392 = 0;
+    camera->field_0x394 = 0;
+    camera->field_0x396 = 0;
+    camera->field_0x3a4 = 0;
+    camera->field_0x3b0 = 0;
+    camera->field_0x3b4 = 0;
+    camera->field_0x3b8 = 0;
+    camera->field_0x3bc = 0;
+    camera->field_0x384 = 0;
+    camera->field_0x386 = 0;
+    sub_80312DC(camera);
 }
