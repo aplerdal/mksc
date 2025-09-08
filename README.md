@@ -1,5 +1,6 @@
 # Mario Kart: Super Circuit
-![badge](https://img.shields.io/endpoint?url=https://gist.github.com/aplerdal/38cc39084ab058bb085f894e9a164e3f/raw/progress.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/aplerdal/38cc39084ab058bb085f894e9a164e3f/raw/progress.json)
+
 This is a decompilation of Mario Kart: Super Circuit (US).
 
 It builds the following ROM:
