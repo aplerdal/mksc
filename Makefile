@@ -6,7 +6,8 @@ REVISION		:= 0
 ROM				:= mksc.gba
 
 # Tools
-BIN_DIR			:= $(DEVKITARM)/bin # If DEVKITARM is not set will default to installed /bin/./arm-none-eabi-__;
+BIN_DIR			:= $(DEVKITARM)/bin
+# If DEVKITARM is not set will default to installed /bin/./arm-none-eabi-__;
 PREFIX			:= arm-none-eabi-
 CPP				:= $(BIN_DIR)/./$(PREFIX)cpp
 OBJCOPY 		:= $(BIN_DIR)/./$(PREFIX)objcopy

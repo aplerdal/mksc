@@ -48,7 +48,7 @@ jobs:
 
       - name: Build
         run: |
-          make progress
+          make progress > logfile.txt
 
       - name: Calculate progress
         run: |
