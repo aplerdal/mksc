@@ -79,7 +79,7 @@ compare: $(ROM)
 	@$(SHA1) rom.sha1
 
 progress: $(MAP)
-	@perl tools/scripts/calcrom.pl $(MAP)
+	@perl tools/calcrom.pl $(MAP)
 
 libraries:
 	@$(MAKE) -C lib/libunk

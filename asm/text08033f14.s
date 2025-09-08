@@ -41196,7 +41196,7 @@ sub_804AF10:
     push {r4, lr}
     ldr r4, _0804AF20 @ =0x00000824
     adds r0, r0, r4
-    bl cam_projectActor
+    bl cam_CalcProjectActor
     pop {r4}
     pop {r0}
     bx r0
@@ -42124,26 +42124,26 @@ sub_804C030:
     ldrh r2, [r5, #0x00]
     adds r0, r4, #0x0
     movs r1, #0x78
-    bl sub_8030F20
+    bl cam_SetScreenPos
     ldrh r1, [r5, #0x04]
     adds r0, r4, #0x0
     bl sub_8030E90
     ldrh r1, [r5, #0x02]
     adds r0, r4, #0x0
-    bl sub_8030EA0
+    bl cam_SetElevation
     ldrh r1, [r5, #0x06]
     adds r0, r4, #0x0
-    bl sub_8030EB0
+    bl cam_SetPitch
     mov r0, r8
     adds r0, #0x7C
     ldrh r1, [r0, #0x00]
     adds r0, r4, #0x0
-    bl cam_setAngle
+    bl cam_SetYaw
     mov r0, r8
     ldr r1, [r0, #0x00]
     ldr r2, [r0, #0x04]
     adds r0, r4, #0x0
-    bl cam_setPos
+    bl cam_SetPos
     adds r0, r4, #0x0
     bl sub_8031100
     adds r6, #0xBC

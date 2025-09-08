@@ -5,8 +5,7 @@
 
 typedef struct Camera
 {
-    Vec2s32 pos;
-    s32 unkZ;
+    Vec3s32 pos;
     s32 field_0xc;
     s32 elevation;
     s16 yaw;

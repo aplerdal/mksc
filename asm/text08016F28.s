@@ -20490,10 +20490,10 @@
     adds r1, r1, r0
     str r1, [sp, #0x004]
     adds r0, r4, #0x0
-    bl cam_setPos
+    bl cam_SetPos
     adds r0, r4, #0x0
     movs r1, #0x00
-    bl cam_setAngle
+    bl cam_SetYaw
     adds r0, r5, #0x0
     bl loadtrack_loadObjects
     ldr r0, _08028698 @ =0x0203EBB8
