@@ -1,0 +1,68 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Install binutils
+        run: sudo apt update && sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi
+        # build-essential, git, and libpng-dev are already installed
+        # gcc-arm-none-eabi is only needed for the modern build
+        # as an alternative to dkP
+
+      - name: Checkout agbcc
+        uses: actions/checkout@v4
+        with:
+          repository: pret/agbcc
+          path: agbcc
+
+      - name: Cache agbcc build
+        id: cache-agbcc
+        uses: actions/cache@v4
+        with:
+          path: |
+            agbcc/build
+            agbcc/lib
+            agbcc/bin
+          # key changes whenever agbcc's repo content changes
+          key: ${{ runner.os }}-agbcc-${{ hashFiles('agbcc/**') }}
+          restore-keys: |
+            ${{ runner.os }}-agbcc-
+
+      - name: Build agbcc
+        if: steps.cache-agbcc.outputs.cache-hit != 'true'
+        run: ./build.sh
+        working-directory: ./agbcc
+                  
+      - name: Install agbcc
+        run: ./install.sh ../
+        working-directory: ./agbcc
+
+      - name: Build
+        run: |
+          make progress
+
+      - name: Calculate progress
+        run: |
+          PROGRESS=$(grep "bytes of code in src" logfile.txt | sed -E 's/.*\(([0-9.]+)%\).*/\1/')
+          echo "PROGRESS=$PROGRESS" >> $GITHUB_ENV
+      
+      - name: Create progress badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.MKSC_PROGRESS_SECRET }}
+          gistID: 38cc39084ab058bb085f894e9a164e3f
+          filename: progress.json
+          label: Progress
+          message: ${{ env.PROGRESS }}%
+          valColorRange: ${{ env.PROGRESS }}
+          maxColorRange: 100
+          minColorRange: 0

@@ -13,8 +13,7 @@ _ReSharper*/
 *.DotSettings.user
 
 /tools/agbcc
-/tools/gbafix
-/tools/thumb-elf
+#/tools/gbafix
 
 /lib/*/build
 /lib/*/*.a

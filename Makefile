@@ -6,18 +6,19 @@ REVISION		:= 0
 ROM				:= mksc.gba
 
 # Tools
-BIN_DIR			:= $(DEVKITARM)/bin
+BIN_DIR			:= $(DEVKITARM)/bin # If DEVKITARM is not set will default to installed /bin/./arm-none-eabi-__;
 PREFIX			:= arm-none-eabi-
 CPP				:= $(BIN_DIR)/./$(PREFIX)cpp
 OBJCOPY 		:= $(BIN_DIR)/./$(PREFIX)objcopy
 LD 				:= $(BIN_DIR)/./$(PREFIX)ld
 AS 			    := $(BIN_DIR)/./$(PREFIX)as
 SHA1			:= $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
-FIX				:= gbafix
+FIX				:= tools/gbafix/./gbafix
 SHELL			:= /bin/bash -o pipefail
-OLD_AGBCC		:= tools/agbcc/bin/old_agbcc
-AGBCC			:= tools/agbcc/bin/agbcc -fprologue-bugfix
-AIF2PCM   		:= tools/aif2pcm/aif2pcm
+OLD_AGBCC		:= tools/agbcc/bin/./old_agbcc
+AGBCC			:= tools/agbcc/bin/./agbcc -fprologue-bugfix
+AIF2PCM   		:= tools/aif2pcm/./aif2pcm
+BIN2S			:= tools/bin2s/./bin2s
 
 # Flags
 ASFLAGS			:= -mcpu=arm7tdmi -I include
@@ -67,13 +68,13 @@ SUBDIRS  := $(sort $(dir $(OBJS)))
 $(shell mkdir -p $(SUBDIRS))
 
 define bin2o
-	bin2s -H $(@).h $< | $(AS) -o $(@)
+	$(BIN2S) -H $(@).h $< | $(AS) -o $(@)
 endef
 
 # Rules
 .PHONY: tools libraries rom clean progress
 
-rom: tools libraries $(ROM) compare progress
+rom: tools libraries $(ROM) compare
  
 compare: $(ROM)
 	@$(SHA1) rom.sha1
@@ -86,12 +87,16 @@ libraries:
 
 clean:
 	$(MAKE) clean -C tools/aif2pcm
+	$(MAKE) clean -C tools/bin2s
+	$(MAKE) clean -C tools/gbafix
 	rm -f $(ROM) $(ELF) $(MAP)
 	rm -r build/*
 	$(MAKE) -C lib/libunk clean
 
 tools:
 	@$(MAKE) -C tools/aif2pcm
+	@$(MAKE) -C tools/bin2s
+	@$(MAKE) -C tools/gbafix
 
 $(OBJ_DIR)/src/agbbackup/%.o : src/agbbackup/%.c
 	@$(CPP) -MMD -MT $@ $(CPPFLAGS) $< -o $(OBJ_DIR)/src/agbbackup/$*.i
@@ -121,7 +126,7 @@ $(C_BUILDDIR)/%.o : $(C_SUBDIR)/%.c
 
 $(SOUND_BUILDDIR)/%.o: $(SOUND_SUBDIR)/%.aif
 	$(AIF2PCM) $< $(patsubst %.o,%,$@)
-	bin2s -H $(@).h $(patsubst %.o,%,$@) | $(AS) -o $(@)
+	$(BIN2S) -H $(@).h $(patsubst %.o,%,$@) | $(AS) -o $(@)
 
 $(SOUND_BUILDDIR)/%.o: $(SOUND_SUBDIR)/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
@@ -135,6 +140,7 @@ $(DATA_BUILDDIR)/%.o : $(DATA_SUBDIR)/%.bin
 
 $(ELF): $(OBJS)
 	cd $(OBJ_DIR) && $(LD) -Map ../$(MAP) -T ../ld_script.ld -o ../$@ $(LDFLAGS) $(OBJS_REL)
+$(MAP): rom
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
