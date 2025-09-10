@@ -514,3 +514,157 @@ void sub_8031100(Camera* camera) {
     camera->field_0x386 = 0;
     sub_80312DC(camera);
 }
+
+void sub_80311B4(Camera *camera)
+{
+    // Thanks testyourmine for help
+    s32 posDiffZ;
+    u16 targetVal;
+    u32 unusedVal;
+    u16 *targetPtr;
+    u16 *currentPtr;
+    s32 newValue;
+    s32 targetValue;
+    s32 currentValue;
+    s16 delta;
+    u16 *targetPtr_1;
+    u16 *currentPtr_1;
+    
+    camera->field_0x388 = camera->field_0x398;
+    camera->field_0x38c = camera->field_0x39c;
+
+    do {
+    targetPtr = &camera->field_0x3a0;
+    currentPtr = &camera->field_0x390; } while(0);
+    targetValue = camera->field_0x3a0;
+    currentValue = camera->field_0x390;
+    delta = targetValue - currentValue;
+    
+    if (delta >= 0) {
+        newValue = currentValue + 0x480;
+        *currentPtr = newValue;
+        targetVal = *targetPtr;
+        if (0 > (s16)(targetVal - newValue)) {
+            *currentPtr = targetVal;
+        }
+    }
+    else {
+        newValue = currentValue - 0x480;
+        *currentPtr = newValue;
+        targetVal = *targetPtr;
+        if ((s16)(targetVal - newValue) > 0) {
+            *currentPtr = targetVal;
+        }
+    }
+
+    if (camera->field_0x396 < 40) {
+        camera->field_0x396 += 8;
+    }
+    else {
+        camera->field_0x396 = 48;
+    }
+    if (((s16)camera->field_0x392 == 0) && ((s16)camera->field_0x3a2 == 0)) {
+        camera->field_0x396 = 0;
+    }
+
+    do {
+    targetPtr_1 = &camera->field_0x3a2;
+    currentPtr_1 = &camera->field_0x392; } while(0);
+    targetValue = (u16)camera->field_0x3a2;
+    currentValue = (u16)camera->field_0x392;
+    delta = targetValue - currentValue;
+    
+    if (delta > 0) {
+        newValue = currentValue + (u16)camera->field_0x396;
+        *currentPtr_1 = newValue;
+        targetVal = *targetPtr_1;
+        if ((s16)(targetVal - newValue) < 0) {
+            *currentPtr_1 = targetVal;
+        }
+    } 
+    else if (delta < 0) {
+        newValue = currentValue - (u16)camera->field_0x396;
+        *currentPtr_1 = newValue;
+        targetVal = *targetPtr_1;
+        if ((s16)(targetVal - newValue) > 0) {
+            *currentPtr_1 = targetVal;
+        }
+    }
+
+    posDiffZ = camera->field_0x3a4 - camera->field_0x394;
+    if (posDiffZ > 0) {
+        camera->field_0x394++;
+    }
+    else if (posDiffZ < 0) {
+        camera->field_0x394--;
+    }
+    return;
+}
+
+void sub_80312DC(Camera* camera) {
+    sub_SetHDMA(camera);
+}
+#ifndef NONMATCHING
+asm_unified(".include \"nonmatching/text080312E8.s\"");
+#else
+void sub_80312E8(Camera* camera) {
+    struct astruct3* var1;
+
+    var1 = camera->field_0x3a6;
+    camera->unk380 = (s8)(camera->field_0x3ac - 0x49);
+    if ((var1->field_0x8 != DAT_030021a8)) {
+        var1->field_0x8 = DAT_030021a8;
+        if ((*(astruct3**)0x3004fd4) == var1) {
+            *(((vu8*)REG_DISPSTAT)+1) = (DAT_030021a8);
+            *(((vu8*)REG_DISPSTAT)+0) = ((REG_DISPSTAT & DISPSTAT_VCOUNT_INTR) & 0xFF);
+        }
+    }
+    DAT_030021a8 = camera->field_0x3ac;
+}
+#endif
+
+void sub_803134C(Camera *camera)
+{
+    camera->field_0x3a4 = 24;
+}
+
+void sub_8031358(Camera *camera)
+{
+    camera->field_0x3a4 = -24;
+}
+
+void sub_8031368(Camera *param_1)
+{
+    param_1->field_0x3a4 = 0;
+}
+
+s32 sub_8031374(Camera* camera)
+{
+    return camera->field_0x388 + (camera->field_0x394 * math_sin(camera->field_0x390));
+}
+
+s32 sub_80313B4(Camera* camera)
+{
+    return camera->field_0x38c - (camera->field_0x394 * math_cos(camera->field_0x390));
+}
+
+s16 sub_8031400(Camera *camera)
+{
+    return camera->field_0x390 + camera->field_0x392;
+}
+
+s32 sub_8031418(Camera* camera) {
+    s32 temp_r1;
+    u32 var_r4;
+    s32 temp1;
+    s32 temp2;
+
+    var_r4 = 1;
+    if ((camera->field_0x388 == camera->field_0x398) && (camera->field_0x38c == camera->field_0x39c)) {
+        temp1 = (*(s32*)&camera->field_0x390);
+        temp2 = (*(s32*)&camera->field_0x3a0);
+        temp_r1 = temp1 ^ temp2;
+        var_r4 = (u32) ((0 - temp_r1) | temp_r1) >> 0x1F;
+    }
+    return (s32) var_r4;
+}

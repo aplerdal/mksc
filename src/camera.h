@@ -4,6 +4,12 @@
 #include "actor.h"
 
 extern s32 Div(s32, s32);
+
+typedef struct astruct3 {
+    u8 unk[8];
+    s32 field_0x8;
+} astruct3;
+
 typedef struct Camera
 {
     Vec3s32 pos;
@@ -30,16 +36,18 @@ typedef struct Camera
     u8 field_0x387;
     s32 field_0x388;
     s32 field_0x38c;
-    s16 field_0x390;
-    s16 field_0x392;
+    u16 field_0x390;
+    u16 field_0x392;
     s16 field_0x394;
     s16 field_0x396;
     s32 field_0x398;
     s32 field_0x39c;
-    s16 field_0x3a0;
-    s16 field_0x3a2;
+    u16 field_0x3a0;
+    u16 field_0x3a2;
     s16 field_0x3a4;
-    u8 field_0x3a6[10];
+    s16 field_0x3a6;
+    astruct3* field_0x3a8;
+    u32 field_0x3ac;
     u32 field_0x3b0;
     u32 field_0x3b4;
     u32 field_0x3b8;
@@ -76,3 +84,6 @@ void sub_80310E8(Camera* camera);
 void sub_80310F4(Camera* camera);
 void sub_80310F4(Camera* camera);
 void sub_8031100(Camera* camera);
+// void sub_80311B4(Camera* camera);
+void sub_80312DC(Camera* camera);
+void cam_80312e8(Camera* camera);
