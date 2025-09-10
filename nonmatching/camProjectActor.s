@@ -3,8 +3,8 @@
 .syntax unified
 .text
     
-    thumb_func_start cam_projectActor
-cam_projectActor:
+    thumb_func_start cam_CalcProjectActor
+cam_CalcProjectActor:
     push {r4, r5, r6, r7, lr}
     mov r7, r10
     mov r6, r9

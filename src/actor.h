@@ -16,9 +16,9 @@ typedef struct Actor
     u16 typeFlags;
     int updateFunc;
     ActorCollide collideFunc;
-    Vec2s16 field_1C;
+    Vec2s16 drawPos;
     Vec2s16 positionS16;
-    u16 scale;
+    u16 drawScale;
     u16 field_26;
     int field_28;
     int field_2C;
