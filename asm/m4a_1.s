@@ -1,10 +1,10 @@
-.include "asm/macros.inc"
-.include "gba_constants.inc"
-.include "m4a_constants.inc"
+	.include "asm/macros.inc"
+	.include "gba_constants.inc"
+	.include "m4a_constants.inc"
 
-.syntax unified
-.text
-        
+	.syntax unified
+	.text
+
 	thumb_func_start umul3232H32
 umul3232H32:
 	adr r2, __umul3232H32
@@ -86,14 +86,14 @@ lt_PCM_DMA_BUF_SIZE:      .word PCM_DMA_BUF_SIZE
 
 	thumb_func_start SoundMainRAM
 SoundMainRAM:
-    ldrb r3, [r0, o_SoundInfo_reverb]
-    cmp r3, #0
-    beq SoundMainRAM_NoReverb
-    adr r1, SoundMainRAM_Reverb
-    bx r1
-    .arm
+	ldrb r3, [r0, o_SoundInfo_reverb]
+	cmp r3, #0
+	beq SoundMainRAM_NoReverb
+	adr r1, SoundMainRAM_Reverb
+	bx r1
+	.arm
 SoundMainRAM_Reverb:
-    cmp r4, #2
+	cmp r4, #2
 	addeq r7, r0, o_SoundInfo_pcmBuffer
 	addne r7, r5, r8
 	mov r4, r8
@@ -110,176 +110,176 @@ SoundMainRAM_Reverb:
 	bgt 1b
 	adr r0, _081DCF36 + 1 @ plus 1 because THUMB
 	bx r0
-    .thumb
+	.thumb
 SoundMainRAM_NoReverb:
-    movs r0, #0
-    mov r1, r8
-    lsrs r1, r1, #0x03
-    bcc SoundMainRAM_NoReverb_Ok
-    stm r5!, {r0}
+	movs r0, #0
+	mov r1, r8
+	lsrs r1, r1, #0x03
+	bcc SoundMainRAM_NoReverb_Ok
+	stm r5!, {r0}
 SoundMainRAM_NoReverb_Ok:
-    lsrs r1, r1, #0x01
-    bcc SoundMainRAM_NoReverb_Loop
-    stm r5!, {r0}
-    stm r5!, {r0}
+	lsrs r1, r1, #0x01
+	bcc SoundMainRAM_NoReverb_Loop
+	stm r5!, {r0}
+	stm r5!, {r0}
 SoundMainRAM_NoReverb_Loop:
-    stm r5!, {r0}
-    stm r5!, {r0}
-    stm r5!, {r0}
-    stm r5!, {r0}
-    subs r1, #1
-    bgt SoundMainRAM_NoReverb_Loop
+	stm r5!, {r0}
+	stm r5!, {r0}
+	stm r5!, {r0}
+	stm r5!, {r0}
+	subs r1, #1
+	bgt SoundMainRAM_NoReverb_Loop
 _081DCF36:
-    ldr r4, [sp, #0x18]
-    ldr r0, [r4, o_SoundInfo_divFreq]
-    mov r12, r0
-    ldrb r0, [r4, o_SoundInfo_maxChans]
-    adds r4, o_SoundInfo_chans
+	ldr r4, [sp, #0x18]
+	ldr r0, [r4, o_SoundInfo_divFreq]
+	mov r12, r0
+	ldrb r0, [r4, o_SoundInfo_maxChans]
+	adds r4, o_SoundInfo_chans
 
 SoundMainRAM_ChanLoop:
-    str r0, [sp, #0x4]
-    ldr r3, [r4, o_SoundChannel_wav]
-    ldr r0, [sp, #0x14]
-    cmp r0, #0
-    beq _0805F388
-    ldr r1,= REG_VCOUNT
-    ldrb r1, [r1]
-    cmp r1, VCOUNT_VBLANK
-    bcs _0805F37C
-    adds r1, TOTAL_SCANLINES
+	str r0, [sp, #0x4]
+	ldr r3, [r4, o_SoundChannel_wav]
+	ldr r0, [sp, #0x14]
+	cmp r0, #0
+	beq _0805F388
+	ldr r1, = REG_VCOUNT
+	ldrb r1, [r1]
+	cmp r1, VCOUNT_VBLANK
+	bcs _0805F37C
+	adds r1, TOTAL_SCANLINES
 _0805F37C:
-    cmp r1, r0
-    bcc _0805F388
-    b _0805F60A
+	cmp r1, r0
+	bcc _0805F388
+	b _0805F60A
 
-    .pool
+	.pool
 
 _0805F388:
-    ldrb r6, [r4, o_SoundChannel_status]
-    movs r0, #0xC7
-    tst r0, r6
-    bne _0805F392
-    b _0805F600
+	ldrb r6, [r4, o_SoundChannel_status]
+	movs r0, #0xC7
+	tst r0, r6
+	bne _0805F392
+	b _0805F600
 _0805F392:
-    movs r0, #0x80
-    tst r0, r6
-    beq _0805F3C2
-    movs r0, #0x40
-    tst r0, r6
-    bne _0805F3D2
-    movs r6, #0x03
-    strb r6, [r4, o_SoundChannel_status]
-    adds r0, r3, #0x0
-    adds r0, #0x10
-    str r0, [r4, o_SoundChannel_cp]
-    ldr r0, [r3, #0x0C]
-    str r0, [r4, o_SoundChannel_ct]
-    movs r5, #0x00
-    strb r5, [r4, o_SoundChannel_ev]
-    str r5, [r4, o_SoundChannel_fw]
-    ldrb r2, [r3, #0x03]
-    movs r0, #0xC0
-    tst r0, r2
-    beq _0805F41A
-    movs r0, #0x10
-    orrs r6, r0
-    strb r6, [r4, o_SoundChannel_status]
-    b _0805F41A
+	movs r0, #0x80
+	tst r0, r6
+	beq _0805F3C2
+	movs r0, #0x40
+	tst r0, r6
+	bne _0805F3D2
+	movs r6, #0x03
+	strb r6, [r4, o_SoundChannel_status]
+	adds r0, r3, #0x0
+	adds r0, #0x10
+	str r0, [r4, o_SoundChannel_cp]
+	ldr r0, [r3, #0x0C]
+	str r0, [r4, o_SoundChannel_ct]
+	movs r5, #0x00
+	strb r5, [r4, o_SoundChannel_ev]
+	str r5, [r4, o_SoundChannel_fw]
+	ldrb r2, [r3, #0x03]
+	movs r0, #0xC0
+	tst r0, r2
+	beq _0805F41A
+	movs r0, #0x10
+	orrs r6, r0
+	strb r6, [r4, o_SoundChannel_status]
+	b _0805F41A
 _0805F3C2:
-    ldrb r5, [r4, o_SoundChannel_ev]
-    movs r0, #0x04
-    tst r0, r6
-    beq _0805F3D8
-    ldrb r0, [r4, o_SoundChannel_iel]
-    subs r0, #0x01
-    strb r0, [r4, o_SoundChannel_iel]
-    bhi _0805F428
+	ldrb r5, [r4, o_SoundChannel_ev]
+	movs r0, #0x04
+	tst r0, r6
+	beq _0805F3D8
+	ldrb r0, [r4, o_SoundChannel_iel]
+	subs r0, #0x01
+	strb r0, [r4, o_SoundChannel_iel]
+	bhi _0805F428
 _0805F3D2:
-    movs r0, #0x00
-    strb r0, [r4, o_SoundChannel_status]
-    b _0805F600
+	movs r0, #0x00
+	strb r0, [r4, o_SoundChannel_status]
+	b _0805F600
 _0805F3D8:
-    movs r0, #0x40
-    tst r0, r6
-    beq _0805F3F8
-    ldrb r0, [r4, o_SoundChannel_release]
-    muls r5, r0
-    lsrs r5, r5, #0x08
-    ldrb r0, [r4, o_SoundChannel_iev]
-    cmp r5, r0
-    bhi _0805F428
+	movs r0, #0x40
+	tst r0, r6
+	beq _0805F3F8
+	ldrb r0, [r4, o_SoundChannel_release]
+	muls r5, r0
+	lsrs r5, r5, #0x08
+	ldrb r0, [r4, o_SoundChannel_iev]
+	cmp r5, r0
+	bhi _0805F428
 _0805F3EA:
-    ldrb r5, [r4, o_SoundChannel_iev]
-    cmp r5, #0x00
-    beq _0805F3D2
-    movs r0, #0x04
-    orrs r6, r0
-    strb r6, [r4, o_SoundChannel_status]
-    b _0805F428
+	ldrb r5, [r4, o_SoundChannel_iev]
+	cmp r5, #0x00
+	beq _0805F3D2
+	movs r0, #0x04
+	orrs r6, r0
+	strb r6, [r4, o_SoundChannel_status]
+	b _0805F428
 _0805F3F8:
-    movs r2, #0x03
-    ands r2, r6
-    cmp r2, #0x02
-    bne _0805F416
-    ldrb r0, [r4, o_SoundChannel_decay]
-    muls r5, r0
-    lsrs r5, r5, #0x08
-    ldrb r0, [r4, o_SoundChannel_sustain]
-    cmp r5, r0
-    bhi _0805F428
-    adds r5, r0, #0x0
-    beq _0805F3EA
-    subs r6, #0x01
-    strb r6, [r4, o_SoundChannel_status]
-    b _0805F428
+	movs r2, #0x03
+	ands r2, r6
+	cmp r2, #0x02
+	bne _0805F416
+	ldrb r0, [r4, o_SoundChannel_decay]
+	muls r5, r0
+	lsrs r5, r5, #0x08
+	ldrb r0, [r4, o_SoundChannel_sustain]
+	cmp r5, r0
+	bhi _0805F428
+	adds r5, r0, #0x0
+	beq _0805F3EA
+	subs r6, #0x01
+	strb r6, [r4, o_SoundChannel_status]
+	b _0805F428
 _0805F416:
-    cmp r2, #0x03
-    bne _0805F428
+	cmp r2, #0x03
+	bne _0805F428
 _0805F41A:
-    ldrb r0, [r4, o_SoundChannel_attack]
-    adds r5, r5, r0
-    cmp r5, #0xFF
-    bcc _0805F428
-    movs r5, #0xFF
-    subs r6, #0x01
-    strb r6, [r4, o_SoundChannel_status]
+	ldrb r0, [r4, o_SoundChannel_attack]
+	adds r5, r5, r0
+	cmp r5, #0xFF
+	bcc _0805F428
+	movs r5, #0xFF
+	subs r6, #0x01
+	strb r6, [r4, o_SoundChannel_status]
 _0805F428:
-    strb r5, [r4, o_SoundChannel_ev]
-    ldr r0, [sp, #0x18]
-    ldrb r0, [r0, o_SoundChannel_release]
-    adds r0, #0x01
-    muls r0, r5
-    lsrs r5, r0, 4
-    ldrb r0, [r4, o_SoundChannel_rightVolume]
-    ldrb r1, [r4, o_SoundChannel_leftVolume]
-    adds r0, r0, r1
-    muls r0, r5
-    lsrs r0, r0, #0x09
-    strb r0, [r4, o_SoundChannel_er]
-    movs r0, #0x10
-    ands r0, r6
-    str r0, [sp, #0x010]
-    beq _0805F458
-    adds r0, r3, #0x0
-    adds r0, #0x10
-    ldr r1, [r3, #0x08]
-    adds r0, r0, r1
-    str r0, [sp, #0x00C]
-    ldr r0, [r3, #0x0C]
-    subs r0, r0, r1
-    str r0, [sp, #0x10]
+	strb r5, [r4, o_SoundChannel_ev]
+	ldr r0, [sp, #0x18]
+	ldrb r0, [r0, o_SoundChannel_release]
+	adds r0, #0x01
+	muls r0, r5
+	lsrs r5, r0, 4
+	ldrb r0, [r4, o_SoundChannel_rightVolume]
+	ldrb r1, [r4, o_SoundChannel_leftVolume]
+	adds r0, r0, r1
+	muls r0, r5
+	lsrs r0, r0, #0x09
+	strb r0, [r4, o_SoundChannel_er]
+	movs r0, #0x10
+	ands r0, r6
+	str r0, [sp, #0x010]
+	beq _0805F458
+	adds r0, r3, #0x0
+	adds r0, #0x10
+	ldr r1, [r3, #0x08]
+	adds r0, r0, r1
+	str r0, [sp, #0x00C]
+	ldr r0, [r3, #0x0C]
+	subs r0, r0, r1
+	str r0, [sp, #0x10]
 _0805F458:
-    ldr r5, [sp, #0x8]
-    ldr r2, [r4, o_SoundChannel_ct]
-    ldr r3, [r4, o_SoundChannel_cp]
-    adr r0, _081DD044
-    bx r0
+	ldr r5, [sp, #0x8]
+	ldr r2, [r4, o_SoundChannel_ct]
+	ldr r3, [r4, o_SoundChannel_cp]
+	adr r0, _081DD044
+	bx r0
 	.arm
 _081DD044:
 	str r8, [sp]
 	ldrb r10, [r4, o_SoundChannel_er]
-    mov r10, r10, lsl #16
-    ldrb r0, [r4, o_SoundChannel_type]
+	mov r10, r10, lsl #16
+	ldrb r0, [r4, o_SoundChannel_type]
 	tst r0, #8
 	beq _081DD19C
 _081DD07C:
@@ -400,25 +400,25 @@ _081DD234:
 	bx r0
 	.thumb
 _0805F600:
-    ldr r0, [sp, #0x004]
-    subs r0, #0x01
-    ble _0805F60A
-    adds r4, #0x40
-    b SoundMainRAM_ChanLoop
+	ldr r0, [sp, #0x004]
+	subs r0, #0x01
+	ble _0805F60A
+	adds r4, #0x40
+	b SoundMainRAM_ChanLoop
 _0805F60A:
-    ldr r0, [sp, #0x018]
-    ldr r3,= ID_NUMBER
-    str r3, [r0, #0x00]
-    add sp, #0x01C
-    pop {r0, r1, r2, r3, r4, r5, r6, r7}
-    mov r8, r0
-    mov r9, r1
-    mov r10, r2
-    mov r11, r3
-    pop {r3}
+	ldr r0, [sp, #0x018]
+	ldr r3, = ID_NUMBER
+	str r3, [r0, #0x00]
+	add sp, #0x01C
+	pop {r0, r1, r2, r3, r4, r5, r6, r7}
+	mov r8, r0
+	mov r9, r1
+	mov r10, r2
+	mov r11, r3
+	pop {r3}
 _0805F61E:
-    bx r3
-.pool
+	bx r3
+	.pool
 
 	thumb_func_start SoundMainBTM
 SoundMainBTM:
@@ -503,42 +503,42 @@ MPlayJumpTableCopy_Loop:
 	bx r12
 	thumb_func_end MPlayJumpTableCopy
 
-    .align 2, 0
-    thumb_func_start ldrb_r3_r2
+	.align 2, 0
+	thumb_func_start ldrb_r3_r2
 ldrb_r3_r2:
-    ldrb r3, [r2, #0x00]
+	ldrb r3, [r2, #0x00]
 
 @ This attempts to protect against reading anything from the BIOS ROM
 @ besides the jump table template.
 @ It assumes that the jump table template is located at the end of the ROM.
-    non_word_aligned_thumb_func_start chk_adr_r2
+	non_word_aligned_thumb_func_start chk_adr_r2
 chk_adr_r2:
-    push {r0}
-    lsrs r0, r2, 25
-    bne chk_adr_r2_done @ if adr >= 0x2000000 (i.e. not in BIOS ROM), accept it
-    ldr r0, lt_MPlayJumpTableTemplate
-    cmp r2, r0
-    bcc chk_adr_r2_reject @ if adr < gMPlayJumpTableTemplate, reject it
-    lsrs r0, r2, 14
-    beq chk_adr_r2_done @ if adr < 0x40000 (i.e. in BIOS ROM), accept it
+	push {r0}
+	lsrs r0, r2, 25
+	bne chk_adr_r2_done @ if adr >= 0x2000000 (i.e. not in BIOS ROM), accept it
+	ldr r0, lt_MPlayJumpTableTemplate
+	cmp r2, r0
+	bcc chk_adr_r2_reject @ if adr < gMPlayJumpTableTemplate, reject it
+	lsrs r0, r2, 14
+	beq chk_adr_r2_done @ if adr < 0x40000 (i.e. in BIOS ROM), accept it
 chk_adr_r2_reject:
-    movs r3, #0x00
+	movs r3, #0x00
 chk_adr_r2_done:
-    pop {r0}
-    bx lr
+	pop {r0}
+	bx lr
 
-    .align 2, 0
+	.align 2, 0
 lt_MPlayJumpTableTemplate: .word gMPlayJumpTableTemplate
 
-    thumb_func_start ld_r3_tp_adr_i
+	thumb_func_start ld_r3_tp_adr_i
 ld_r3_tp_adr_i:
-    ldr r2, [r1, #0x40]
-    non_word_aligned_thumb_func_start ld_r3_r2_i_sub
+	ldr r2, [r1, #0x40]
+	non_word_aligned_thumb_func_start ld_r3_r2_i_sub
 ld_r3_r2_i_sub:
-    adds r3, r2, #0x1
-    str r3, [r1, #0x40]
-    ldrb r3, [r2, #0x00]
-    b chk_adr_r2
+	adds r3, r2, #0x1
+	str r3, [r1, #0x40]
+	ldrb r3, [r2, #0x00]
+	b chk_adr_r2
 	thumb_func_end ld_r3_tp_adr_i
 
 	thumb_func_start ply_goto
@@ -560,7 +560,7 @@ ply_goto_1:
 	pop {r0}
 	bx r0
 	thumb_func_end ply_goto
-    
+
 	thumb_func_start ply_patt
 ply_patt:
 	ldrb r2, [r1, o_MusicPlayerTrack_patternLevel]
@@ -780,51 +780,51 @@ ply_port:
 	.pool
 	thumb_func_end ply_port
 
-    thumb_func_start SoundVSync_rev01
+	thumb_func_start SoundVSync_rev01
 SoundVSync_rev01:
-    ldr r0, lt2_SOUND_INFO_PTR
-    ldr r0, [r0]
+	ldr r0, lt2_SOUND_INFO_PTR
+	ldr r0, [r0]
 
     @ Exit the function if ident is not ID_NUMBER or ID_NUMBER+1.
-    ldr r2, lt2_ID_NUMBER
-    ldr r3, [r0, o_SoundInfo_ident]
-    subs r3, r2
-    cmp r3, 1
-    bhi m4aSoundVSync_Done
+	ldr r2, lt2_ID_NUMBER
+	ldr r3, [r0, o_SoundInfo_ident]
+	subs r3, r2
+	cmp r3, 1
+	bhi m4aSoundVSync_Done
 
     @ Decrement the PCM DMA counter. If it reaches 0, we need to do a DMA.
-    ldrb r1, [r0, o_SoundInfo_pcmDmaCounter]
-    subs r1, 1
-    strb r1, [r0, o_SoundInfo_pcmDmaCounter]
-    bgt m4aSoundVSync_Done
+	ldrb r1, [r0, o_SoundInfo_pcmDmaCounter]
+	subs r1, 1
+	strb r1, [r0, o_SoundInfo_pcmDmaCounter]
+	bgt m4aSoundVSync_Done
 
     @ Reload the PCM DMA counter.
-    ldrb r1, [r0, o_SoundInfo_pcmDmaPeriod]
-    strb r1, [r0, o_SoundInfo_pcmDmaCounter]
+	ldrb r1, [r0, o_SoundInfo_pcmDmaPeriod]
+	strb r1, [r0, o_SoundInfo_pcmDmaCounter]
 
-    ldr r2,= REG_DMA1
+	ldr r2, = REG_DMA1
 
-    ldr r1, [r2, #0x08] @ DMA1CNT
-    lsls r1, 7
-    bcc m4aSoundVSync_SkipDMA1
+	ldr r1, [r2, #0x08] @ DMA1CNT
+	lsls r1, 7
+	bcc m4aSoundVSync_SkipDMA1
 
-    ldr r1, =((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4
-    str r1, [r2, #0x08] @ DMA1CNT
+	ldr r1, =((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4
+	str r1, [r2, #0x08] @ DMA1CNT
 
 m4aSoundVSync_SkipDMA1:
 
     @ turn off DMA1
-    movs r1, DMA_32BIT >> 8
-    lsls r1, 8
-    strh r1, [r2, #0x0A] @ DMA1CNT_H
+	movs r1, DMA_32BIT >> 8
+	lsls r1, 8
+	strh r1, [r2, #0x0A] @ DMA1CNT_H
 
     @ turn on DMA1 direct-sound FIFO mode
-    movs r1, (DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT) >> 8
-    lsls r1, 8 @ LSB is 0, so DMA_SRC_INC is used (destination is always fixed in FIFO mode)
-    strh r1, [r2, #0x0A] @ DMA1CNT_H
+	movs r1, (DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT) >> 8
+	lsls r1, 8 @ LSB is 0, so DMA_SRC_INC is used (destination is always fixed in FIFO mode)
+	strh r1, [r2, #0x0A] @ DMA1CNT_H
 
 m4aSoundVSync_Done:
-    bx lr
+	bx lr
 
 	.pool
 	thumb_func_end SoundVSync_rev01
@@ -1576,7 +1576,7 @@ clear_modM:
 	bx lr
 	thumb_func_end clear_modM
 
-    thumb_func_start ld_r3_tp_adr_i_unchecked
+	thumb_func_start ld_r3_tp_adr_i_unchecked
 ld_r3_tp_adr_i_unchecked:
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	adds r3, r2, 1
@@ -1609,4 +1609,4 @@ ply_mod:
 	bx r12
 	thumb_func_end ply_mod
 
-.align 2, 0 @ Don't pad with nop.
+	.align 2, 0 @ Don't pad with nop.

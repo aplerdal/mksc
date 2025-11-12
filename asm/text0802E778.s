@@ -1,7 +1,7 @@
-    .include "asm/macros.inc"
+	.include "asm/macros.inc"
 
-    .syntax unified
-    .text
+	.syntax unified
+	.text
 
 	thumb_func_start sub_802E778
 sub_802E778:
@@ -467,7 +467,7 @@ _0802EAA8:
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	b _0802EAE4
-	.byte 0x00, 0x00
+	.align 2, 0
 _0802EADC: .4byte 0x080DE1EC
 _0802EAE0:
 	movs r0, #0x80
@@ -476,199 +476,199 @@ _0802EAE4:
 	pop {r4}
 	pop {r1}
 	bx r1
-	.byte 0x00, 0x00
-    thumb_func_start sub_802EAEC
+	.align 2, 0
+	thumb_func_start sub_802EAEC
 sub_802EAEC:
-    push {r4, r5, r6, lr}
-    lsls r0, r0, #0x10
-    lsls r1, r1, #0x10
-    lsrs r4, r1, #0x10
-    movs r6, #0x00
-    movs r5, #0x00
-    lsrs r3, r0, #0x10
-    cmp r0, #0x00
-    ble _0802EB0A
-    lsls r1, r4, #0x10
-    asrs r0, r1, #0x10
-    mvns r0, r0
-    lsrs r2, r0, #0x1F
-    adds r0, r1, #0x0
-    b _0802EB14
+	push {r4, r5, r6, lr}
+	lsls r0, r0, #0x10
+	lsls r1, r1, #0x10
+	lsrs r4, r1, #0x10
+	movs r6, #0x00
+	movs r5, #0x00
+	lsrs r3, r0, #0x10
+	cmp r0, #0x00
+	ble _0802EB0A
+	lsls r1, r4, #0x10
+	asrs r0, r1, #0x10
+	mvns r0, r0
+	lsrs r2, r0, #0x1F
+	adds r0, r1, #0x0
+	b _0802EB14
 _0802EB0A:
-    lsls r0, r4, #0x10
-    movs r2, #0x03
-    cmp r0, #0x00
-    ble _0802EB14
-    movs r2, #0x02
+	lsls r0, r4, #0x10
+	movs r2, #0x03
+	cmp r0, #0x00
+	ble _0802EB14
+	movs r2, #0x02
 _0802EB14:
-    cmp r2, #0x01
-    beq _0802EB30
-    cmp r2, #0x01
-    bgt _0802EB22
-    cmp r2, #0x00
-    beq _0802EB2C
-    b _0802EB74
+	cmp r2, #0x01
+	beq _0802EB30
+	cmp r2, #0x01
+	bgt _0802EB22
+	cmp r2, #0x00
+	beq _0802EB2C
+	b _0802EB74
 _0802EB22:
-    cmp r2, #0x02
-    beq _0802EB42
-    cmp r2, #0x03
-    beq _0802EB56
-    b _0802EB74
+	cmp r2, #0x02
+	beq _0802EB42
+	cmp r2, #0x03
+	beq _0802EB56
+	b _0802EB74
 _0802EB2C:
-    lsls r0, r3, #0x18
-    b _0802EB6C
+	lsls r0, r3, #0x18
+	b _0802EB6C
 _0802EB30:
-    cmp r0, #0x00
-    bne _0802EB3A
-    movs r0, #0x80
-    lsls r0, r0, #0x07
-    b _0802EBBA
+	cmp r0, #0x00
+	bne _0802EB3A
+	movs r0, #0x80
+	lsls r0, r0, #0x07
+	b _0802EBBA
 _0802EB3A:
-    lsls r0, r3, #0x18
-    lsrs r6, r0, #0x18
-    lsls r0, r4, #0x18
-    b _0802EB72
+	lsls r0, r3, #0x18
+	lsrs r6, r0, #0x18
+	lsls r0, r4, #0x18
+	b _0802EB72
 _0802EB42:
-    cmp r3, #0x00
-    bne _0802EB4C
-    movs r0, #0x80
-    lsls r0, r0, #0x08
-    b _0802EBBA
+	cmp r3, #0x00
+	bne _0802EB4C
+	movs r0, #0x80
+	lsls r0, r0, #0x08
+	b _0802EBBA
 _0802EB4C:
-    negs r0, r3
-    lsls r0, r0, #0x18
-    lsrs r6, r0, #0x18
-    lsls r0, r4, #0x18
-    b _0802EB72
+	negs r0, r3
+	lsls r0, r0, #0x18
+	lsrs r6, r0, #0x18
+	lsls r0, r4, #0x18
+	b _0802EB72
 _0802EB56:
-    cmp r3, #0x00
-    bne _0802EB5E
-    movs r0, #0x00
-    b _0802EBBA
+	cmp r3, #0x00
+	bne _0802EB5E
+	movs r0, #0x00
+	b _0802EBBA
 _0802EB5E:
-    cmp r0, #0x00
-    bne _0802EB68
-    movs r0, #0xC0
-    lsls r0, r0, #0x08
-    b _0802EBBA
+	cmp r0, #0x00
+	bne _0802EB68
+	movs r0, #0xC0
+	lsls r0, r0, #0x08
+	b _0802EBBA
 _0802EB68:
-    negs r0, r3
-    lsls r0, r0, #0x18
+	negs r0, r3
+	lsls r0, r0, #0x18
 _0802EB6C:
-    lsrs r6, r0, #0x18
-    negs r0, r4
-    lsls r0, r0, #0x18
+	lsrs r6, r0, #0x18
+	negs r0, r4
+	lsls r0, r0, #0x18
 _0802EB72:
-    lsrs r5, r0, #0x18
+	lsrs r5, r0, #0x18
 _0802EB74:
-    ldr r1, _0802EB90 @ =0x080DE3FC
-    lsls r0, r5, #0x07
-    subs r0, #0x81
-    adds r0, r6, r0
-    lsls r0, r0, #0x01
-    adds r0, r0, r1
-    ldrh r1, [r0, #0x00]
-    cmp r2, #0x02
-    beq _0802EBA0
-    cmp r2, #0x02
-    bgt _0802EB94
-    cmp r2, #0x01
-    beq _0802EB9A
-    b _0802EBB6
+	ldr r1, _0802EB90 @ =0x080DE3FC
+	lsls r0, r5, #0x07
+	subs r0, #0x81
+	adds r0, r6, r0
+	lsls r0, r0, #0x01
+	adds r0, r0, r1
+	ldrh r1, [r0, #0x00]
+	cmp r2, #0x02
+	beq _0802EBA0
+	cmp r2, #0x02
+	bgt _0802EB94
+	cmp r2, #0x01
+	beq _0802EB9A
+	b _0802EBB6
 _0802EB90: .4byte 0x080DE3FC
 _0802EB94:
-    cmp r2, #0x03
-    beq _0802EBB0
-    b _0802EBB6
+	cmp r2, #0x03
+	beq _0802EBB0
+	b _0802EBB6
 _0802EB9A:
-    movs r0, #0x80
-    lsls r0, r0, #0x08
-    b _0802EBB4
+	movs r0, #0x80
+	lsls r0, r0, #0x08
+	b _0802EBB4
 _0802EBA0:
-    movs r0, #0x80
-    lsls r0, r0, #0x08
-    adds r1, r1, r0
-    ldr r0, _0802EBAC @ =0x0000FFFF
-    ands r1, r0
-    b _0802EBB6
+	movs r0, #0x80
+	lsls r0, r0, #0x08
+	adds r1, r1, r0
+	ldr r0, _0802EBAC @ =0x0000FFFF
+	ands r1, r0
+	b _0802EBB6
 _0802EBAC: .4byte 0x0000FFFF
 _0802EBB0:
-    movs r0, #0x80
-    lsls r0, r0, #0x09
+	movs r0, #0x80
+	lsls r0, r0, #0x09
 _0802EBB4:
-    subs r1, r0, r1
+	subs r1, r0, r1
 _0802EBB6:
-    lsls r0, r1, #0x10
-    lsrs r0, r0, #0x10
+	lsls r0, r1, #0x10
+	lsrs r0, r0, #0x10
 _0802EBBA:
-    pop {r4, r5, r6}
-    pop {r1}
-    bx r1
-    thumb_func_start sub_802EBC0
+	pop {r4, r5, r6}
+	pop {r1}
+	bx r1
+	thumb_func_start sub_802EBC0
 sub_802EBC0:
-    push {r4, r5, r6, lr}
-    cmp r0, #0x00
-    bge _0802EBC8
-    negs r0, r0
+	push {r4, r5, r6, lr}
+	cmp r0, #0x00
+	bge _0802EBC8
+	negs r0, r0
 _0802EBC8:
-    ldr r2, _0802EC18 @ =0x7FFFFFFF
-    adds r4, r2, #0x0
-    ands r4, r0
-    cmp r1, #0x00
-    bge _0802EBD4
-    negs r1, r1
+	ldr r2, _0802EC18 @ =0x7FFFFFFF
+	adds r4, r2, #0x0
+	ands r4, r0
+	cmp r1, #0x00
+	bge _0802EBD4
+	negs r1, r1
 _0802EBD4:
-    adds r5, r2, #0x0
-    ands r5, r1
-    cmp r4, r5
-    bcs _0802EBE2
-    adds r0, r4, #0x0
-    adds r4, r5, #0x0
-    adds r5, r0, #0x0
+	adds r5, r2, #0x0
+	ands r5, r1
+	cmp r4, r5
+	bcs _0802EBE2
+	adds r0, r4, #0x0
+	adds r4, r5, #0x0
+	adds r5, r0, #0x0
 _0802EBE2:
-    cmp r5, #0x00
-    beq _0802EC0E
-    movs r6, #0x02
+	cmp r5, #0x00
+	beq _0802EC0E
+	movs r6, #0x02
 _0802EBE8:
-    adds r0, r5, #0x0
-    adds r1, r4, #0x0
-    bl Div
-    adds r2, r0, #0x0
-    adds r0, r2, #0x0
-    muls r0, r2
-    adds r2, r0, #0x0
-    adds r1, r2, #0x4
-    bl Div
-    adds r2, r0, #0x0
-    lsls r0, r2, #0x01
-    muls r0, r4
-    adds r4, r4, r0
-    muls r5, r2
-    subs r6, #0x01
-    cmp r6, #0x00
-    bge _0802EBE8
+	adds r0, r5, #0x0
+	adds r1, r4, #0x0
+	bl Div
+	adds r2, r0, #0x0
+	adds r0, r2, #0x0
+	muls r0, r2
+	adds r2, r0, #0x0
+	adds r1, r2, #0x4
+	bl Div
+	adds r2, r0, #0x0
+	lsls r0, r2, #0x01
+	muls r0, r4
+	adds r4, r4, r0
+	muls r5, r2
+	subs r6, #0x01
+	cmp r6, #0x00
+	bge _0802EBE8
 _0802EC0E:
-    adds r0, r4, #0x0
-    pop {r4, r5, r6}
-    pop {r1}
-    bx r1
-    .byte 0x00, 0x00
+	adds r0, r4, #0x0
+	pop {r4, r5, r6}
+	pop {r1}
+	bx r1
+	.align 2, 0
 _0802EC18: .4byte 0x7FFFFFFF
-    .byte 0x00, 0xB5, 0x00, 0x04, 0x00, 0x14, 0x09, 0x04, 0x09, 0x14, 0x32, 0xF0, 0x8F, 0xFB, 0x80, 0x21
-    .byte 0xC9, 0x01, 0x40, 0x18, 0x00, 0x04, 0x00, 0x0C, 0x02, 0xBC, 0x08, 0x47
-    thumb_func_start sub_802EC38
+	.byte 0x00, 0xB5, 0x00, 0x04, 0x00, 0x14, 0x09, 0x04, 0x09, 0x14, 0x32, 0xF0, 0x8F, 0xFB, 0x80, 0x21
+	.byte 0xC9, 0x01, 0x40, 0x18, 0x00, 0x04, 0x00, 0x0C, 0x02, 0xBC, 0x08, 0x47
+	thumb_func_start sub_802EC38
 sub_802EC38:
-    push {lr}
-    lsls r0, r0, #0x10
-    asrs r0, r0, #0x10
-    lsls r1, r1, #0x10
-    asrs r1, r1, #0x10
-    bl ArcTan2
-    lsls r0, r0, #0x10
-    movs r1, #0x80
-    lsls r1, r1, #0x17
-    adds r0, r0, r1
-    lsrs r0, r0, #0x10
-    pop {r1}
-    bx r1
-    
+	push {lr}
+	lsls r0, r0, #0x10
+	asrs r0, r0, #0x10
+	lsls r1, r1, #0x10
+	asrs r1, r1, #0x10
+	bl ArcTan2
+	lsls r0, r0, #0x10
+	movs r1, #0x80
+	lsls r1, r1, #0x17
+	adds r0, r0, r1
+	lsrs r0, r0, #0x10
+	pop {r1}
+	bx r1
+
