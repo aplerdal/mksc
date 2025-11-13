@@ -26,15 +26,21 @@ rom_header:
 	.byte 0x21, 0xd4, 0xf8, 0x07
 
     // title
+	.global _080000A0
+_080000A0:
 	.ascii "MARIO KART\0\0"
 
     // game code
+	.global _080000AC
+_080000AC:
 	.ascii "AMKE"
 
     // maker code
 	.ascii "01"
 
     // fixed value
+	.global _080000B2
+_080000B2:
 	.byte 0x96
 
     // main unit code

@@ -7,6 +7,7 @@ typedef struct
 } Register;
 
 void main_setKeyRepeat(int initialRepeatWait, int nextRepeatWait);
+void main_vblankHandler();
 u16 main_getKeys(void);
 u16 main_getTriggerKeys(void);
 u16 main_getRepeatTriggerKeys(void);

@@ -6,7 +6,7 @@
 #include "sio2.h"
 #include "main.h"
 
-static void vblankHandler(void);
+void main_vblankHandler(void);
 static void initKeys(void);
 static void updateKeys(void);
 
@@ -52,8 +52,8 @@ void AgbMain(void)
     REG_DISPSTAT = 24;
     irq_updateMask(IRQ_UPDATE_MODE_SET, IRQ_MASK_VBLANK | IRQ_MASK_IME);
     irq_updateMask(IRQ_UPDATE_MODE_OR, IRQ_MASK_CARTRIDGE | IRQ_MASK_IME);
-    vblankFunc = vblankHandler;
-    if (!vblankHandler)
+    vblankFunc = main_vblankHandler;
+    if (!main_vblankHandler)
         vblankFunc = main_dummyIrqHandler;
     irq_setHandler(IRQ_ID_VBLANK, vblankFunc);
     vcountFunc = vcount_irqHandler;
@@ -85,7 +85,7 @@ void AgbMain(void)
     SoftReset(255);
 }
 
-static void vblankHandler(void)
+void main_vblankHandler(void)
 {
     SceneState* sceneState = &gSceneState;
 
