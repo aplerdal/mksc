@@ -17,6 +17,7 @@ unk_030029B4 = 0x030029B4;
 unk_030029D4 = 0x030029D4;
 unk_03002C40 = 0x03002C40;
 unk_03002C58 = 0x03002C58;
+unk_03002C60 = 0x03002C60;
 
 sio2_sMPlayerId = 0x03002C80;
 col_sCpoiStartIndicesPassive = 0x03002CA0;

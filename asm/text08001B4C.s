@@ -2,24 +2,6 @@
 
 	.syntax unified
 	.text
-		thumb_func_start sub_8001B30
-sub_8001B30: @ 0x08001B30
-	ldr r1, _08001B48 @ =0x03002C60
-	adds r3, r1, #0
-	movs r2, #0
-	adds r0, r1, #0
-	adds r0, #0x12
-_08001B3A:
-	strh r2, [r0]
-	subs r0, #2
-	cmp r0, r3
-	bge _08001B3A
-	movs r0, #1
-	strh r0, [r1, #0xa]
-	bx lr
-	.align 2, 0
-_08001B48: .4byte 0x03002C60
-
 	thumb_func_start sub_8001B4C
 sub_8001B4C: @ 0x08001B4C
 	ldr r0, _08001B5C @ =0x03002C60
