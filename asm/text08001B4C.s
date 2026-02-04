@@ -2785,7 +2785,7 @@ _08003106:
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl main_frameProc
-	ldr r0, _08003168 @ =_080B83A4
+	ldr r0, _08003168 @ =dword_80B83A4
 	ldr r2, _0800316C @ =0xFFFFF200
 	adds r1, r4, r2
 	bl LZ77UnCompWram
@@ -2812,7 +2812,7 @@ _08003158: .4byte 0x80000040
 _0800315C: .4byte _080627D4
 _08003160: .4byte _080B8534
 _08003164: .4byte 0x02013A00
-_08003168: .4byte _080B83A4
+_08003168: .4byte dword_80B83A4
 _0800316C: .4byte 0xFFFFF200
 _08003170: .4byte 0xFFFFEE00
 _08003174: .4byte 0x06012400
@@ -3497,7 +3497,7 @@ _08003728:
 	ldr r0, [r0]
 	cmp r1, r0
 	beq _080037D8
-	ldr r4, _0800376C @ =_080CAE30
+	ldr r4, _0800376C @ =dword_80CAE30
 	movs r0, #1
 	bl pltt_getBuffer
 	adds r1, r0, #0
@@ -3520,7 +3520,7 @@ _08003728:
 	.align 2, 0
 _08003764: .4byte 0x03002C80
 _08003768: .4byte 0x00001088
-_0800376C: .4byte _080CAE30
+_0800376C: .4byte dword_80CAE30
 _08003770: .4byte 0x0000108C
 _08003774: .4byte 0x00001090
 _08003778:
@@ -3580,7 +3580,7 @@ _080037D8:
 	subs r0, #1
 	cmp r0, #2
 	bhi _08003832
-	ldr r4, _08003814 @ =_080CAE30
+	ldr r4, _08003814 @ =dword_80CAE30
 	movs r0, #1
 	bl pltt_getBuffer
 	adds r1, r0, #0
@@ -3600,7 +3600,7 @@ _080037D8:
 	.align 2, 0
 _0800380C: .4byte 0x00001090
 _08003810: .4byte 0x0000108C
-_08003814: .4byte _080CAE30
+_08003814: .4byte dword_80CAE30
 _08003818: .4byte 0x00001094
 _0800381C:
 	adds r4, #0x22
@@ -3679,7 +3679,7 @@ _080038B4: .4byte _080C8674
 sub_80038B8: @ 0x080038B8
 	push {r4, r5, lr}
 	adds r5, r0, #0
-	ldr r0, _08003914 @ =_080CC748
+	ldr r0, _08003914 @ =title_sObjTiles4
 	ldr r4, _08003918 @ =0x02016C00
 	adds r1, r4, #0
 	bl LZ77UnCompWram
@@ -3722,7 +3722,7 @@ _0800390E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08003914: .4byte _080CC748
+_08003914: .4byte title_sObjTiles4
 _08003918: .4byte 0x02016C00
 _0800391C: .4byte 0x06016800
 _08003920: .4byte 0x80000200
@@ -5393,7 +5393,7 @@ _08004594:
 	movs r0, #1
 	bl pltt_setDirtyFlag
 	bl main_frameProc
-	ldr r0, _080047B0 @ =_0807D1E8
+	ldr r0, _080047B0 @ =dword_807D1E8
 	ldr r4, _080047B4 @ =0x02008400
 	adds r1, r4, #0
 	bl LZ77UnCompWram
@@ -5560,7 +5560,7 @@ _080047A0: .4byte _080AE03C
 _080047A4: .4byte _0807CD48
 _080047A8: .4byte _080AF2C0
 _080047AC: .4byte _080AF300
-_080047B0: .4byte _0807D1E8
+_080047B0: .4byte dword_807D1E8
 _080047B4: .4byte 0x02008400
 _080047B8: .4byte 0x06008000
 _080047BC: .4byte 0x80000600
@@ -7543,7 +7543,7 @@ _080056E6:
 	bl CpuSet
 	movs r0, #1
 	bl pltt_setDirtyFlag
-	ldr r0, _080057F4 @ =_080A97F8
+	ldr r0, _080057F4 @ =dword_80A97F8
 	ldr r5, _080057F8 @ =0x0200C400
 	adds r1, r5, #0
 	bl LZ77UnCompWram
@@ -7553,7 +7553,7 @@ _080056E6:
 	adds r1, r5, #0
 	adds r3, r6, #0
 	bl dmaq_enqueue
-	ldr r0, _08005804 @ =_080A9E2C
+	ldr r0, _08005804 @ =dword_80A9E2C
 	movs r1, #0xc0
 	lsls r1, r1, #5
 	adds r4, r5, r1
@@ -7565,7 +7565,7 @@ _080056E6:
 	adds r3, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _0800580C @ =_080AA56C
+	ldr r0, _0800580C @ =dword_80AA56C
 	adds r1, r5, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -7591,13 +7591,13 @@ _080057E4: .4byte 0x06004000
 _080057E8: .4byte 0x80000200
 _080057EC: .4byte 0x01000140
 _080057F0: .4byte _080AAD30
-_080057F4: .4byte _080A97F8
+_080057F4: .4byte dword_80A97F8
 _080057F8: .4byte 0x0200C400
 _080057FC: .4byte 0x06005000
 _08005800: .4byte 0x80000C00
-_08005804: .4byte _080A9E2C
+_08005804: .4byte dword_80A9E2C
 _08005808: .4byte 0x06006800
-_0800580C: .4byte _080AA56C
+_0800580C: .4byte dword_80AA56C
 _08005810:
 	mov r0, sl
 	cmp r0, #5
@@ -8270,7 +8270,7 @@ sub_8005CB0: @ 0x08005CB0
 	bl CpuFastSet
 	movs r0, #1
 	bl pltt_setDirtyFlag
-	ldr r0, _08005D88 @ =_0807D1E8
+	ldr r0, _08005D88 @ =dword_807D1E8
 	ldr r4, _08005D8C @ =0x02008400
 	adds r1, r4, #0
 	bl LZ77UnCompWram
@@ -8310,7 +8310,7 @@ _08005D78: .4byte 0x000011FE
 _08005D7C: .4byte 0x0000FFF3
 _08005D80: .4byte 0x00001204
 _08005D84: .4byte 0x0000FFFC
-_08005D88: .4byte _0807D1E8
+_08005D88: .4byte dword_807D1E8
 _08005D8C: .4byte 0x02008400
 _08005D90: .4byte 0x06008000
 _08005D94: .4byte 0x80000600
@@ -10480,7 +10480,7 @@ _08006E4A:
 	mov r2, r8
 	cmp r2, #0
 	beq _08006F2C
-	ldr r0, _08007088 @ =_0807D1E8
+	ldr r0, _08007088 @ =dword_807D1E8
 	ldr r4, _0800708C @ =0x02008400
 	adds r1, r4, #0
 	bl LZ77UnCompWram
@@ -10686,7 +10686,7 @@ _08007078: .4byte 0x81000C00
 _0800707C: .4byte _080AE03C
 _08007080: .4byte _0807CD48
 _08007084: .4byte _080AF2C0
-_08007088: .4byte _0807D1E8
+_08007088: .4byte dword_807D1E8
 _0800708C: .4byte 0x02008400
 _08007090: .4byte 0x06008000
 _08007094: .4byte 0x80000600
@@ -18009,7 +18009,7 @@ _0800AA70:
 	mov r1, sb
 	cmp r1, #0
 	beq _0800AB3A
-	ldr r0, _0800AB60 @ =_0807D1E8
+	ldr r0, _0800AB60 @ =dword_807D1E8
 	ldr r4, _0800AB64 @ =0x02008400
 	adds r1, r4, #0
 	bl LZ77UnCompWram
@@ -18083,7 +18083,7 @@ _0800AB3A:
 	.align 2, 0
 _0800AB58: .4byte _080B164C
 _0800AB5C: .4byte _080D94A0
-_0800AB60: .4byte _0807D1E8
+_0800AB60: .4byte dword_807D1E8
 _0800AB64: .4byte 0x02008400
 _0800AB68: .4byte 0x06008000
 _0800AB6C: .4byte 0x80000600
@@ -21600,7 +21600,7 @@ sub_800C78C: @ 0x0800C78C
 	push {r5, r6}
 	adds r4, r0, #0
 	adds r5, r1, #0
-	ldr r0, _0800C934 @ =_080A97F8
+	ldr r0, _0800C934 @ =dword_80A97F8
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -21610,7 +21610,7 @@ sub_800C78C: @ 0x0800C78C
 	adds r3, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _0800C93C @ =_080A9E2C
+	ldr r0, _0800C93C @ =dword_80A9E2C
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -21621,7 +21621,7 @@ sub_800C78C: @ 0x0800C78C
 	adds r3, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _0800C940 @ =_080AA56C
+	ldr r0, _0800C940 @ =dword_80AA56C
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -21751,10 +21751,10 @@ sub_800C78C: @ 0x0800C78C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800C934: .4byte _080A97F8
+_0800C934: .4byte dword_80A97F8
 _0800C938: .4byte 0x80000C00
-_0800C93C: .4byte _080A9E2C
-_0800C940: .4byte _080AA56C
+_0800C93C: .4byte dword_80A9E2C
+_0800C940: .4byte dword_80AA56C
 _0800C944: .4byte _080ACAFC
 _0800C948: .4byte 0x80000600
 _0800C94C: .4byte _080ABEFC
@@ -22610,7 +22610,7 @@ _0800D046:
 	adds r3, r7, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _0800D120 @ =_0807D1E8
+	ldr r0, _0800D120 @ =dword_807D1E8
 	adds r1, r5, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -22682,7 +22682,7 @@ _0800D110: .4byte 0x000011E2
 _0800D114: .4byte 0x06017460
 _0800D118: .4byte _080B3718
 _0800D11C: .4byte 0x06007C00
-_0800D120: .4byte _0807D1E8
+_0800D120: .4byte dword_807D1E8
 _0800D124: .4byte 0x06004000
 _0800D128: .4byte 0x80000600
 _0800D12C: .4byte 0x00001128
@@ -28193,13 +28193,13 @@ singlelink_main: @ 0x0800FD18
 	ldr r0, _0801005C @ =0x04000128
 	strh r2, [r0]
 	ldr r1, _08010060 @ =0x020378FC
-	ldr r0, _08010064 @ =_080A97F8
+	ldr r0, _08010064 @ =dword_80A97F8
 	str r0, [r1]
 	subs r1, #4
-	ldr r0, _08010068 @ =_080A9E2C
+	ldr r0, _08010068 @ =dword_80A9E2C
 	str r0, [r1]
 	subs r1, #4
-	ldr r0, _0801006C @ =_080AA56C
+	ldr r0, _0801006C @ =dword_80AA56C
 	str r0, [r1]
 	subs r1, #4
 	ldr r0, _08010070 @ =_080C3870
@@ -28211,7 +28211,7 @@ singlelink_main: @ 0x0800FD18
 	ldr r0, _0801007C @ =_0807CD48
 	str r0, [r1]
 	subs r1, #4
-	ldr r0, _08010080 @ =_0807D1E8
+	ldr r0, _08010080 @ =dword_807D1E8
 	str r0, [r1]
 	subs r1, #4
 	ldr r0, _08010084 @ =_0807DA94
@@ -28238,7 +28238,7 @@ singlelink_main: @ 0x0800FD18
 	ldr r0, _080100A0 @ =_080C41BC
 	str r0, [r1]
 	subs r1, #4
-	ldr r0, _080100A4 @ =_080C4784
+	ldr r0, _080100A4 @ =dword_80C4784
 	str r0, [r1]
 	subs r1, #4
 	ldr r0, _080100A8 @ =_080C400C
@@ -28588,14 +28588,14 @@ _08010054: .4byte 0x030029C4
 _08010058: .4byte 0x03002C50
 _0801005C: .4byte 0x04000128
 _08010060: .4byte 0x020378FC
-_08010064: .4byte _080A97F8
-_08010068: .4byte _080A9E2C
-_0801006C: .4byte _080AA56C
+_08010064: .4byte dword_80A97F8
+_08010068: .4byte dword_80A9E2C
+_0801006C: .4byte dword_80AA56C
 _08010070: .4byte _080C3870
 _08010074: .4byte 0x020378EC
 _08010078: .4byte _080C2FA8
 _0801007C: .4byte _0807CD48
-_08010080: .4byte _0807D1E8
+_08010080: .4byte dword_807D1E8
 _08010084: .4byte _0807DA94
 _08010088: .4byte _0807DB98
 _0801008C: .4byte _080B2270
@@ -28604,7 +28604,7 @@ _08010094: .4byte _080C3B68
 _08010098: .4byte _080C3C74
 _0801009C: .4byte _080C3E08
 _080100A0: .4byte _080C41BC
-_080100A4: .4byte _080C4784
+_080100A4: .4byte dword_80C4784
 _080100A8: .4byte _080C400C
 _080100AC: .4byte _080BB758
 _080100B0: .4byte 0x020378B0
@@ -34749,7 +34749,7 @@ _080131E8:
 	adds r0, r4, #0
 	movs r2, #0x10
 	bl CpuFastSet
-	ldr r0, _080134E0 @ =_0807D1E8
+	ldr r0, _080134E0 @ =dword_807D1E8
 	ldr r4, _080134E4 @ =0x02010400
 	adds r1, r4, #0
 	bl LZ77UnCompWram
@@ -34760,7 +34760,7 @@ _080131E8:
 	adds r3, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _080134F0 @ =_080A97F8
+	ldr r0, _080134F0 @ =dword_80A97F8
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -34770,7 +34770,7 @@ _080131E8:
 	adds r3, r5, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _080134FC @ =_080A9E2C
+	ldr r0, _080134FC @ =dword_80A9E2C
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -34779,7 +34779,7 @@ _080131E8:
 	adds r3, r5, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _08013504 @ =_080AA56C
+	ldr r0, _08013504 @ =dword_80AA56C
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -35019,16 +35019,16 @@ _080134D0: .4byte 0x0203EC14
 _080134D4: .4byte 0x81000C00
 _080134D8: .4byte _080C3A8C
 _080134DC: .4byte _0807CD48
-_080134E0: .4byte _0807D1E8
+_080134E0: .4byte dword_807D1E8
 _080134E4: .4byte 0x02010400
 _080134E8: .4byte 0x06004000
 _080134EC: .4byte 0x80000600
-_080134F0: .4byte _080A97F8
+_080134F0: .4byte dword_80A97F8
 _080134F4: .4byte 0x06008000
 _080134F8: .4byte 0x80000C00
-_080134FC: .4byte _080A9E2C
+_080134FC: .4byte dword_80A9E2C
 _08013500: .4byte 0x06009800
-_08013504: .4byte _080AA56C
+_08013504: .4byte dword_80AA56C
 _08013508: .4byte 0x0600B000
 _0801350C: .4byte _080C3E08
 _08013510: .4byte 0x0600C800
@@ -37347,7 +37347,7 @@ _080146F0:
 	bl LZ77UnCompWram
 	movs r0, #1
 	bl pltt_setDirtyFlag
-	ldr r0, _08014810 @ =_0807D1E8
+	ldr r0, _08014810 @ =dword_807D1E8
 	adds r1, r5, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -37356,7 +37356,7 @@ _080146F0:
 	adds r2, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _08014818 @ =_080A97F8
+	ldr r0, _08014818 @ =dword_80A97F8
 	adds r1, r5, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -37368,7 +37368,7 @@ _080146F0:
 	adds r3, r4, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _08014820 @ =_080A9E2C
+	ldr r0, _08014820 @ =dword_80A9E2C
 	adds r1, r5, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -37379,7 +37379,7 @@ _080146F0:
 	adds r3, r4, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _08014824 @ =_080AA56C
+	ldr r0, _08014824 @ =dword_80AA56C
 	adds r1, r5, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -37436,12 +37436,12 @@ _080146F0:
 _08014804: .4byte 0x0000FFFF
 _08014808: .4byte _0807CD48
 _0801480C: .4byte _080B2068
-_08014810: .4byte _0807D1E8
+_08014810: .4byte dword_807D1E8
 _08014814: .4byte 0x80000150
-_08014818: .4byte _080A97F8
+_08014818: .4byte dword_80A97F8
 _0801481C: .4byte 0x80000C00
-_08014820: .4byte _080A9E2C
-_08014824: .4byte _080AA56C
+_08014820: .4byte dword_80A9E2C
+_08014824: .4byte dword_80AA56C
 _08014828: .4byte _080BB758
 _0801482C: .4byte 0x80000600
 _08014830: .4byte _080B29C4
@@ -38815,7 +38815,7 @@ sub_801534C: @ 0x0801534C
 	push {r5, r6}
 	adds r4, r0, #0
 	adds r5, r1, #0
-	ldr r0, _080154FC @ =_0807D1E8
+	ldr r0, _080154FC @ =dword_807D1E8
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -38826,7 +38826,7 @@ sub_801534C: @ 0x0801534C
 	mov r3, sb
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _08015504 @ =_080A97F8
+	ldr r0, _08015504 @ =dword_80A97F8
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -38838,7 +38838,7 @@ sub_801534C: @ 0x0801534C
 	adds r3, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _0801550C @ =_080A9E2C
+	ldr r0, _0801550C @ =dword_80A9E2C
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -38849,7 +38849,7 @@ sub_801534C: @ 0x0801534C
 	adds r3, r6, #0
 	bl dmaq_enqueue
 	bl main_frameProc
-	ldr r0, _08015510 @ =_080AA56C
+	ldr r0, _08015510 @ =dword_80AA56C
 	adds r1, r4, #0
 	bl LZ77UnCompWram
 	bl dmaq_getVBlankDmaQueue
@@ -38969,12 +38969,12 @@ sub_801534C: @ 0x0801534C
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080154FC: .4byte _0807D1E8
+_080154FC: .4byte dword_807D1E8
 _08015500: .4byte 0x80000600
-_08015504: .4byte _080A97F8
+_08015504: .4byte dword_80A97F8
 _08015508: .4byte 0x80000C00
-_0801550C: .4byte _080A9E2C
-_08015510: .4byte _080AA56C
+_0801550C: .4byte dword_80A9E2C
+_08015510: .4byte dword_80AA56C
 _08015514: .4byte _080ACAFC
 _08015518: .4byte _080ABEFC
 _0801551C: .4byte 0x80000400
