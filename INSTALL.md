@@ -13,48 +13,18 @@ Open a terminal and enter the following commands, depending on your distribution
 ### Debian/Ubuntu
 Install the required packages:
 ```bash
-sudo apt install build-essential binutils-arm-none-eabi git libpng-dev
+sudo apt install build-essential binutils-arm-none-eabi git libpng-dev gcc-arm-none-eabi
 ```
-
-And follow the [**devkitpro** instructions](https://devkitpro.org/wiki/devkitPro_pacman) for **Debian and derivatives** to install devkitpro to your computer.
-Install the GBA Libraries
-```bash
-sudo dkp-pacman -S gba-dev
-```
-And proceed to [Installing devkitarm](#installing-devkit-arm)
-
 ### Arch Linux
 
 Install the required packages:
 
 ```bash
-sudo pacman -S base-devel arm-none-eabi-binutils git libpng
+sudo pacman -S base-devel arm-none-eabi-binutils git libpng arm-none-eabi-gcc
 ```
-And follow the [**devkitpro** instructions](https://devkitpro.org/wiki/devkitPro_pacman) for **Customising Existing Pacman Install** to install devkitpro to your computer. 
-Install the GBA Libraries
-```bash
-sudo pacman -S gba-dev
-```
-And proceed to [Installing devkitarm](#installing-devkit-arm)
-
-### Installing DevkitArm
-
-Run the following commands:
-```bash
-export DEVKITPRO=/opt/devkitpro
-export DEVKITARM=/opt/devkitpro/devkitARM
-export PATH=$PATH:$DEVKITPRO/tools/bin
-```
-You will need to run these each time you reopen the terminal. It is recommended to add them to your shell's .rc file (eg. `.bashrc`)
-
-Proceed to [Choosing where to store mksc on Linux](#choosing-where-to-store-mksc-on-linux).
-
 ### Choosing where to store mksc on Linux
 
-At this point, you can choose a folder to store **mksc** (and **agbcc**).
-If you choose a custom path, remember to adjust directory paths in the following commands.
-
-If this works, proceed to [Installation](#installation). Otherwise, ask for help on Discord (see [README.md](README.md)).
+At this point, you can choose a folder to store **mksc** (and **agbcc**). Open a terminal in that folder
 
 ## Installation
 
