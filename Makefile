@@ -22,7 +22,7 @@ AIF2PCM   		:= tools/aif2pcm/./aif2pcm
 BIN2S			:= tools/bin2s/./bin2s
 
 # Flags
-ASFLAGS			:= -mcpu=arm7tdmi -I include
+ASFLAGS			:= -mcpu=arm7tdmi -I include -I.
 CFLAGS			:= -mthumb-interwork -Wimplicit -Wparentheses -O2
 CPPFLAGS		:= -I tools/agbcc -I tools/agbcc/include -I lib -iquote include -nostdinc
 LDFLAGS			= -L../tools/agbcc/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=../symbols.txt

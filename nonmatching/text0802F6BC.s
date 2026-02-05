@@ -140,7 +140,7 @@ _0802F72C:
     cmp r5, #0x00
     bgt _0802F722
     b _0802F9F2
-    .byte 0x00, 0x00
+    .align 2, 0
 _0802F7C4: .4byte 0x030016F0
 _0802F7C8: .4byte 0x000001FF
 _0802F7CC: .4byte 0x030016F8
@@ -214,7 +214,7 @@ _0802F850:
     movs r0, #0x01
     negs r0, r0
     b _0802F9F4
-    .byte 0x00, 0x00
+    .align 2, 0
 _0802F858: .4byte 0x030016F4
 _0802F85C: .4byte 0x030016FE
 _0802F860:

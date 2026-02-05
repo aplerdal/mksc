@@ -56,6 +56,7 @@ Now you're ready to [build mksc](#build-mksc).
    ```bash
    cd mksc
    ```
+3. Place a US mksc rom named `baserom.gba` with a sha1 of `9d327c030c3e2d9007990518594f70c3340ac56f` in the base of the **mksc** directory.
 2. Build **mksc.gba**:
 
    ```bash
