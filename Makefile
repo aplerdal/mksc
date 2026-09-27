@@ -13,6 +13,7 @@ CPP				:= $(BIN_DIR)/./$(PREFIX)cpp
 OBJCOPY 		:= $(BIN_DIR)/./$(PREFIX)objcopy
 LD 				:= $(BIN_DIR)/./$(PREFIX)ld
 AS 			    := $(BIN_DIR)/./$(PREFIX)as
+NM				:= $(BIN_DIR)/./$(PREFIX)nm
 SHA1			:= $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 FIX				:= tools/gbafix/./gbafix
 SHELL			:= /bin/bash -o pipefail
@@ -30,6 +31,7 @@ LDFLAGS			= -L../tools/agbcc/lib -L../lib/libunk -lgcc -lc -lunk --just-symbols=
 # Files
 ELF = $(ROM:.gba=.elf)
 MAP = $(ROM:.gba=.map)
+SYMS= $(ROM:.gba=.sym)
 OBJ_DIR := build
 
 C_SUBDIR = src
@@ -75,7 +77,7 @@ endef
 # Rules
 .PHONY: tools libraries rom clean progress
 
-rom: tools libraries $(ROM) compare
+rom: tools libraries $(ROM) compare $(SYMS)
  
 compare: $(ROM)
 	@$(SHA1) rom.sha1
@@ -90,7 +92,7 @@ clean:
 	$(MAKE) clean -C tools/aif2pcm
 	$(MAKE) clean -C tools/bin2s
 	$(MAKE) clean -C tools/gbafix
-	rm -f $(ROM) $(ELF) $(MAP)
+	rm -f $(ROM) $(ELF) $(MAP) $(SYMS)
 	rm -r build/*
 	$(MAKE) -C lib/libunk clean
 
@@ -141,7 +143,11 @@ $(DATA_BUILDDIR)/%.o : $(DATA_SUBDIR)/%.bin
 
 $(ELF): $(OBJS)
 	cd $(OBJ_DIR) && $(LD) -Map ../$(MAP) -T ../ld_script.ld -o ../$@ $(LDFLAGS) $(OBJS_REL)
+
 $(MAP): rom
+
+$(SYMS): $(ELF)
+	$(NM) -Ung $< > $@
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary $< $@
