@@ -347,7 +347,7 @@ static void error_8016D90(void)
 }
 #endif
 
-static void sub_8016F28(void)
+void sub_8016F28(void)
 {
     CpuSet(dword_80CAE30[0], &pltt_getBuffer(PLTT_BUFFER_OBJ)[112], 9);
 
@@ -372,7 +372,7 @@ static void sub_8016F28(void)
     oam_renderCellData(dword_80DA30C, &word_300018C, 0, 0, 0, NULL);
 }
 
-static bool32 sub_8016FDC(void)
+bool32 sub_8016FDC(void)
 {
     if ((gTransitionState.flags & TRNS_FLAG_UPDATE_FRAME) != 0)
         return FALSE;
@@ -399,7 +399,7 @@ static void sub_8017048(void)
     }
 }
 
-static void sub_801708C(void)
+void sub_801708C(void)
 {
     LZ77UnCompVram(title_sObjTiles4, 0x6013400);
     CpuSet(dword_80CAE30, &pltt_getBuffer(PLTT_BUFFER_OBJ)[112], 9);
@@ -409,7 +409,7 @@ static void sub_801708C(void)
     word_300018C.y = 148;
 }
 
-static bool32 sub_80170DC(u32 a1[27])
+bool32 sub_80170DC(u32 a1[27])
 {
     s32 angle = a1[26];
     bool32 isModified = FALSE;
@@ -426,12 +426,12 @@ static bool32 sub_80170DC(u32 a1[27])
     return isModified;
 }
 
-static void sub_8017128(void)
+void sub_8017128(void)
 {
     dword_203EC20 = TRUE;
 }
 
-static void sub_8017134(void)
+void sub_8017134(void)
 {
     trns_setInitFunc(trns_initDefaultOutTransition);
     gTransitionState.applyFunc = trns_applyDefaultOutTransition;
