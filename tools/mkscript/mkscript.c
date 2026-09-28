@@ -57,26 +57,22 @@ int main(int argc, char** argv) {
     int inputLen = strlen(input);
     if (output == NULL) {
         char* extptr = strchr(input, '.');
-        char* buf;
-        if (extptr != NULL) {
-            int noExtLen = (size_t)extptr - (size_t)input;
-            buf = calloc(1, sizeof(char) * (noExtLen + 5));
-            strncpy(buf, input, noExtLen);
-            if (mode == MODE_COMPILE) {
+        char* buf = NULL;
+        if (mode == MODE_COMPILE) {
+                if (extptr != NULL) {
+                int noExtLen = (size_t)extptr - (size_t)input;
+                buf = calloc(1, sizeof(char) * (noExtLen + 5));
+                strncpy(buf, input, noExtLen);
                 strcpy(&buf[noExtLen], ".bin\0");
+                
             } else {
-                strcpy(&buf[noExtLen], ".mks\0");
-            }
-            
-        } else {
-            buf = calloc(1, sizeof(char) * (inputLen + 5));
-            if (mode == MODE_COMPILE) {
+                buf = calloc(1, sizeof(char) * (inputLen + 5));
                 snprintf(buf, inputLen+5, "%s.bin", input);
-            } else {
-                snprintf(buf, inputLen+5, "%s.mks", input);
             }
-            
+        } else {
+            asprintf(&buf, "%08x.mks", disassembleAddress | 0x08000000);
         }
+
         output = buf;
     }
     printf("Input file: %s\n", input);
@@ -334,7 +330,7 @@ static int disassemble_file(FILE* input, FILE* output) {
         int res = fread(&instr, sizeof(Instruction), 1, input);
         if (res != 1) break;
         
-        if (instr.opcode == 0x0) {
+        if (instr.opcode == 0x0 || instr.opcode == 0x42) {
             step = false;
         } else if (instr.opcode == 0xf2 || instr.opcode == 0xf6) {
             char* str;
@@ -362,7 +358,7 @@ static int disassemble_file(FILE* input, FILE* output) {
             fprintf(output, "%s:\n", data);
         }
 
-        if (instr.opcode == 0x0 || instr.opcode == 0xf2 || instr.opcode == 0xf6) {
+        if (instr.opcode == 0x0 || instr.opcode == 0x42 || instr.opcode == 0xf2 || instr.opcode == 0xf6) {
             step = false;
         }
         const char* opcode = get_opcode(instr.opcode);
@@ -404,7 +400,7 @@ static int disassemble_file(FILE* input, FILE* output) {
                         }
                     } else {
                         // use hex backup
-                        fprintf(output, "%s %08x\n", opcode, instr.arg);
+                        fprintf(output, "%s 0x%08x\n", opcode, instr.arg);
                     }
                 }
                 break;
