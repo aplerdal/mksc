@@ -84,7 +84,7 @@ lsls r4, r4, #0x02
 subs r4, r4, r6
 lsls r4, r4, #0x0D
 lsls r5, r5, #0x0B
-ldr r0, _08016EA0 @ =0x08345800
+ldr r0, _08016EA0 @ =characterTiles_bin
 adds r5, r5, r0
 adds r4, r4, r5
 lsls r5, r7, #0x0B
@@ -96,7 +96,7 @@ adds r2, r5, #0x0
 ldr r3, _08016EA8 @ =0x80000400
 bl dmaq_enqueue
 lsls r6, r6, #0x09
-ldr r2, _08016EAC @ =0x08344600
+ldr r2, _08016EAC @ =characterPalettes_bin
 adds r6, r6, r2
 movs r0, #0x01
 bl pltt_getBuffer
@@ -141,11 +141,11 @@ adds r0, r3, #0x0
 orrs r0, r1
 strh r0, [r2, #0x00]
 b _08016EC0
-_08016EA0: .4byte 0x08345800
+_08016EA0: .4byte characterTiles_bin
 _08016EA4: .4byte 0x06011800
 _08016EA8: .4byte 0x80000400
-_08016EAC: .4byte 0x08344600
-_08016EB0: .4byte 0x080DA2FC
+_08016EAC: .4byte characterPalettes_bin
+_08016EB0: .4byte off_80DA2FC
 _08016EB4:
 adds r0, r6, r4
 ldrh r1, [r0, #0x00]
@@ -200,6 +200,6 @@ pop {r0}
 bx r0
 _08016F1C: .4byte 0x0000EFFF
 _08016F20: .4byte 0x007000A8
-_08016F24: .4byte 0x080CA7A0
+_08016F24: .4byte dword_80CA7A0
 
 

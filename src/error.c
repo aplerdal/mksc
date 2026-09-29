@@ -34,8 +34,8 @@ extern int dword_80BC960[1];
 extern void sub_8017048(void);
 extern void title_main();
 
-extern const u8 gCharacterTiles[1];
-extern const int gCharacterPalettes[1];
+extern const u8 characterTiles_bin[1];
+extern const int characterPalettes_bin[1];
 extern const u16* const off_80DA2FC[4];
 extern u16 dword_80CA7A0[1];
 
@@ -322,9 +322,9 @@ static void error_8016D90(void)
         v8 = sub_8008600(v7);
         v9 = spm_menuCharIdxToCharId(i);
 
-        sprite = &gCharacterTiles[0x16000 * v9] + 2048 * v8;
+        sprite = &characterTiles_bin[0x16000 * v9] + 2048 * v8;
         dmaq_enqueueVBlank(sprite, (void*)(0x6011800 + (i << 11)), 0x80000400);
-        CpuFastSet(&gCharacterPalettes[128 * v9], &pltt_getBuffer(1)[64 + 16 * i], 8);
+        CpuFastSet(&characterPalettes_bin[128 * v9], &pltt_getBuffer(1)[64 + 16 * i], 8);
 
         for (j = 0; j < 4; j++)
         {

@@ -34361,7 +34361,7 @@ _08012F08:
 	subs r0, r0, r1
 	lsls r0, r0, #0xd
 	lsls r2, r2, #9
-	ldr r1, _08012F6C @ =_08356800
+	ldr r1, _08012F6C @ =characterTiles_bin+0x11000
 	adds r2, r2, r1
 	adds r0, r0, r2
 	lsls r1, r5, #0xa
@@ -34402,7 +34402,7 @@ _08012F46:
 	orrs r0, r1
 	b _08012F80
 	.align 2, 0
-_08012F6C: .4byte _08356800
+_08012F6C: .4byte characterTiles_bin + 0x11000
 _08012F70: .4byte 0x06014000
 _08012F74: .4byte _080D9FC0
 _08012F78:

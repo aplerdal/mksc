@@ -2,8 +2,8 @@
 #include "math.h"
 #include "oam.h"
 
-static const int sObjHalfWidth[3][4] = { { 4, 8, 16, 32 }, { 8, 16, 16, 32 }, { 4, 4, 8, 16 } };
-static const int sObjHalfHeight[3][4] = { { 4, 8, 16, 32 }, { 4, 4, 8, 16 }, { 8, 16, 16, 32 } };
+const int sObjHalfWidth[3][4] = { { 4, 8, 16, 32 }, { 8, 16, 16, 32 }, { 4, 4, 8, 16 } };
+const int sObjHalfHeight[3][4] = { { 4, 8, 16, 32 }, { 4, 4, 8, 16 }, { 8, 16, 16, 32 } };
 
 static int sBufferOffset;
 static int sNextAffineId;

@@ -98,7 +98,7 @@ _080E756C:
 	.incbin "baserom.gba", 0x000E756C, 0x00000014
 
 	.global _080E7580
-_080E7580: .4byte 0x080EB3C5
+_080E7580: .4byte _080EB3C5
 
 	.global _080E7584
 _080E7584:
@@ -166,7 +166,7 @@ _080E75DC:
 	.incbin "baserom.gba", 0x000E75DC, 0x00000014
 
 	.global _080E75F0
-_080E75F0: .4byte 0x080EB403
+_080E75F0: .4byte _080EB403
 
 	.global _080E75F4
 _080E75F4:
@@ -234,7 +234,7 @@ _080E764C:
 	.incbin "baserom.gba", 0x000E764C, 0x00000014
 
 	.global _080E7660
-_080E7660: .4byte 0x080EB44D
+_080E7660: .4byte _080EB44D
 
 	.global _080E7664
 _080E7664:
@@ -302,7 +302,7 @@ _080E76BC:
 	.incbin "baserom.gba", 0x000E76BC, 0x00000014
 
 	.global _080E76D0
-_080E76D0: .4byte 0x080EB4AF
+_080E76D0: .4byte _080EB4AF
 
 	.global _080E76D4
 _080E76D4:
@@ -370,7 +370,7 @@ _080E772C:
 	.incbin "baserom.gba", 0x000E772C, 0x00000014
 
 	.global _080E7740
-_080E7740: .4byte 0x080EB4E5
+_080E7740: .4byte _080EB4E5
 
 	.global _080E7744
 _080E7744:
@@ -404,7 +404,7 @@ _080E7764:
 	.incbin "baserom.gba", 0x000E7764, 0x00000014
 
 	.global _080E7778
-_080E7778: .4byte 0x080EB54B
+_080E7778: .4byte _080EB54B
 
 	.global _080E777C
 _080E777C:
@@ -472,7 +472,7 @@ _080E77D4:
 	.incbin "baserom.gba", 0x000E77D4, 0x00000014
 
 	.global _080E77E8
-_080E77E8: .4byte 0x080EB5AD
+_080E77E8: .4byte _080EB5AD
 
 	.global _080E77EC
 _080E77EC:
@@ -540,7 +540,7 @@ _080E7844:
 	.incbin "baserom.gba", 0x000E7844, 0x00000014
 
 	.global _080E7858
-_080E7858: .4byte 0x080EB603
+_080E7858: .4byte _080EB603
 
 	.global _080E785C
 _080E785C:
@@ -607,7 +607,7 @@ _080E78B4:
 	.incbin "baserom.gba", 0x000E78B4, 0x00000014
 
 	.global _080E78C8
-_080E78C8: .4byte 0x080EB665
+_080E78C8: .4byte _080EB665
 
 	.global _080E78CC
 _080E78CC:
@@ -707,7 +707,7 @@ _080E795C:
 	.incbin "baserom.gba", 0x000E795C, 0x00000014
 
 	.global _080E7970
-_080E7970: .4byte 0x080EB6DF
+_080E7970: .4byte _080EB6DF
 
 	.global _080E7974
 _080E7974:
@@ -1839,43 +1839,84 @@ _080EB39C:
 
 	.global _080EB3A4
 _080EB3A4:
-	.incbin "baserom.gba", 0x000EB3A4, 0x00000036
+	.incbin "baserom.gba", 0x000EB3A4, 33
+
+	.global _080EB3C5
+_080EB3C5:
+	.incbin "baserom.gba", 0x000EB3C5, 21
+
 
 	.global _080EB3DA
 _080EB3DA:
-	.incbin "baserom.gba", 0x000EB3DA, 0x0000004A
+	.incbin "baserom.gba", 0x000EB3DA, 41
+
+	.global _080EB403
+_080EB403:
+	.incbin "baserom.gba", 0x000EB403, 33
 
 	.global _080EB424
 _080EB424:
-	.incbin "baserom.gba", 0x000EB424, 0x0000005E
+	.incbin "baserom.gba", 0x000EB424, 41
+
+	.global _080EB44D
+_080EB44D:
+	.incbin "baserom.gba", 0x000EB44D, 53
 
 	.global _080EB482
 _080EB482:
-	.incbin "baserom.gba", 0x000EB482, 0x0000004E
+	.incbin "baserom.gba", 0x000EB482, 45
+
+	.global _080EB4AF
+_080EB4AF:
+	.incbin "baserom.gba", 0x000EB4AF, 33
 
 	.global _080EB4D0
 _080EB4D0:
-	.incbin "baserom.gba", 0x000EB4D0, 0x00000042
+	.incbin "baserom.gba", 0x000EB4D0, 21
 
-	.global _080EB512
+	.global _080EB4E5
+_080EB4E5:
+	.incbin "baserom.gba", 0x000EB4E5, 45
+
+	.global _080E
 _080EB512:
-	.incbin "baserom.gba", 0x000EB512, 0x0000006E
+	.incbin "baserom.gba", 0x000EB512, 57
+
+	.global _080EB54B
+_080EB54B:
+	.incbin "baserom.gba", 0x000EB54B, 53
 
 	.global _080EB580
 _080EB580:
-	.incbin "baserom.gba", 0x000EB580, 0x0000005A
+	.incbin "baserom.gba", 0x000EB580, 45
+
+	.global _080EB5AD
+_080EB5AD:
+	.incbin "baserom.gba", 0x000EB5AD, 45
 
 	.global _080EB5DA
 _080EB5DA:
-	.incbin "baserom.gba", 0x000EB5DA, 0x0000005A
+	.incbin "baserom.gba", 0x000EB5DA, 41
+
+	.global _080EB603
+_080EB603:
+	.incbin "baserom.gba", 0x000EB603, 49
 
 	.global _080EB634
 _080EB634:
-	.incbin "baserom.gba", 0x000EB634, 0x00000052
+	.incbin "baserom.gba", 0x000EB634, 49
+
+	.global _080EB665
+_080EB665:
+	.incbin "baserom.gba", 0x000EB665, 33
 
 	.global _080EB686
 _080EB686:
-	.incbin "baserom.gba", 0x000EB686, 0x0000009A
+	.incbin "baserom.gba", 0x000EB686, 89
+
+	.global _080EB6DF
+_080EB6DF:
+	.incbin "baserom.gba", 0x000EB6DF, 65
 
 	.global _080EB720
 _080EB720:

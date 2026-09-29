@@ -319,7 +319,7 @@ _0802F8E0:
     b _0802F92E
 _0802F91C: .4byte 0x030016F0
 _0802F920: .4byte 0x000001FF
-_0802F924: .4byte 0x080E642C
+_0802F924: .4byte sObjHalfHeight
 _0802F928: .4byte 0x030016F8
 _0802F92C:
     adds r6, r2, #0x0
@@ -433,7 +433,7 @@ _0802F9F4:
     pop {r4, r5, r6, r7}
     pop {r1}
     bx r1
-_0802FA04: .4byte 0x080E63FC
+_0802FA04: .4byte sObjHalfWidth
 _0802FA08: .4byte 0x030016F0
 _0802FA0C: .4byte 0x030016FA
 _0802FA10: .4byte 0x000001FF

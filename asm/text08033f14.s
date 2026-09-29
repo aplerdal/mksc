@@ -17913,16 +17913,16 @@ _0803C9EE:
 	ldr r1, [r3]
 	lsls r1, r1, #0x1e
 	lsrs r1, r1, #0x1d
-	ldr r2, _0803CA30 @ =gCharacterPalettes + 0x1C0
+	ldr r2, _0803CA30 @ =characterPalettes_bin + 0x1C0
 	b _0803CA3E
 	.align 2, 0
-_0803CA30: .4byte gCharacterPalettes + 0x1C0
+_0803CA30: .4byte characterPalettes_bin + 0x1C0
 _0803CA34:
 	lsls r0, r6, #9
 	ldr r1, [r3]
 	lsls r1, r1, #0x1e
 	lsrs r1, r1, #0x1d
-	ldr r2, _0803CA74 @ =gCharacterPalettes + 0x1E0
+	ldr r2, _0803CA74 @ =characterPalettes_bin + 0x1E0
 _0803CA3E:
 	adds r1, r1, r2
 	adds r5, r0, r1
@@ -17950,7 +17950,7 @@ _0803CA6E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0803CA74: .4byte gCharacterPalettes + 0x1E0
+_0803CA74: .4byte characterPalettes_bin + 0x1E0
 
 	thumb_func_start sub_803CA78
 sub_803CA78: @ 0x0803CA78
@@ -18625,7 +18625,7 @@ _0803CF30:
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	adds r0, r0, r4
-	ldr r1, _0803CFAC @ =gCharacterPalettes + 0x6
+	ldr r1, _0803CFAC @ =characterPalettes_bin + 0x6
 	adds r4, r0, r1
 	adds r1, r6, #0
 	adds r1, #0xd4
@@ -18654,13 +18654,13 @@ _0803CF9C: .4byte 0x030022E8
 _0803CFA0: .4byte 0x03002E44
 _0803CFA4: .4byte 0x000007D4
 _0803CFA8: .4byte 0x06014000
-_0803CFAC: .4byte gCharacterPalettes + 0x6
+_0803CFAC: .4byte characterPalettes_bin + 0x6
 _0803CFB0:
 	adds r0, r6, #0
 	bl sub_803C84C
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	ldr r2, _0803D004 @ =gCharacterPalettes + 0x1006
+	ldr r2, _0803D004 @ =characterPalettes_bin + 0x1006
 	adds r4, r0, r2
 	adds r1, r6, #0
 	adds r1, #0xd4
@@ -18696,7 +18696,7 @@ _0803CFEE:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0803D004: .4byte gCharacterPalettes + 0x1006
+_0803D004: .4byte characterPalettes_bin + 0x1006
 _0803D008: .4byte 0x030022E8
 
 	thumb_func_start sub_803D00C

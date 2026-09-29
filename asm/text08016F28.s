@@ -9838,7 +9838,7 @@ _0801C2E0:
 	subs r4, r4, r1
 	lsls r4, r4, #0xd
 	lsls r0, r0, #9
-	ldr r1, _0801C350 @ =_08356800
+	ldr r1, _0801C350 @ =characterTiles_bin+0x11000
 	adds r0, r0, r1
 	adds r4, r4, r0
 	lsls r5, r7, #0xa
@@ -9885,7 +9885,7 @@ _0801C32A:
 	orrs r0, r1
 	b _0801C364
 	.align 2, 0
-_0801C350: .4byte _08356800
+_0801C350: .4byte characterTiles_bin+0x11000
 _0801C354: .4byte 0x06014000
 _0801C358: .4byte _080DA668
 _0801C35C:
@@ -36175,7 +36175,7 @@ _08029578: .4byte 0x000007FB
 _0802957C: .4byte 0x0000000B
 _08029580: .4byte 0x03004F70
 _08029584: .4byte 0x03004EA0
-_08029588: .4byte _08102914
+_08029588: .4byte _08102910+4
 _0802958C: .4byte gMPlayTable
 _08029590: .4byte trns_initDefaultOutTransition
 _08029594: .4byte trns_applyDefaultOutTransition

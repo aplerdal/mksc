@@ -130,6 +130,9 @@ gSongTable:
 	song seq_124, 4, 4
 	song seq_125, 6, 6
 	song seq_126, 10, 10
+@ Replace old hardcoded address; Hack
+.global _08102890
+	_08102890:
 	song seq_127, 7, 7
 	song seq_128, 9, 9
 	song seq_129, 6, 6
@@ -146,6 +149,9 @@ gSongTable:
 	song seq_140, 6, 6
 	song seq_141, 8, 8
 	song seq_142, 7, 7
+@ Replace old hardcoded address; Hack
+.global _08102910
+	_08102910:
 	song seq_143, 7, 7
 	song seq_144, 7, 7
 	song seq_145, 7, 7

@@ -185,8 +185,8 @@ _08030128:
     bl MPlayStart
     b _080300C0
     .align 2, 0
-_08030148: .4byte 0x08102414
-_0803014C: .4byte 0x08102498
+_08030148: .4byte gMPlayTable
+_0803014C: .4byte gSongTable
 _08030150:
     ldr r0, _08030184 @ =0x0000000B
     lsls r0, r0, #0x18
@@ -216,8 +216,8 @@ _08030178:
     mov r0, r8
     b _0803019C
 _08030184: .4byte 0x0000000B
-_08030188: .4byte 0x08102414
-_0803018C: .4byte 0x08102498
+_08030188: .4byte gMPlayTable
+_0803018C: .4byte gSongTable
 _08030190:
     ldrh r0, [r5, #0x04]
     bl m4aSongNumStop

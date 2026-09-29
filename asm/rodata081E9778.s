@@ -7,8 +7,8 @@
 _081E9778:
 	.incbin "baserom.gba", 0x001E9778, 0x0000000C
 
-	.global _081E9784
-_081E9784: .4byte _081E9864
+	.global sFlashList
+sFlashList: .4byte _081E9864
 
 	.global _081E9788
 _081E9788: .4byte _081E9960
@@ -20,10 +20,10 @@ _081E978C: .4byte _081E98E8
 _081E9790: .4byte _081E9914
 
 	.global _081E9794
-_081E9794: .4byte _081E9838
+_081E9794: .4byte DefaultFlash
 
 	.global _081E9798
-_081E9798: .4byte _081E9784
+_081E9798: .4byte sFlashList
 
 	.global _081E979C
 _081E979C:
@@ -53,7 +53,7 @@ _081E9804: .4byte ReadFlash_Core
 _081E9808: .4byte ReadFlash
 
 	.global _081E980C
-_081E980C: .4byte _081E9838
+_081E980C: .4byte DefaultFlash
 
 	.global _081E9810
 _081E9810: .4byte VerifyFlashSector_Core
@@ -62,7 +62,7 @@ _081E9810: .4byte VerifyFlashSector_Core
 _081E9814: .4byte VerifyFlashSector
 
 	.global _081E9818
-_081E9818: .4byte _081E9838
+_081E9818: .4byte DefaultFlash
 
 	.global _081E981C
 _081E981C:
@@ -72,8 +72,8 @@ _081E981C:
 _081E9820:
 	.incbin "baserom.gba", 0x001E9820, 0x00000018
 
-	.global _081E9838
-_081E9838: .4byte ProgramFlashSector_LE
+	.global DefaultFlash
+DefaultFlash: .4byte ProgramFlashSector_LE
 
 	.global _081E983C
 _081E983C: .4byte EraseFlashChip_LE
